@@ -410,7 +410,7 @@
     <nav class="nav">
       <button data-view="dashboard" class="active" data-roles="admin,staff"><span class="ic">▦</span><span>แดชบอร์ด</span></button>
       <button data-view="stock" data-roles="admin,staff"><span class="ic">📦</span><span>สต็อกสินค้า</span></button>
-      <button data-view="pawn" data-roles="admin,staff,partner"><span class="ic">🏷️</span><span>ระบบรับฝาก</span></button>
+      <button data-view="pawn" data-roles="admin,staff,partner,viewer"><span class="ic">🏷️</span><span>ระบบรับฝาก</span></button>
       <button data-view="customers" data-roles="admin,staff"><span class="ic">👥</span><span>ประวัติลูกค้า</span></button>
       <button data-view="report" data-roles="admin"><span class="ic">📊</span><span>สรุปยอด</span></button>
       <button data-view="ledger" data-roles="admin,staff"><span class="ic">🕐</span><span>รายการล่าสุด</span></button>
@@ -624,7 +624,7 @@
               <div class="val green" id="ownerBal">฿0</div>
               <div style="display:flex;gap:6px;margin-top:8px">
                 <button class="btn btn-ghost btn-sm" style="flex:1" onclick="openWalletHistory('owner')">ประวัติ</button>
-                <button class="btn btn-gold btn-sm" style="flex:1" onclick="openWithdraw('owner')">ถอน</button>
+                <button class="btn btn-gold btn-sm" style="flex:1" onclick="openWithdraw('owner')" data-no-partner>ถอน</button>
               </div>
             </div>
             <div class="kpi" style="border:1px solid rgba(111,168,220,.3)">
@@ -632,7 +632,7 @@
               <div class="val blue" id="partnerBal">฿0</div>
               <div style="display:flex;gap:6px;margin-top:8px">
                 <button class="btn btn-ghost btn-sm" style="flex:1" onclick="openWalletHistory('partner')">ประวัติ</button>
-                <button class="btn btn-gold btn-sm" style="flex:1" onclick="openWithdraw('partner')">ถอน</button>
+                <button class="btn btn-gold btn-sm" style="flex:1" onclick="openWithdraw('partner')" data-no-partner>ถอน</button>
               </div>
             </div>
           </div>
@@ -650,7 +650,7 @@
             </div>
             <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
               <input class="search" id="pawnSearch" placeholder="ค้นหา ชื่อ / เครื่อง / เลขตั๋ว…">
-              <button class="btn btn-gold btn-sm" onclick="openPawn()">+ รับฝากใหม่</button>
+              <button class="btn btn-gold btn-sm" onclick="openPawn()" data-no-partner>+ รับฝากใหม่</button>
             </div>
           </div>
           <div class="tablewrap">
@@ -1454,7 +1454,8 @@ let DB=load();
 const CREDS={
   admin:{pass:'A0878090435x',label:'ผู้ดูแลระบบ (Admin)'},
   staff:{pass:'',label:'พนักงาน (Staff)'},
-  partner:{pass:'',label:'หุ้นส่วน (Partner)'}
+  partner:{pass:'',label:'หุ้นส่วน (Partner)'},
+  viewer:{pass:'',label:'ผู้ดูข้อมูล (Viewer)'}
 };
 let currentRole=null;
 let notifOpen=false, notifAudioCtx=null, notifTimer=null, notifSoundActive=false;
@@ -1463,6 +1464,7 @@ function applyRole(role){
   document.body.classList.toggle('role-admin',role==='admin');
   document.body.classList.toggle('role-staff',role==='staff');
   document.body.classList.toggle('role-partner',role==='partner');
+  document.body.classList.toggle('role-viewer',role==='viewer');
   // เมนู: ซ่อนตามสิทธิ์
   document.querySelectorAll('.nav button[data-roles]').forEach(b=>{
     const allowed=b.dataset.roles.split(',').includes(role);
@@ -1472,23 +1474,26 @@ function applyRole(role){
   const rb=document.getElementById('roleBadge');if(rb)rb.textContent='👤 '+(CREDS[role]?CREDS[role].label:role);
   // ซ่อนองค์ประกอบที่เป็นกำไร/ข้อมูลอ่อนไหวตาม data-sensitive
   document.querySelectorAll('[data-admin-only]').forEach(el=>{el.style.display=role==='admin'?'':'none'});
-  // หน้าเริ่มต้นตามสิทธิ์
-  const home=role==='partner'?'pawn':'dashboard';
+  // หน้าเริ่มต้นตามสิทธิ์ (partner/viewer เข้าหน้ารับฝากเป็นหลัก)
+  const home=(role==='partner'||role==='viewer')?'pawn':'dashboard';
   go(home);
-  // partner: ปุ่มคีย์ข้อมูลในหน้ารับฝากต้องถูกล็อก
-  applyPartnerLock();
+  // partner/viewer: ปุ่มคีย์ข้อมูลในหน้ารับฝากต้องถูกล็อก (ดูได้อย่างเดียว)
+  applyReadOnlyLock();
   try{if(typeof startNotifLoop==='function')startNotifLoop();}catch(e){console.warn('notif',e)}
 }
-function applyPartnerLock(){
-  const lock=currentRole==='partner';
-  // ปุ่มที่ partner ห้ามใช้ (เพิ่ม/แก้/ถอน)
-  document.querySelectorAll('[data-no-partner]').forEach(el=>{el.style.display=lock?'none':''});
+function applyReadOnlyLock(){
+  // partner: ล็อกเฉพาะปุ่มคีย์ข้อมูล (ดูยอดได้ แก้ไขไม่ได้)
+  // viewer: ล็อกทุกปุ่มที่แก้ไข/บันทึก/ลบ ได้ (ดูได้อย่างเดียวเต็มรูปแบบ)
+  const lockPartner=currentRole==='partner'||currentRole==='viewer';
+  document.querySelectorAll('[data-no-partner]').forEach(el=>{el.style.display=lockPartner?'none':''});
+  const lockViewer=currentRole==='viewer';
+  document.querySelectorAll('[data-no-viewer]').forEach(el=>{el.style.display=lockViewer?'none':''});
 }
 function getUserRole(user){
   // อ่านสิทธิ์จาก Supabase user_metadata.role ที่ตั้งไว้ตอนสร้าง/แก้ไข user
   // ไม่ตั้งไว้ หรือตั้งค่าที่ไม่รู้จัก = staff (ปลอดภัยกว่า กันพลาดให้สิทธิ์ admin โดยไม่ตั้งใจ)
   const r=user&&user.user_metadata&&user.user_metadata.role;
-  if(r==='admin'||r==='partner')return r;
+  if(r==='admin'||r==='partner'||r==='viewer')return r;
   return 'staff';
 }
 async function doLogin(){
@@ -3171,10 +3176,11 @@ function renderPawn(q=''){
       <td class="num" style="color:var(--gold-soft);font-weight:700">${p.status==='active'?baht(redeem):'—'}</td>
       <td class="num" style="white-space:nowrap">
         <button class="btn btn-ghost btn-sm" onclick="printPawn('${p.id}')">🖨️</button>
-        ${p.status==='active'?`<button class="btn btn-green btn-sm" onclick="openRedeem('${p.id}')">จัดการ</button>`:`<button class="btn btn-danger btn-sm" onclick="delPawn('${p.id}')">ลบ</button>`}
+        ${p.status==='active'?`<button class="btn btn-green btn-sm" onclick="openRedeem('${p.id}')" data-no-partner>จัดการ</button>`:`<button class="btn btn-danger btn-sm" onclick="delPawn('${p.id}')" data-no-partner>ลบ</button>`}
       </td>
     </tr>`;
   }).join(''):`<tr><td colspan="10" class="empty"><div class="big">🏷️</div>ไม่มีรายการรับฝาก</td></tr>`;
+  applyReadOnlyLock(); // ปุ่มในแถวสร้างใหม่ทุกครั้ง ต้องล็อกซ้ำให้ partner/viewer
 }
 document.querySelectorAll('#pawnFilter button').forEach(b=>b.onclick=()=>{
   document.querySelectorAll('#pawnFilter button').forEach(x=>x.classList.remove('on'));
