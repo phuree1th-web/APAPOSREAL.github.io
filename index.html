@@ -1484,6 +1484,13 @@ function applyPartnerLock(){
   // ปุ่มที่ partner ห้ามใช้ (เพิ่ม/แก้/ถอน)
   document.querySelectorAll('[data-no-partner]').forEach(el=>{el.style.display=lock?'none':''});
 }
+function getUserRole(user){
+  // อ่านสิทธิ์จาก Supabase user_metadata.role ที่ตั้งไว้ตอนสร้าง/แก้ไข user
+  // ไม่ตั้งไว้ หรือตั้งค่าที่ไม่รู้จัก = staff (ปลอดภัยกว่า กันพลาดให้สิทธิ์ admin โดยไม่ตั้งใจ)
+  const r=user&&user.user_metadata&&user.user_metadata.role;
+  if(r==='admin'||r==='partner')return r;
+  return 'staff';
+}
 async function doLogin(){
   const email=($('loginUser').value||'').trim();
   const p=$('loginPass').value||'';
@@ -1500,7 +1507,7 @@ async function doLogin(){
     $('appShell').style.display='';
     setCloudStatus('⏳ กำลังโหลดข้อมูล...');
     await cloudPull();           // ดึงข้อมูลล่าสุดจากคลาวด์
-    applyRole('admin');          // เจ้าของ = admin
+    applyRole(getUserRole(sbUser)); // อ่านสิทธิ์จาก user_metadata.role (ปลอดภัย: ไม่ตั้งไว้ = staff)
     renderDash();
     setCloudStatus('☁️ เชื่อมคลาวด์แล้ว');
   }catch(e){
@@ -1536,7 +1543,7 @@ function initAuth(){
         sbUser=data.session.user;
         $('loginScreen').style.display='none';$('appShell').style.display='';
         setCloudStatus('⏳ กำลังโหลดข้อมูล...');
-        await cloudPull();applyRole('admin');renderDash();
+        await cloudPull();applyRole(getUserRole(sbUser));renderDash();
         setCloudStatus('☁️ เชื่อมคลาวด์แล้ว');
       }
     });
