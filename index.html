@@ -750,6 +750,7 @@
         <div class="field"><label>ชื่อลูกค้า *</label><div style="display:flex;gap:6px"><input id="p_name" placeholder="ชื่อ-นามสกุล" style="flex:1"><button type="button" class="btn btn-ghost btn-sm" style="white-space:nowrap" onclick="openCustLookup('p_name','p_phone')">👥 เก่า</button></div></div>
         <div class="field"><label>เบอร์โทร</label><input id="p_phone" inputmode="tel" placeholder="08x-xxx-xxxx"></div>
       </div>
+      <div class="field"><label>วันที่รับฝากจริง *</label><input type="date" id="p_date"><div style="font-size:11px;color:var(--muted);margin-top:4px">ค่าเริ่มต้นคือวันนี้ · แก้ได้เมื่อย้อนลงข้อมูลเก่า (ดอกเบี้ย/วันครบกำหนดจะคำนวณจากวันนี้)</div></div>
       <div class="field"><label>เลขบัตรประชาชน</label><input id="p_idcard" inputmode="numeric" placeholder="x-xxxx-xxxxx-xx-x"></div>
       <input type="hidden" id="p_item">
       <!-- ตัวเลือกข้อมูลเครื่องแบบละเอียด (เหมือนรับเครื่อง ไม่มีที่ต้องซ่อม) -->
@@ -3307,6 +3308,7 @@ if($('pp_cond_other')){$('pp_cond_other').oninput=ppUpdateCondPreview;$('pp_cond
 function openPawn(){
   pawnMethod='cash';
   ['p_name','p_phone','p_idcard','p_item','p_imei','p_note','p_principal','p_splitcash','p_splitbank'].forEach(i=>document.getElementById(i).value='');
+  document.getElementById('p_date').value=new Date().toISOString().slice(0,10);
   document.getElementById('pawnMethodSeg').querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.m==='cash'));
   show('pawnSplitWrap',false);
   resetPawnPicker();
@@ -3315,10 +3317,13 @@ function openPawn(){
 }
 function updatePawnPreview(){
   const pr=+document.getElementById('p_principal').value||0;
-  const due=new Date();due.setDate(due.getDate()+20);
+  const dv=document.getElementById('p_date').value;
+  const base=dv?new Date(dv+'T00:00:00'):new Date();
+  const due=new Date(base);due.setDate(due.getDate()+20);
   document.getElementById('p_duePreview').textContent=pr?due.toLocaleDateString('th-TH-u-ca-gregory',{day:'2-digit',month:'short',year:'2-digit'})+' (20 วัน)':'—';
   document.getElementById('p_intPreview').textContent=baht(pr*0.10);
 }
+document.getElementById('p_date').addEventListener('input',updatePawnPreview);
 document.getElementById('p_principal').addEventListener('input',updatePawnPreview);
 document.getElementById('pawnMethodSeg').querySelectorAll('button').forEach(b=>b.onclick=()=>{
   document.getElementById('pawnMethodSeg').querySelectorAll('button').forEach(x=>x.classList.remove('on'));
@@ -3351,6 +3356,8 @@ document.getElementById('savePawn').onclick=()=>{
   }
   const miss=[];
   if(!name)miss.push('• ชื่อลูกค้า');
+  const pawnDateVal=document.getElementById('p_date').value;
+  if(!pawnDateVal)miss.push('• วันที่รับฝาก');
   if(!ppk.brand)miss.push('• ยี่ห้อ');
   else if(ppk.brand==='Apple'&&!ppk.device)miss.push('• ประเภทอุปกรณ์');
   else if(ppk.brand==='Apple'&&ppk.device==='iPhone'&&!ppk.model)miss.push('• รุ่น iPhone');
@@ -3359,6 +3366,11 @@ document.getElementById('savePawn').onclick=()=>{
   if(!principal)miss.push('• เงินต้น');
   if(miss.length){alert('กรอกข้อมูลให้ครบ:\n\n'+miss.join('\n'));return}
   if(principal>DB.fund.balance){alert('กองทุนรับฝากมีไม่พอ\nคงเหลือ '+baht(DB.fund.balance)+'\nต้องใช้ '+baht(principal));return}
+  // วันที่รับฝากจริง: ใช้วันที่ที่กรอก (เวลาให้คงเป็นเวลาปัจจุบัน เพื่อให้ลำดับรายการในวันเดียวกันสมเหตุสมผล)
+  const now=new Date();
+  const pawnDateObj=new Date(pawnDateVal+'T00:00:00');
+  pawnDateObj.setHours(now.getHours(),now.getMinutes(),now.getSeconds());
+  const pawnTs=pawnDateObj.toISOString();
   // ผนวกมือ + ตำหนิ
   item=ppGrade+' · '+item;
   const condText=condArr.join(', ');
@@ -3369,7 +3381,7 @@ document.getElementById('savePawn').onclick=()=>{
     pSplit={splitCash:c,splitBank:b};
   }
   const noteExtra=document.getElementById('p_note').value.trim();
-  const p={id:uid(),no:nextPawnNo(),ts:nowISO(),name,
+  const p={id:uid(),no:nextPawnNo(),ts:pawnTs,name,
     phone:document.getElementById('p_phone').value.trim(),
     idcard:document.getElementById('p_idcard').value.trim(),
     item,imei:document.getElementById('p_imei').value.trim(),
