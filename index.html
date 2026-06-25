@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0053)https://phuree1th-web.github.io/APAPOSREAL.github.io/ -->
+<!-- saved from url=(0246)https://phuree1th-web.github.io/APAPOSREAL.github.io/?fbclid=IwY2xjawSp67RleHRuA2FlbQIxMABicmlkETFsMDhsem9qeWg3UXNkeHBrc3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABHs1BPc1kxbvF9F9Qk_exxeYw7dXEtpAr42WG_0Lh2ZGB4HSMTu4VoiOUMV_F_aem_Gio2IUoOJYIFDjXJmXRxYQ -->
 <html lang="th"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -408,12 +408,12 @@
       </div>
     </div>
     <nav class="nav">
-      <button data-view="dashboard" class="active" data-roles="admin,staff"><span class="ic">▦</span><span>แดชบอร์ด</span></button>
-      <button data-view="stock" data-roles="admin,staff"><span class="ic">📦</span><span>สต็อกสินค้า</span></button>
-      <button data-view="pawn" data-roles="admin,staff,partner,viewer" class=""><span class="ic">🏷️</span><span>ระบบรับฝาก</span></button>
+      <button data-view="dashboard" class="" data-roles="admin,staff"><span class="ic">▦</span><span>แดชบอร์ด</span></button>
+      <button data-view="stock" data-roles="admin,staff" class=""><span class="ic">📦</span><span>สต็อกสินค้า</span></button>
+      <button data-view="pawn" data-roles="admin,staff,partner,viewer" class="active"><span class="ic">🏷️</span><span>ระบบรับฝาก</span></button>
       <button data-view="customers" data-roles="admin,staff" class=""><span class="ic">👥</span><span>ลูกค้า</span></button>
-      <button data-view="report" data-roles="admin"><span class="ic">📊</span><span>สรุปยอด</span></button>
-      <button data-view="ledger" data-roles="admin,staff"><span class="ic">🕐</span><span>รายการล่าสุด</span></button>
+      <button data-view="report" data-roles="admin" class=""><span class="ic">📊</span><span>สรุปยอด</span></button>
+      <button data-view="ledger" data-roles="admin,staff" class=""><span class="ic">🕐</span><span>รายการล่าสุด</span></button>
     </nav>
     <div class="nav-foot">
       <div id="roleBadge" style="margin-bottom:8px;padding:7px 10px;background:rgba(212,175,55,.12);border-radius:8px;color:var(--gold-soft);font-weight:600">👤 ผู้ดูแลระบบ (Admin)</div>
@@ -425,15 +425,15 @@
 
   <div class="main">
     <div class="topbar">
-      <h1 id="viewTitle">แดชบอร์ด</h1>
+      <h1 id="viewTitle">ระบบรับฝาก</h1>
       <div class="globalsearch">
         <span class="gs-ic">🔍</span>
         <input id="globalSearch" placeholder="ค้นหา IMEI / รุ่น / ลูกค้า" autocomplete="off">
         <button class="gs-clear hidden" id="gsClear">×</button>
       </div>
       <div class="cashpills">
-        <div class="cashpill cash"><div class="l">เงินสดคงเหลือ</div><div class="v" id="cashBal">-฿10,700</div></div>
-        <div class="cashpill bank"><div class="l">เงินโอนคงเหลือ</div><div class="v" id="bankBal">-฿7,930</div></div>
+        <div class="cashpill cash"><div class="l">เงินสดคงเหลือ</div><div class="v" id="cashBal">฿0</div></div>
+        <div class="cashpill bank"><div class="l">เงินโอนคงเหลือ</div><div class="v" id="bankBal">฿0</div></div>
         <button class="theme-toggle" id="themeToggle" title="สลับธีม สว่าง/มืด">🌙</button>
         <button class="theme-toggle" id="viewModeToggle" title="สลับเป็นโหมดมือถือ">📱</button>
         <button class="theme-toggle" id="bellBtn" title="การแจ้งเตือน" style="position:relative" onclick="toggleNotif()">🔔<span id="bellBadge" style="display:none;position:absolute;top:-4px;right:-4px;background:#e5484d;color:#fff;font-size:10px;font-weight:800;min-width:17px;height:17px;border-radius:9px;align-items:center;justify-content:center;padding:0 4px">0</span></button>
@@ -504,7 +504,7 @@
       </section>
 
       <!-- DASHBOARD -->
-      <section id="view-dashboard" class="">
+      <section id="view-dashboard" class="hidden">
         
         <div class="quick">
           <button onclick="openTxn(&#39;sell&#39;)"><span class="qi">🟢</span><div class="qt">ขายเครื่อง</div><div class="qs">ตัดสต็อก + ลงรายรับ</div></button>
@@ -522,8 +522,8 @@
         <div class="kpi-row">
           <div class="kpi"><div class="label">รายรับวันนี้</div><div class="val green" id="kpiIn">฿0</div></div>
           <div class="kpi"><div class="label">รายจ่ายวันนี้</div><div class="val red" id="kpiOut">฿0</div></div>
-          <div class="kpi" data-admin-only=""><div class="label">กำไรวันนี้</div><div class="val gold" id="kpiProfit">฿0</div></div>
-          <div class="kpi" data-admin-only=""><div class="label">มูลค่าสต็อก (ต้นทุน)</div><div class="val blue" id="kpiStock">฿0</div></div>
+          <div class="kpi" data-admin-only="" style="display: none;"><div class="label">กำไรวันนี้</div><div class="val gold" id="kpiProfit">฿0</div></div>
+          <div class="kpi" data-admin-only="" style="display: none;"><div class="label">มูลค่าสต็อก (ต้นทุน)</div><div class="val blue" id="kpiStock">฿0</div></div>
         </div>
         <div class="panel">
           <div class="panel-head">
@@ -564,7 +564,7 @@
         <div class="panel">
           <div class="panel-head"><h2>🕐 รายการล่าสุด</h2><button class="btn btn-gold btn-sm" onclick="openTxn(&#39;etc&#39;)">+ บันทึกรายการ</button></div>
           <div class="tablewrap" style="max-height:none">
-            <table id="recentTable"><thead><tr><th>เวลา</th><th>รายการ</th><th>ประเภท</th><th>ช่องทาง</th><th class="num">จำนวน</th></tr></thead><tbody></tbody></table>
+            <table id="recentTable"><thead><tr><th>เวลา</th><th>รายการ</th><th>ประเภท</th><th>ช่องทาง</th><th class="num">จำนวน</th></tr></thead><tbody><tr><td colspan="5" class="empty">ยังไม่มีรายการ</td></tr></tbody></table>
           </div>
         </div>
       </section>
@@ -594,17 +594,17 @@
                 <th class="num sens-profit">ทุนรับ</th><th class="num sens-profit">ทุนเพิ่ม</th><th class="num sens-profit">ทุนรวม</th>
                 <th>วันที่ขาย</th><th class="num">ราคาขาย</th><th class="num sens-profit">กำไร</th><th></th>
               </tr></thead>
-              <tbody></tbody>
+              <tbody><tr><td colspan="13" class="empty"><div class="big">📦</div>ไม่มีสินค้า</td></tr></tbody>
             </table>
           </div>
         </div>
       </section>
 
       <!-- PAWN -->
-      <section id="view-pawn" class="hidden">
+      <section id="view-pawn" class="">
         <div class="kpi-row">
-          <div class="kpi"><div class="label">เงินต้นรับฝากคงค้าง</div><div class="val gold" id="pwPrincipal">฿3,500</div></div>
-          <div class="kpi"><div class="label">รายการที่ยังไม่ไถ่</div><div class="val blue" id="pwActive">1<span class="unit">รายการ</span></div></div>
+          <div class="kpi"><div class="label">เงินต้นรับฝากคงค้าง</div><div class="val gold" id="pwPrincipal">฿23,500</div></div>
+          <div class="kpi"><div class="label">รายการที่ยังไม่ไถ่</div><div class="val blue" id="pwActive">9<span class="unit">รายการ</span></div></div>
           <div class="kpi"><div class="label">ดอกเบี้ยรับเดือนนี้</div><div class="val green" id="pwInterest">฿0</div></div>
           <div class="kpi"><div class="label">ครบกำหนด/เกินกำหนด</div><div class="val red" id="pwOverdue">0<span class="unit">รายการ</span></div></div>
         </div>
@@ -615,8 +615,8 @@
           <div class="kpi-row" style="grid-template-columns:repeat(3,1fr)">
             <div class="kpi" style="border:1px solid rgba(212,175,55,.3)">
               <div class="label">กองทุนหมุนเวียน (คงเหลือ)</div>
-              <div class="val gold" id="fundBal">฿96,500</div>
-              <div style="font-size:11px;color:var(--muted);margin-top:4px">ทุนตั้งต้น <span id="fundCap">฿100,000</span> · ปล่อยอยู่ <span id="fundOut">฿3,500</span></div>
+              <div class="val gold" id="fundBal">฿76,500</div>
+              <div style="font-size:11px;color:var(--muted);margin-top:4px">ทุนตั้งต้น <span id="fundCap">฿100,000</span> · ปล่อยอยู่ <span id="fundOut">฿23,500</span></div>
               <button class="btn btn-ghost btn-sm" style="margin-top:8px;width:100%" onclick="openWalletHistory(&#39;fund&#39;)">ดูประวัติกองทุน</button>
             </div>
             <div class="kpi" style="border:1px solid rgba(59,167,118,.3)">
@@ -672,7 +672,128 @@
       <td class="num" style="color:var(--gold-soft);font-weight:700">฿3,680</td>
       <td class="num" style="white-space:nowrap">
         <button class="btn btn-ghost btn-sm" onclick="printPawn(&#39;mqt7yu3frwlh&#39;)">🖨️</button>
+        <button class="btn btn-ghost btn-sm" onclick="openPawnEdit(&#39;mqt7yu3frwlh&#39;)" data-admin-only="" style="display: none;">✏️</button>
         <button class="btn btn-green btn-sm" onclick="openRedeem(&#39;mqt7yu3frwlh&#39;)" data-no-partner="">จัดการ</button>
+      </td>
+    </tr><tr class="row-buy">
+      <td style="font-weight:600">PW-260002</td>
+      <td style="color:var(--muted);white-space:nowrap">22/06/26<div style="font-size:10px;color:var(--muted);font-weight:400">17:31 น.</div></td>
+      <td>พิตชัย อู่ประชา<div style="font-size:11px;color:var(--muted)">0921819126</div></td>
+      <td>มือ 2 · Apple Watch Watch8/44mm 32GB มิดไนท์ (Midnight) <span class="imei">WYP3</span></td>
+      <td class="num" style="font-weight:700">฿1,500</td>
+      <td style="white-space:nowrap;color:var(--muted)">12/07/26</td>
+      <td><span class="tag tag-etc">ยังไม่ไถ่</span></td>
+      <td class="num in">฿80</td>
+      <td class="num" style="color:var(--gold-soft);font-weight:700">฿1,580</td>
+      <td class="num" style="white-space:nowrap">
+        <button class="btn btn-ghost btn-sm" onclick="printPawn(&#39;mqtd4erb9fh5&#39;)">🖨️</button>
+        <button class="btn btn-ghost btn-sm" onclick="openPawnEdit(&#39;mqtd4erb9fh5&#39;)" data-admin-only="" style="display: none;">✏️</button>
+        <button class="btn btn-green btn-sm" onclick="openRedeem(&#39;mqtd4erb9fh5&#39;)" data-no-partner="">จัดการ</button>
+      </td>
+    </tr><tr class="row-buy">
+      <td style="font-weight:600">PW-260006</td>
+      <td style="color:var(--muted);white-space:nowrap">21/06/26<div style="font-size:10px;color:var(--muted);font-weight:400">17:39 น.</div></td>
+      <td>วรวิทร แม่นผล<div style="font-size:11px;color:var(--muted)">0950124685</div></td>
+      <td>มือ 2 · iPad Gen11 128GB ขาว (White) <span class="imei">WM06</span></td>
+      <td class="num" style="font-weight:700">฿3,000</td>
+      <td style="white-space:nowrap;color:var(--muted)">11/07/26</td>
+      <td><span class="tag tag-etc">ยังไม่ไถ่</span></td>
+      <td class="num in">฿150</td>
+      <td class="num" style="color:var(--gold-soft);font-weight:700">฿3,150</td>
+      <td class="num" style="white-space:nowrap">
+        <button class="btn btn-ghost btn-sm" onclick="printPawn(&#39;mqtdegs5w0hi&#39;)">🖨️</button>
+        <button class="btn btn-ghost btn-sm" onclick="openPawnEdit(&#39;mqtdegs5w0hi&#39;)" data-admin-only="" style="display: none;">✏️</button>
+        <button class="btn btn-green btn-sm" onclick="openRedeem(&#39;mqtdegs5w0hi&#39;)" data-no-partner="">จัดการ</button>
+      </td>
+    </tr><tr class="row-buy">
+      <td style="font-weight:600">PW-260005</td>
+      <td style="color:var(--muted);white-space:nowrap">21/06/26<div style="font-size:10px;color:var(--muted);font-weight:400">17:37 น.</div></td>
+      <td>วัชระ จันทร์ชัง<div style="font-size:11px;color:var(--muted)">0648759464</div></td>
+      <td>มือ 2 · iPhone 12 64GB ดำ (Black) <span class="imei">4177</span></td>
+      <td class="num" style="font-weight:700">฿2,000</td>
+      <td style="white-space:nowrap;color:var(--muted)">11/07/26</td>
+      <td><span class="tag tag-etc">ยังไม่ไถ่</span></td>
+      <td class="num in">฿100</td>
+      <td class="num" style="color:var(--gold-soft);font-weight:700">฿2,100</td>
+      <td class="num" style="white-space:nowrap">
+        <button class="btn btn-ghost btn-sm" onclick="printPawn(&#39;mqtdbn1q6z3p&#39;)">🖨️</button>
+        <button class="btn btn-ghost btn-sm" onclick="openPawnEdit(&#39;mqtdbn1q6z3p&#39;)" data-admin-only="" style="display: none;">✏️</button>
+        <button class="btn btn-green btn-sm" onclick="openRedeem(&#39;mqtdbn1q6z3p&#39;)" data-no-partner="">จัดการ</button>
+      </td>
+    </tr><tr class="row-buy">
+      <td style="font-weight:600">PW-260003</td>
+      <td style="color:var(--muted);white-space:nowrap">20/06/26<div style="font-size:10px;color:var(--muted);font-weight:400">17:34 น.</div></td>
+      <td>ณัฐกฤษ ขุนนางค่า<div style="font-size:11px;color:var(--muted)">0811380177</div></td>
+      <td>มือ 2 · iPad Gen11 128GB สตาร์ไลท์ (Starlight) <span class="imei">WG21</span></td>
+      <td class="num" style="font-weight:700">฿5,000</td>
+      <td style="white-space:nowrap;color:var(--muted)">10/07/26</td>
+      <td><span class="tag tag-etc">ยังไม่ไถ่</span></td>
+      <td class="num in">฿250</td>
+      <td class="num" style="color:var(--gold-soft);font-weight:700">฿5,250</td>
+      <td class="num" style="white-space:nowrap">
+        <button class="btn btn-ghost btn-sm" onclick="printPawn(&#39;mqtd7e5i8qlf&#39;)">🖨️</button>
+        <button class="btn btn-ghost btn-sm" onclick="openPawnEdit(&#39;mqtd7e5i8qlf&#39;)" data-admin-only="" style="display: none;">✏️</button>
+        <button class="btn btn-green btn-sm" onclick="openRedeem(&#39;mqtd7e5i8qlf&#39;)" data-no-partner="">จัดการ</button>
+      </td>
+    </tr><tr class="row-buy">
+      <td style="font-weight:600">PW-260004</td>
+      <td style="color:var(--muted);white-space:nowrap">10/06/26<div style="font-size:10px;color:var(--muted);font-weight:400">17:35 น.</div></td>
+      <td>สุรศักดิ์ สวัสดิมงคล (พี่หนึ่งสนรงค์)<div style="font-size:11px;color:var(--muted)">0936799935</div></td>
+      <td>มือ 2 · iPad Gen9 64GB ดำ (Black) <span class="imei">DDHP</span></td>
+      <td class="num" style="font-weight:700">฿2,000</td>
+      <td style="white-space:nowrap;color:var(--muted)">30/06/26</td>
+      <td><span class="tag tag-etc">ยังไม่ไถ่</span></td>
+      <td class="num in">฿150</td>
+      <td class="num" style="color:var(--gold-soft);font-weight:700">฿2,150</td>
+      <td class="num" style="white-space:nowrap">
+        <button class="btn btn-ghost btn-sm" onclick="printPawn(&#39;mqtd9kp2kx9e&#39;)">🖨️</button>
+        <button class="btn btn-ghost btn-sm" onclick="openPawnEdit(&#39;mqtd9kp2kx9e&#39;)" data-admin-only="" style="display: none;">✏️</button>
+        <button class="btn btn-green btn-sm" onclick="openRedeem(&#39;mqtd9kp2kx9e&#39;)" data-no-partner="">จัดการ</button>
+      </td>
+    </tr><tr class="row-buy">
+      <td style="font-weight:600">PW-260007</td>
+      <td style="color:var(--muted);white-space:nowrap">07/06/26<div style="font-size:10px;color:var(--muted);font-weight:400">17:41 น.</div></td>
+      <td>ธนพล แสงมุกดา<div style="font-size:11px;color:var(--muted)">0819319241</div></td>
+      <td>มือ 2 · Samsung A07 -/- <span class="imei">3114</span></td>
+      <td class="num" style="font-weight:700">฿1,000</td>
+      <td style="white-space:nowrap;color:var(--muted)">27/06/26</td>
+      <td><span class="tag tag-etc">ยังไม่ไถ่</span></td>
+      <td class="num in">฿90</td>
+      <td class="num" style="color:var(--gold-soft);font-weight:700">฿1,090</td>
+      <td class="num" style="white-space:nowrap">
+        <button class="btn btn-ghost btn-sm" onclick="printPawn(&#39;mqtdhg5kxnf6&#39;)">🖨️</button>
+        <button class="btn btn-ghost btn-sm" onclick="openPawnEdit(&#39;mqtdhg5kxnf6&#39;)" data-admin-only="" style="display: none;">✏️</button>
+        <button class="btn btn-green btn-sm" onclick="openRedeem(&#39;mqtdhg5kxnf6&#39;)" data-no-partner="">จัดการ</button>
+      </td>
+    </tr><tr class="row-buy">
+      <td style="font-weight:600">PW-260009</td>
+      <td style="color:var(--muted);white-space:nowrap">06/06/26<div style="font-size:10px;color:var(--muted);font-weight:400">17:45 น.</div></td>
+      <td>แพรวา โอ้อากาศ<div style="font-size:11px;color:var(--muted)">0960231468</div></td>
+      <td>มือ 2 · iPad Gen9 64GB ดำ (Black) <span class="imei">4KLH</span></td>
+      <td class="num" style="font-weight:700">฿1,500</td>
+      <td style="white-space:nowrap;color:var(--muted)">26/06/26</td>
+      <td><span class="tag tag-etc">ยังไม่ไถ่</span></td>
+      <td class="num in">฿140</td>
+      <td class="num" style="color:var(--gold-soft);font-weight:700">฿1,640</td>
+      <td class="num" style="white-space:nowrap">
+        <button class="btn btn-ghost btn-sm" onclick="printPawn(&#39;mqtdljj4d8mu&#39;)">🖨️</button>
+        <button class="btn btn-ghost btn-sm" onclick="openPawnEdit(&#39;mqtdljj4d8mu&#39;)" data-admin-only="" style="display: none;">✏️</button>
+        <button class="btn btn-green btn-sm" onclick="openRedeem(&#39;mqtdljj4d8mu&#39;)" data-no-partner="">จัดการ</button>
+      </td>
+    </tr><tr class="row-buy">
+      <td style="font-weight:600">PW-260008</td>
+      <td style="color:var(--muted);white-space:nowrap">06/06/26<div style="font-size:10px;color:var(--muted);font-weight:400">17:43 น.</div></td>
+      <td>จิรนันท์ พุ่มจันทร์<div style="font-size:11px;color:var(--muted)">0614179747</div></td>
+      <td>มือ 2 · iPad Air5 256GB ดำ (Black) <span class="imei">QRRF</span></td>
+      <td class="num" style="font-weight:700">฿4,000</td>
+      <td style="white-space:nowrap;color:var(--muted)">26/06/26</td>
+      <td><span class="tag tag-etc">ยังไม่ไถ่</span></td>
+      <td class="num in">฿380</td>
+      <td class="num" style="color:var(--gold-soft);font-weight:700">฿4,380</td>
+      <td class="num" style="white-space:nowrap">
+        <button class="btn btn-ghost btn-sm" onclick="printPawn(&#39;mqtdjkcfm3el&#39;)">🖨️</button>
+        <button class="btn btn-ghost btn-sm" onclick="openPawnEdit(&#39;mqtdjkcfm3el&#39;)" data-admin-only="" style="display: none;">✏️</button>
+        <button class="btn btn-green btn-sm" onclick="openRedeem(&#39;mqtdjkcfm3el&#39;)" data-no-partner="">จัดการ</button>
       </td>
     </tr></tbody>
             </table>
@@ -684,20 +805,84 @@
       <section id="view-customers" class="hidden">
         <div class="panel">
           <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
-            <button class="btn btn-gold btn-sm" onclick="openCustAdd()" data-admin-only>+ เพิ่มลูกค้า</button>
+            <button class="btn btn-gold btn-sm" onclick="openCustAdd()" data-admin-only="" style="display: none;">+ เพิ่มลูกค้า</button>
             <button class="btn btn-ghost btn-sm" onclick="exportCustomersCSV()">📥 ดาวน์โหลด CSV (Excel/Sheets)</button>
             <button class="btn btn-ghost btn-sm" onclick="exportCustomersPDF()">📄 ออก PDF รายชื่อ</button>
           </div>
           <div class="field">
             <input class="search" style="width:100%" id="custSearch" placeholder="🔍 ค้นหาลูกค้า — ชื่อ หรือ เบอร์โทร…">
           </div>
-          <div id="custList"><div style="font-size:12px;color:var(--muted);margin-bottom:8px">ลูกค้าทั้งหมด 1 ราย</div><div class="custcard" onclick="showCustDetail(0)">
+          <div id="custList"><div style="font-size:12px;color:var(--muted);margin-bottom:8px">ลูกค้าทั้งหมด 9 ราย</div><div class="custcard" onclick="showCustDetail(0)">
       <div style="display:flex;justify-content:space-between;align-items:center">
         <div>
           <div style="font-weight:700;font-size:14.5px">ศศิธร เจริญชื่น</div>
           <div style="font-size:12px;color:var(--muted);margin-top:2px">0929401314 · 1 ธุรกรรม</div>
         </div>
         <div style="font-size:11px;color:var(--gold-soft)">ล่าสุด 25/06/26 ›</div>
+      </div>
+    </div><div class="custcard" onclick="showCustDetail(1)">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <div style="font-weight:700;font-size:14.5px">พิตชัย อู่ประชา</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px">0921819126 · 1 ธุรกรรม</div>
+        </div>
+        <div style="font-size:11px;color:var(--gold-soft)">ล่าสุด 22/06/26 ›</div>
+      </div>
+    </div><div class="custcard" onclick="showCustDetail(2)">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <div style="font-weight:700;font-size:14.5px">วรวิทร แม่นผล</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px">0950124685 · 1 ธุรกรรม</div>
+        </div>
+        <div style="font-size:11px;color:var(--gold-soft)">ล่าสุด 21/06/26 ›</div>
+      </div>
+    </div><div class="custcard" onclick="showCustDetail(3)">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <div style="font-weight:700;font-size:14.5px">วัชระ จันทร์ชัง</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px">0648759464 · 1 ธุรกรรม</div>
+        </div>
+        <div style="font-size:11px;color:var(--gold-soft)">ล่าสุด 21/06/26 ›</div>
+      </div>
+    </div><div class="custcard" onclick="showCustDetail(4)">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <div style="font-weight:700;font-size:14.5px">ณัฐกฤษ ขุนนางค่า</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px">0811380177 · 1 ธุรกรรม</div>
+        </div>
+        <div style="font-size:11px;color:var(--gold-soft)">ล่าสุด 20/06/26 ›</div>
+      </div>
+    </div><div class="custcard" onclick="showCustDetail(5)">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <div style="font-weight:700;font-size:14.5px">สุรศักดิ์ สวัสดิมงคล (พี่หนึ่งสนรงค์)</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px">0936799935 · 1 ธุรกรรม</div>
+        </div>
+        <div style="font-size:11px;color:var(--gold-soft)">ล่าสุด 10/06/26 ›</div>
+      </div>
+    </div><div class="custcard" onclick="showCustDetail(6)">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <div style="font-weight:700;font-size:14.5px">ธนพล แสงมุกดา</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px">0819319241 · 1 ธุรกรรม</div>
+        </div>
+        <div style="font-size:11px;color:var(--gold-soft)">ล่าสุด 07/06/26 ›</div>
+      </div>
+    </div><div class="custcard" onclick="showCustDetail(7)">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <div style="font-weight:700;font-size:14.5px">แพรวา โอ้อากาศ</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px">0960231468 · 1 ธุรกรรม</div>
+        </div>
+        <div style="font-size:11px;color:var(--gold-soft)">ล่าสุด 06/06/26 ›</div>
+      </div>
+    </div><div class="custcard" onclick="showCustDetail(8)">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <div style="font-weight:700;font-size:14.5px">จิรนันท์ พุ่มจันทร์</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px">0614179747 · 1 ธุรกรรม</div>
+        </div>
+        <div style="font-size:11px;color:var(--gold-soft)">ล่าสุด 06/06/26 ›</div>
       </div>
     </div></div>
         </div>
@@ -711,7 +896,7 @@
       <section id="view-report" class="hidden">
         <div class="panel" style="margin-bottom:14px;border:1px solid rgba(212,175,55,.3)">
           <div class="panel-head"><h2>💾 สำรองข้อมูล (Backup)</h2></div>
-          <div id="backupInfo" style="font-size:13px;color:var(--muted);margin-bottom:12px">—</div>
+          <div id="backupInfo" style="font-size:13px;color:var(--muted);margin-bottom:12px">สำรองล่าสุด: <b>25/06/26 18:09 น.</b> · 0 รายการ</div>
           <div style="display:flex;gap:8px;flex-wrap:wrap">
             <button class="btn btn-gold btn-sm" onclick="manualBackup()">💾 สำรองทันที (ทับไฟล์เดิม)</button>
             <button class="btn btn-ghost btn-sm" onclick="downloadBackup()">📥 ดาวน์โหลดไฟล์ .json</button>
@@ -755,7 +940,7 @@
         <div class="panel">
           <div class="panel-head"><h2>แยกตามหมวด</h2></div>
           <div class="tablewrap" style="max-height:none">
-            <table id="catTable"><thead><tr><th>หมวด</th><th class="num">รับ</th><th class="num">จ่าย</th><th class="num">สุทธิ</th></tr></thead><tbody></tbody></table>
+            <table id="catTable"><thead><tr><th>หมวด</th><th class="num">รับ</th><th class="num">จ่าย</th><th class="num">สุทธิ</th></tr></thead><tbody><tr><td colspan="4" class="empty">ไม่มีข้อมูล</td></tr></tbody></table>
           </div>
         </div>
       </section>
@@ -1487,9 +1672,9 @@
   </div>
 </div>
 
-<script src="./APA POS — แอปเปิ้ลอาร์ม เพชรบุรี_files/html2canvas.min.js.ดาวน์โหลด"></script>
-<script src="./APA POS — แอปเปิ้ลอาร์ม เพชรบุรี_files/jspdf.umd.min.js.ดาวน์โหลด"></script>
-<script src="./APA POS — แอปเปิ้ลอาร์ม เพชรบุรี_files/supabase-js@2"></script>
+<script src="./index_files/html2canvas.min.js.ดาวน์โหลด"></script>
+<script src="./index_files/jspdf.umd.min.js.ดาวน์โหลด"></script>
+<script src="./index_files/supabase-js@2"></script>
 <script>
 const $=id=>document.getElementById(id);
 /* ===================================================================
@@ -1576,7 +1761,14 @@ async function doLogin(){
   $('loginBtn').disabled=true;$('loginBtn').textContent='กำลังเข้าสู่ระบบ...';
   try{
     const {data,error}=await sb.auth.signInWithPassword({email,password:p});
-    if(error){err.textContent='อีเมลหรือรหัสผ่านไม่ถูกต้อง';return}
+    if(error){
+      console.warn('login error:',error);
+      let msg='อีเมลหรือรหัสผ่านไม่ถูกต้อง';
+      if(/email not confirmed/i.test(error.message))msg='อีเมลยังไม่ได้ยืนยัน — ไปที่ Supabase > Authentication > Users กดที่ user แล้ว Confirm email';
+      else if(/invalid/i.test(error.message))msg='อีเมลหรือรหัสผ่านไม่ถูกต้อง (ลองรีเซ็ตรหัสใน Supabase)';
+      else msg='เข้าระบบไม่ได้: '+error.message;
+      err.textContent=msg;return;
+    }
     sbUser=data.user;
     $('loginScreen').style.display='none';
     $('appShell').style.display='';
@@ -4962,6 +5154,7 @@ window.addEventListener('load',()=>{
   }catch(e){}
 });
 </script>
+
 
 
 </body></html>
