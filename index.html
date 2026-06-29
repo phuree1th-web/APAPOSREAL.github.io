@@ -132,7 +132,7 @@
   .modal-head h3{font-size:16.5px;font-weight:700}
   .modal-head .x{background:none;border:none;color:var(--muted);font-size:22px;cursor:pointer;line-height:1}
   .modal-body{padding:18px 22px}
-  .modal-foot{display:flex;gap:10px;justify-content:flex-end;padding:15px 22px;border-top:1px solid var(--line)}
+  .modal-foot{display:flex;gap:10px;justify-content:flex-end;padding:15px 22px;border-top:1px solid var(--line);flex-wrap:wrap}
 
   .search{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:9px 14px;color:var(--text);font-family:inherit;font-size:14px;width:230px}
   .search:focus{outline:none;border-color:var(--gold-dim)}
@@ -411,12 +411,13 @@
       <button data-view="stock" data-roles="admin,staff" class=""><span class="ic">📦</span><span>สต็อกสินค้า</span></button>
       <button data-view="pawn" data-roles="admin,staff,partner,viewer" class="active"><span class="ic">🏷️</span><span>ระบบรับฝาก</span></button>
       <button data-view="customers" data-roles="admin,staff" class=""><span class="ic">👥</span><span>ลูกค้า</span></button>
+      <button data-view="waitlist" data-roles="admin,staff" class=""><span class="ic">📋</span><span>จองเครื่อง</span></button>
       <button data-view="report" data-roles="admin" class=""><span class="ic">📊</span><span>สรุปยอด</span></button>
       <button data-view="ledger" data-roles="admin,staff" class=""><span class="ic">🕐</span><span>รายการล่าสุด</span></button>
     </nav>
     <div class="nav-foot">
       <div id="roleBadge" style="margin-bottom:8px;padding:7px 10px;background:rgba(212,175,55,.12);border-radius:8px;color:var(--gold-soft);font-weight:600">👤 ผู้ดูแลระบบ (Admin)</div>
-      <div id="cloudStatus" style="margin-bottom:8px;font-size:10.5px;color:var(--muted)">☁️ เชื่อมคลาวด์แล้ว</div>
+      <div id="cloudStatus" style="margin-bottom:8px;font-size:10.5px;color:var(--muted)">☁️ ซิงค์ล่าสุด 03:04</div>
       <button class="btn btn-ghost btn-sm" style="width:100%;margin-bottom:10px" onclick="logout()">🚪 ออกจากระบบ</button>
       ☎ 096-557-2230<br>LINE: Phuree_1212<br><span style="opacity:.6">ตัวอย่าง · เก็บในเครื่อง</span>
     </div>
@@ -431,11 +432,11 @@
         <button class="gs-clear hidden" id="gsClear">×</button>
       </div>
       <div class="cashpills">
-        <div class="cashpill cash"><div class="l">เงินสดคงเหลือ</div><div class="v" id="cashBal">฿0</div></div>
-        <div class="cashpill bank"><div class="l">เงินโอนคงเหลือ</div><div class="v" id="bankBal">฿0</div></div>
+        <div class="cashpill cash"><div class="l">เงินสดคงเหลือ</div><div class="v" id="cashBal">฿1,330</div></div>
+        <div class="cashpill bank"><div class="l">เงินโอนคงเหลือ</div><div class="v" id="bankBal">-฿59,990</div></div>
         <button class="theme-toggle" id="themeToggle" title="สลับธีม สว่าง/มืด">🌙</button>
         <button class="theme-toggle" id="viewModeToggle" title="สลับเป็นโหมดมือถือ">📱</button>
-        <button class="theme-toggle" id="syncBtn" title="ดึงข้อมูลล่าสุดจากคลาวด์" onclick="cloudSyncNow()">🔄</button>
+        <button class="theme-toggle" id="syncBtn" title="ดึงข้อมูลล่าสุดจากคลาวด์" onclick="cloudSyncNow()" style="transition: none; transform: none;">🔄</button>
         <button class="theme-toggle" id="logoutBtn" title="ออกจากระบบ" onclick="logout()">🚪</button>
         <button class="theme-toggle" id="bellBtn" title="การแจ้งเตือน" style="position:relative" onclick="toggleNotif()">🔔<span id="bellBadge" style="display:none;position:absolute;top:-4px;right:-4px;background:#e5484d;color:#fff;font-size:10px;font-weight:800;min-width:17px;height:17px;border-radius:9px;align-items:center;justify-content:center;padding:0 4px">0</span></button>
       </div>
@@ -446,7 +447,19 @@
         <span style="font-weight:800">🔔 การแจ้งเตือน</span>
         <button class="btn btn-ghost btn-sm" onclick="markNotifRead()">อ่านทั้งหมด</button>
       </div>
-      <div id="notifList" style="max-height:60vh;overflow-y:auto"><div class="empty" style="padding:30px 16px"><div class="big">✓</div>ไม่มีการแจ้งเตือน</div></div>
+      <div id="notifList" style="max-height:60vh;overflow-y:auto"><div style="padding:12px 16px;border-bottom:1px solid var(--line);display:flex;gap:11px;opacity:.5">
+        <span style="font-size:18px">⏰</span>
+        <div style="flex:1"><div style="font-weight:700;font-size:13.5px;color:var(--gold-soft)">ตั๋วรับฝากใกล้ครบกำหนด</div><div style="font-size:12px;color:var(--muted);margin-top:2px">PW-260004 · มือ 2 · iPad gen9 64GB ดำ (Black) (เหลือ 2 วัน)</div></div>
+        
+      </div><div style="padding:12px 16px;border-bottom:1px solid var(--line);display:flex;gap:11px;opacity:.5">
+        <span style="font-size:18px">⏰</span>
+        <div style="flex:1"><div style="font-weight:700;font-size:13.5px;color:var(--gold-soft)">ตั๋วรับฝากใกล้ครบกำหนด</div><div style="font-size:12px;color:var(--muted);margin-top:2px">PW-260011 · มือ 2 · Apple Watch Se2/44 32GB ขาว (White) (เหลือ 3 วัน)</div></div>
+        
+      </div><div style="padding:12px 16px;border-bottom:1px solid var(--line);display:flex;gap:11px;opacity:.5">
+        <span style="font-size:18px">📦</span>
+        <div style="flex:1"><div style="font-weight:700;font-size:13.5px;color:var(--gold-soft)">อะไหล่ค้างจ่ายสะสมสูง</div><div style="font-size:12px;color:var(--muted);margin-top:2px">ยอดค้าง ฿14,350 ควรเคลียร์</div></div>
+        
+      </div></div>
     </div>
     <div class="content">
 
@@ -521,10 +534,10 @@
           <button onclick="openTxn(&#39;etc&#39;)"><span class="qi">💸</span><div class="qt">รับ-จ่ายอื่นๆ</div><div class="qs">อุปกรณ์ / ค่าใช้จ่าย</div></button>
         </div>
         <div class="kpi-row">
-          <div class="kpi"><div class="label">รายรับวันนี้</div><div class="val green" id="kpiIn">฿0</div></div>
-          <div class="kpi"><div class="label">รายจ่ายวันนี้</div><div class="val red" id="kpiOut">฿0</div></div>
-          <div class="kpi" data-admin-only="" style="display: none;"><div class="label">กำไรวันนี้</div><div class="val gold" id="kpiProfit">฿0</div></div>
-          <div class="kpi" data-admin-only="" style="display: none;"><div class="label">มูลค่าสต็อก (ต้นทุน)</div><div class="val blue" id="kpiStock">฿0</div></div>
+          <div class="kpi"><div class="label">รายรับวันนี้</div><div class="val green" id="kpiIn">฿49,500</div></div>
+          <div class="kpi"><div class="label">รายจ่ายวันนี้</div><div class="val red" id="kpiOut">฿7,500</div></div>
+          <div class="kpi" data-admin-only="" style=""><div class="label">กำไรวันนี้</div><div class="val gold" id="kpiProfit">฿4,940</div></div>
+          <div class="kpi" data-admin-only="" style=""><div class="label">มูลค่าสต็อก (ต้นทุน)</div><div class="val blue" id="kpiStock">฿125,650</div></div>
         </div>
         <div class="panel">
           <div class="panel-head">
@@ -554,7 +567,49 @@
                 <th class="num">เงินสดเข้า</th><th class="num">เงินสดออก</th><th class="num">สดคงเหลือ</th>
                 <th class="num">โอนเข้า</th><th class="num">โอนออก</th><th class="num">โอนคงเหลือ</th><th></th>
               </tr></thead>
-              <tbody><tr><td colspan="10" class="empty"><div class="big">📒</div>ไม่มีรายการในช่วงนี้</td></tr></tbody>
+              <tbody><tr class="daystart"><td colspan="3">📅 29/06/26</td>
+        <td colspan="3" class="num" style="color:var(--gold-soft)">เริ่มสด: ฿1,330</td>
+        <td colspan="4" class="num" style="color:#6fa8dc">เริ่มโอน: -฿101,990</td></tr><tr class="row-buy">
+        <td style="color:var(--muted)">01:23</td>
+        <td>รับ มือ 2 · iPhone 13 128GB มิดไนท์ (Midnight) 2815</td><td><span class="tag tag-buy">รับเข้า</span></td>
+        <td class="num in"></td>
+        <td class="num out"></td>
+        <td class="num bal" style="color:var(--gold-soft)"></td>
+        <td class="num in"></td>
+        <td class="num out">฿7,500</td>
+        <td class="num bal" style="color:#6fa8dc">-฿109,490</td>
+        <td class="num"><button class="btn btn-danger btn-sm" onclick="voidTxn(&#39;mqy4aekcztnj&#39;)">ยกเลิก</button> <button class="btn btn-ghost btn-sm" onclick="deleteTxn(&#39;mqy4aekcztnj&#39;)" title="ลบถาวร">🗑️</button></td>
+      </tr><tr class="row-sell">
+        <td style="color:var(--muted)">02:10</td>
+        <td>ขาย มือ 2 · iPad pro 11นิ้ว gen3 128GB ดำ (Black) 0QV6</td><td><span class="tag tag-sell">ขาย</span></td>
+        <td class="num in"></td>
+        <td class="num out"></td>
+        <td class="num bal" style="color:var(--gold-soft)"></td>
+        <td class="num in">฿10,000</td>
+        <td class="num out"></td>
+        <td class="num bal" style="color:#6fa8dc">-฿99,490</td>
+        <td class="num"><button class="btn btn-danger btn-sm" onclick="voidTxn(&#39;mqy5zitflnql&#39;)">ยกเลิก</button> <button class="btn btn-ghost btn-sm" onclick="deleteTxn(&#39;mqy5zitflnql&#39;)" title="ลบถาวร">🗑️</button></td>
+      </tr><tr class="row-sell">
+        <td style="color:var(--muted)">02:13</td>
+        <td>ขาย มือ 2 · iPhone 14 Pro Max 256GB ทอง (Gold) 9925</td><td><span class="tag tag-sell">ขาย</span></td>
+        <td class="num in"></td>
+        <td class="num out"></td>
+        <td class="num bal" style="color:var(--gold-soft)"></td>
+        <td class="num in">฿17,000</td>
+        <td class="num out"></td>
+        <td class="num bal" style="color:#6fa8dc">-฿82,490</td>
+        <td class="num"><button class="btn btn-danger btn-sm" onclick="voidTxn(&#39;mqy63gbx3hhy&#39;)">ยกเลิก</button> <button class="btn btn-ghost btn-sm" onclick="deleteTxn(&#39;mqy63gbx3hhy&#39;)" title="ลบถาวร">🗑️</button></td>
+      </tr><tr class="row-sell">
+        <td style="color:var(--muted)">02:14</td>
+        <td>ขาย มือ 2 · iPhone 16 Plus 128GB ชมพู (Pink) 3965</td><td><span class="tag tag-sell">ขาย</span></td>
+        <td class="num in"></td>
+        <td class="num out"></td>
+        <td class="num bal" style="color:var(--gold-soft)"></td>
+        <td class="num in">฿22,500</td>
+        <td class="num out"></td>
+        <td class="num bal" style="color:#6fa8dc">-฿59,990</td>
+        <td class="num"><button class="btn btn-danger btn-sm" onclick="voidTxn(&#39;mqy64cf56dam&#39;)">ยกเลิก</button> <button class="btn btn-ghost btn-sm" onclick="deleteTxn(&#39;mqy64cf56dam&#39;)" title="ลบถาวร">🗑️</button></td>
+      </tr></tbody>
             </table>
           </div>
         </div>
@@ -565,7 +620,67 @@
         <div class="panel">
           <div class="panel-head"><h2>🕐 รายการล่าสุด</h2><button class="btn btn-gold btn-sm" onclick="openTxn(&#39;etc&#39;)">+ บันทึกรายการ</button></div>
           <div class="tablewrap" style="max-height:none">
-            <table id="recentTable"><thead><tr><th>เวลา</th><th>รายการ</th><th>ประเภท</th><th>ช่องทาง</th><th class="num">จำนวน</th></tr></thead><tbody><tr><td colspan="5" class="empty">ยังไม่มีรายการ</td></tr></tbody></table>
+            <table id="recentTable"><thead><tr><th>เวลา</th><th>รายการ</th><th>ประเภท</th><th>ช่องทาง</th><th class="num">จำนวน</th></tr></thead><tbody><tr class="row-sell">
+    <td style="color:var(--muted)">29/06/26 02:14</td><td>ขาย มือ 2 · iPhone 16 Plus 128GB ชมพู (Pink) 3965</td><td><span class="tag tag-sell">ขาย</span></td>
+    <td style="color:var(--muted)">เงินโอน</td>
+    <td class="num in">+฿22,500</td></tr><tr class="row-sell">
+    <td style="color:var(--muted)">29/06/26 02:13</td><td>ขาย มือ 2 · iPhone 14 Pro Max 256GB ทอง (Gold) 9925</td><td><span class="tag tag-sell">ขาย</span></td>
+    <td style="color:var(--muted)">เงินโอน</td>
+    <td class="num in">+฿17,000</td></tr><tr class="row-sell">
+    <td style="color:var(--muted)">29/06/26 02:10</td><td>ขาย มือ 2 · iPad pro 11นิ้ว gen3 128GB ดำ (Black) 0QV6</td><td><span class="tag tag-sell">ขาย</span></td>
+    <td style="color:var(--muted)">เงินโอน</td>
+    <td class="num in">+฿10,000</td></tr><tr class="row-buy">
+    <td style="color:var(--muted)">29/06/26 01:23</td><td>รับ มือ 2 · iPhone 13 128GB มิดไนท์ (Midnight) 2815</td><td><span class="tag tag-buy">รับเข้า</span></td>
+    <td style="color:var(--muted)">เงินโอน</td>
+    <td class="num out">−฿7,500</td></tr><tr class="row-etc">
+    <td style="color:var(--muted)">28/06/26 18:12</td><td>Film กระจก</td><td><span class="tag tag-etc">อื่นๆ</span></td>
+    <td style="color:var(--muted)">เงินโอน</td>
+    <td class="num in">+฿100</td></tr><tr class="row-buy">
+    <td style="color:var(--muted)">28/06/26 18:02</td><td>รับ มือ 2 · iPhone 13 128GB มิดไนท์ (Midnight) 2815</td><td><span class="tag tag-buy">รับเข้า</span></td>
+    <td style="color:var(--muted)">เงินสด</td>
+    <td class="num out">−฿7,500</td></tr><tr class="row-buy">
+    <td style="color:var(--muted)">28/06/26 17:59</td><td>รับ มือ 2 · iPad Gen9 64GB ขาว (White) XRGP</td><td><span class="tag tag-buy">รับเข้า</span></td>
+    <td style="color:var(--muted)">จ่ายผสม</td>
+    <td class="num out">−฿4,700</td></tr><tr class="row-buy">
+    <td style="color:var(--muted)">28/06/26 17:54</td><td>รับ มือ 2 · iPad Gen9 64GB ขาว (White) XRGP</td><td><span class="tag tag-buy">รับเข้า</span></td>
+    <td style="color:var(--muted)">จ่ายผสม</td>
+    <td class="num out">−฿4,700</td></tr><tr class="row-etc">
+    <td style="color:var(--muted)">28/06/26 17:51</td><td>ซ่อม X อื่นๆ (ไม่ออกนาม)</td><td><span class="tag tag-etc">ซ่อม</span></td>
+    <td style="color:var(--muted)">เงินสด</td>
+    <td class="num in">+฿500</td></tr><tr class="row-sell">
+    <td style="color:var(--muted)">28/06/26 15:36</td><td>ขาย มือ 2 · iPad pro 11นิ้ว gen3 128GB ดำ (Black) 0QV6</td><td><span class="tag tag-sell">ขาย</span></td>
+    <td style="color:var(--muted)">เงินโอน</td>
+    <td class="num in">+฿11,000</td></tr><tr class="row-sell">
+    <td style="color:var(--muted)">28/06/26 15:27</td><td>ขาย มือ 2 · iPhone 12 64GB แดง (PRODUCT RED) 0954</td><td><span class="tag tag-sell">ขาย</span></td>
+    <td style="color:var(--muted)">เงินโอน</td>
+    <td class="num in">+฿6,000</td></tr><tr class="row-sell">
+    <td style="color:var(--muted)">28/06/26 15:27</td><td>ขาย มือ 2 · iPad gen10 64GB ขาว (White) 3R2N</td><td><span class="tag tag-sell">ขาย</span></td>
+    <td style="color:var(--muted)">เงินโอน</td>
+    <td class="num in">+฿9,000</td></tr><tr class="row-sell">
+    <td style="color:var(--muted)">28/06/26 15:25</td><td>ขาย มือ 2 · iPhone 11 128GB เขียว (Green) 4820</td><td><span class="tag tag-sell">ขาย</span></td>
+    <td style="color:var(--muted)">เงินโอน</td>
+    <td class="num in">+฿4,600</td></tr><tr class="row-sell">
+    <td style="color:var(--muted)">28/06/26 15:25</td><td>ขาย มือ 2 · iPhone 11 128GB ดำ (Black) 3995</td><td><span class="tag tag-sell">ขาย</span></td>
+    <td style="color:var(--muted)">เงินโอน</td>
+    <td class="num in">+฿3,500</td></tr><tr class="row-sell">
+    <td style="color:var(--muted)">28/06/26 15:15</td><td>ขาย มือ 2 · iPhone 11 128GB เขียว (Green) 4820</td><td><span class="tag tag-sell">ขาย</span></td>
+    <td style="color:var(--muted)">เงินสด</td>
+    <td class="num in">+฿4,600</td></tr><tr class="row-etc">
+    <td style="color:var(--muted)">28/06/26 13:07</td><td>พัสดุ</td><td><span class="tag tag-etc">อื่นๆ</span></td>
+    <td style="color:var(--muted)">เงินสด</td>
+    <td class="num out">−฿860</td></tr><tr class="row-etc">
+    <td style="color:var(--muted)">27/06/26 19:48</td><td>เอาเข้าบัญชี</td><td><span class="tag tag-etc">อื่นๆ</span></td>
+    <td style="color:var(--muted)">เงินสด</td>
+    <td class="num out">−฿25,000</td></tr><tr class="row-etc">
+    <td style="color:var(--muted)">27/06/26 19:46</td><td>Film ipad</td><td><span class="tag tag-etc">อื่นๆ</span></td>
+    <td style="color:var(--muted)">เงินโอน</td>
+    <td class="num in">+฿150</td></tr><tr class="row-etc">
+    <td style="color:var(--muted)">27/06/26 19:46</td><td>Film</td><td><span class="tag tag-etc">อื่นๆ</span></td>
+    <td style="color:var(--muted)">เงินโอน</td>
+    <td class="num in">+฿100</td></tr><tr class="row-sell">
+    <td style="color:var(--muted)">27/06/26 19:15</td><td>ขาย มือ 2 · iPad Gen8 32GB ขาว (White) Q1GD</td><td><span class="tag tag-sell">ขาย</span></td>
+    <td style="color:var(--muted)">เงินโอน</td>
+    <td class="num in">+฿3,900</td></tr></tbody></table>
           </div>
         </div>
       </section>
@@ -604,9 +719,9 @@
       <!-- PAWN -->
       <section id="view-pawn" class="">
         <div class="kpi-row">
-          <div class="kpi"><div class="label">เงินต้นรับฝากคงค้าง</div><div class="val gold" id="pwPrincipal">฿23,500</div></div>
-          <div class="kpi"><div class="label">รายการที่ยังไม่ไถ่</div><div class="val blue" id="pwActive">9<span class="unit">รายการ</span></div></div>
-          <div class="kpi"><div class="label">ดอกเบี้ยรับเดือนนี้</div><div class="val green" id="pwInterest">฿0</div></div>
+          <div class="kpi"><div class="label">เงินต้นรับฝากคงค้าง</div><div class="val gold" id="pwPrincipal">฿25,500</div></div>
+          <div class="kpi"><div class="label">รายการที่ยังไม่ไถ่</div><div class="val blue" id="pwActive">10<span class="unit">รายการ</span></div></div>
+          <div class="kpi"><div class="label">ดอกเบี้ยรับเดือนนี้</div><div class="val green" id="pwInterest">฿640</div></div>
           <div class="kpi"><div class="label">ครบกำหนด/เกินกำหนด</div><div class="val red" id="pwOverdue">0<span class="unit">รายการ</span></div></div>
         </div>
 
@@ -616,13 +731,13 @@
           <div class="kpi-row" style="grid-template-columns:repeat(3,1fr)">
             <div class="kpi" style="border:1px solid rgba(212,175,55,.3)">
               <div class="label">กองทุนหมุนเวียน (คงเหลือ)</div>
-              <div class="val gold" id="fundBal">฿76,500</div>
-              <div style="font-size:11px;color:var(--muted);margin-top:4px">ทุนตั้งต้น <span id="fundCap">฿100,000</span> · ปล่อยอยู่ <span id="fundOut">฿23,500</span></div>
+              <div class="val gold" id="fundBal">฿74,500</div>
+              <div style="font-size:11px;color:var(--muted);margin-top:4px">ทุนตั้งต้น <span id="fundCap">฿100,000</span> · ปล่อยอยู่ <span id="fundOut">฿25,500</span></div>
               <button class="btn btn-ghost btn-sm" style="margin-top:8px;width:100%" onclick="openWalletHistory(&#39;fund&#39;)">ดูประวัติกองทุน</button>
             </div>
             <div class="kpi" style="border:1px solid rgba(59,167,118,.3)">
               <div class="label">💼 กระเป๋าร้าน (Owner)</div>
-              <div class="val green" id="ownerBal">฿0</div>
+              <div class="val green" id="ownerBal">฿320</div>
               <div style="display:flex;gap:6px;margin-top:8px">
                 <button class="btn btn-ghost btn-sm" style="flex:1" onclick="openWalletHistory(&#39;owner&#39;)">ประวัติ</button>
                 <button class="btn btn-gold btn-sm" style="flex:1" onclick="openWithdraw(&#39;owner&#39;)" data-no-partner="">ถอน</button>
@@ -630,7 +745,7 @@
             </div>
             <div class="kpi" style="border:1px solid rgba(111,168,220,.3)">
               <div class="label">🤝 กระเป๋าหุ้นส่วน (พี่เนส)</div>
-              <div class="val blue" id="partnerBal">฿0</div>
+              <div class="val blue" id="partnerBal">฿320</div>
               <div style="display:flex;gap:6px;margin-top:8px">
                 <button class="btn btn-ghost btn-sm" style="flex:1" onclick="openWalletHistory(&#39;partner&#39;)">ประวัติ</button>
                 <button class="btn btn-gold btn-sm" style="flex:1" onclick="openWithdraw(&#39;partner&#39;)" data-no-partner="">ถอน</button>
@@ -662,6 +777,51 @@
                 <th class="num">ดอกถึงวันนี้</th><th class="num">ยอดไถ่</th><th></th>
               </tr></thead>
               <tbody><tr class="row-buy">
+      <td style="font-weight:600">PW-260010</td>
+      <td style="color:var(--muted);white-space:nowrap">27/06/26<div style="font-size:10px;color:var(--muted);font-weight:400">15:36 น.</div></td>
+      <td>ธนพล แสงมุกดา<div style="font-size:11px;color:var(--muted)">0819319241</div></td>
+      <td>มือ 2 · Samsung A07 8/256 <span class="imei">3114</span></td>
+      <td class="num" style="font-weight:700">฿1,000</td>
+      <td style="white-space:nowrap;color:var(--muted)">17/07/26</td>
+      <td><span class="tag tag-etc">ยังไม่ไถ่</span></td>
+      <td class="num in">฿50</td>
+      <td class="num" style="color:var(--gold-soft);font-weight:700">฿1,050</td>
+      <td class="num" style="white-space:nowrap">
+        <button class="btn btn-ghost btn-sm" onclick="printPawn(&#39;mquofw0wg2wu&#39;)">🖨️</button>
+        <button class="btn btn-ghost btn-sm" onclick="openPawnEdit(&#39;mquofw0wg2wu&#39;)" data-admin-only="">✏️</button>
+        <button class="btn btn-green btn-sm" onclick="openRedeem(&#39;mquofw0wg2wu&#39;)" data-no-partner="">จัดการ</button>
+      </td>
+    </tr><tr class="row-buy">
+      <td style="font-weight:600">PW-260013</td>
+      <td style="color:var(--muted);white-space:nowrap">26/06/26<div style="font-size:10px;color:var(--muted);font-weight:400">20:07 น.</div></td>
+      <td>แพรวา โอ้อากาศ<div style="font-size:11px;color:var(--muted)">0960231468</div></td>
+      <td>มือ 2 · iPad Gen9 64GB ดำ (Black) <span class="imei">4KLH</span></td>
+      <td class="num" style="font-weight:700">฿1,500</td>
+      <td style="white-space:nowrap;color:var(--muted)">16/07/26</td>
+      <td><span class="tag tag-etc">ยังไม่ไถ่</span></td>
+      <td class="num in">฿80</td>
+      <td class="num" style="color:var(--gold-soft);font-weight:700">฿1,580</td>
+      <td class="num" style="white-space:nowrap">
+        <button class="btn btn-ghost btn-sm" onclick="printPawn(&#39;mquy3vyb53q0&#39;)">🖨️</button>
+        <button class="btn btn-ghost btn-sm" onclick="openPawnEdit(&#39;mquy3vyb53q0&#39;)" data-admin-only="">✏️</button>
+        <button class="btn btn-green btn-sm" onclick="openRedeem(&#39;mquy3vyb53q0&#39;)" data-no-partner="">จัดการ</button>
+      </td>
+    </tr><tr class="row-buy">
+      <td style="font-weight:600">PW-260012</td>
+      <td style="color:var(--muted);white-space:nowrap">26/06/26<div style="font-size:10px;color:var(--muted);font-weight:400">19:58 น.</div></td>
+      <td>จิรนันท์ พุ่มจันทร์<div style="font-size:11px;color:var(--muted)">0614179747</div></td>
+      <td>มือ 2 · iPad Air5 256GB ดำ (Black) <span class="imei">QRRF</span></td>
+      <td class="num" style="font-weight:700">฿4,000</td>
+      <td style="white-space:nowrap;color:var(--muted)">16/07/26</td>
+      <td><span class="tag tag-etc">ยังไม่ไถ่</span></td>
+      <td class="num in">฿200</td>
+      <td class="num" style="color:var(--gold-soft);font-weight:700">฿4,200</td>
+      <td class="num" style="white-space:nowrap">
+        <button class="btn btn-ghost btn-sm" onclick="printPawn(&#39;mquxtcc0dzrn&#39;)">🖨️</button>
+        <button class="btn btn-ghost btn-sm" onclick="openPawnEdit(&#39;mquxtcc0dzrn&#39;)" data-admin-only="">✏️</button>
+        <button class="btn btn-green btn-sm" onclick="openRedeem(&#39;mquxtcc0dzrn&#39;)" data-no-partner="">จัดการ</button>
+      </td>
+    </tr><tr class="row-buy">
       <td style="font-weight:600">PW-260001</td>
       <td style="color:var(--muted);white-space:nowrap">25/06/26<div style="font-size:10px;color:var(--muted);font-weight:400">15:07 น.</div></td>
       <td>ศศิธร เจริญชื่น<div style="font-size:11px;color:var(--muted)">0929401314</div></td>
@@ -673,43 +833,43 @@
       <td class="num" style="color:var(--gold-soft);font-weight:700">฿3,680</td>
       <td class="num" style="white-space:nowrap">
         <button class="btn btn-ghost btn-sm" onclick="printPawn(&#39;mqt7yu3frwlh&#39;)">🖨️</button>
-        <button class="btn btn-ghost btn-sm" onclick="openPawnEdit(&#39;mqt7yu3frwlh&#39;)" data-admin-only="" style="display: none;">✏️</button>
+        <button class="btn btn-ghost btn-sm" onclick="openPawnEdit(&#39;mqt7yu3frwlh&#39;)" data-admin-only="">✏️</button>
         <button class="btn btn-green btn-sm" onclick="openRedeem(&#39;mqt7yu3frwlh&#39;)" data-no-partner="">จัดการ</button>
       </td>
     </tr><tr class="row-buy">
       <td style="font-weight:600">PW-260002</td>
-      <td style="color:var(--muted);white-space:nowrap">22/06/26<div style="font-size:10px;color:var(--muted);font-weight:400">17:31 น.</div></td>
-      <td>พิตชัย อู่ประชา<div style="font-size:11px;color:var(--muted)">0921819126</div></td>
-      <td>มือ 2 · Apple Watch Watch8/44mm 32GB มิดไนท์ (Midnight) <span class="imei">WYP3</span></td>
+      <td style="color:var(--muted);white-space:nowrap">22/06/26<div style="font-size:10px;color:var(--muted);font-weight:400">18:59 น.</div></td>
+      <td>พิชิตชัย อู่ประชา<div style="font-size:11px;color:var(--muted)">0921819126</div></td>
+      <td>มือ 2 · Apple Watch Watch8/44/นำ้เงิน 32GB อื่นๆ (พิมพ์เอง) <span class="imei">WYP3</span></td>
       <td class="num" style="font-weight:700">฿1,500</td>
       <td style="white-space:nowrap;color:var(--muted)">12/07/26</td>
       <td><span class="tag tag-etc">ยังไม่ไถ่</span></td>
       <td class="num in">฿80</td>
       <td class="num" style="color:var(--gold-soft);font-weight:700">฿1,580</td>
       <td class="num" style="white-space:nowrap">
-        <button class="btn btn-ghost btn-sm" onclick="printPawn(&#39;mqtd4erb9fh5&#39;)">🖨️</button>
-        <button class="btn btn-ghost btn-sm" onclick="openPawnEdit(&#39;mqtd4erb9fh5&#39;)" data-admin-only="" style="display: none;">✏️</button>
-        <button class="btn btn-green btn-sm" onclick="openRedeem(&#39;mqtd4erb9fh5&#39;)" data-no-partner="">จัดการ</button>
+        <button class="btn btn-ghost btn-sm" onclick="printPawn(&#39;mqtg97j3yyq6&#39;)">🖨️</button>
+        <button class="btn btn-ghost btn-sm" onclick="openPawnEdit(&#39;mqtg97j3yyq6&#39;)" data-admin-only="">✏️</button>
+        <button class="btn btn-green btn-sm" onclick="openRedeem(&#39;mqtg97j3yyq6&#39;)" data-no-partner="">จัดการ</button>
       </td>
     </tr><tr class="row-buy">
       <td style="font-weight:600">PW-260006</td>
-      <td style="color:var(--muted);white-space:nowrap">21/06/26<div style="font-size:10px;color:var(--muted);font-weight:400">17:39 น.</div></td>
+      <td style="color:var(--muted);white-space:nowrap">21/06/26<div style="font-size:10px;color:var(--muted);font-weight:400">19:47 น.</div></td>
       <td>วรวิทร แม่นผล<div style="font-size:11px;color:var(--muted)">0950124685</div></td>
-      <td>มือ 2 · iPad Gen11 128GB ขาว (White) <span class="imei">WM06</span></td>
+      <td>มือ 2 · iPad gen 11 128GB ขาว (White) <span class="imei">WM06</span></td>
       <td class="num" style="font-weight:700">฿3,000</td>
       <td style="white-space:nowrap;color:var(--muted)">11/07/26</td>
       <td><span class="tag tag-etc">ยังไม่ไถ่</span></td>
       <td class="num in">฿150</td>
       <td class="num" style="color:var(--gold-soft);font-weight:700">฿3,150</td>
       <td class="num" style="white-space:nowrap">
-        <button class="btn btn-ghost btn-sm" onclick="printPawn(&#39;mqtdegs5w0hi&#39;)">🖨️</button>
-        <button class="btn btn-ghost btn-sm" onclick="openPawnEdit(&#39;mqtdegs5w0hi&#39;)" data-admin-only="" style="display: none;">✏️</button>
-        <button class="btn btn-green btn-sm" onclick="openRedeem(&#39;mqtdegs5w0hi&#39;)" data-no-partner="">จัดการ</button>
+        <button class="btn btn-ghost btn-sm" onclick="printPawn(&#39;mqthzh5i4dlw&#39;)">🖨️</button>
+        <button class="btn btn-ghost btn-sm" onclick="openPawnEdit(&#39;mqthzh5i4dlw&#39;)" data-admin-only="">✏️</button>
+        <button class="btn btn-green btn-sm" onclick="openRedeem(&#39;mqthzh5i4dlw&#39;)" data-no-partner="">จัดการ</button>
       </td>
     </tr><tr class="row-buy">
       <td style="font-weight:600">PW-260005</td>
-      <td style="color:var(--muted);white-space:nowrap">21/06/26<div style="font-size:10px;color:var(--muted);font-weight:400">17:37 น.</div></td>
-      <td>วัชระ จันทร์ชัง<div style="font-size:11px;color:var(--muted)">0648759464</div></td>
+      <td style="color:var(--muted);white-space:nowrap">21/06/26<div style="font-size:10px;color:var(--muted);font-weight:400">19:46 น.</div></td>
+      <td>วัชระ จัทร์ชัง<div style="font-size:11px;color:var(--muted)">0648759464</div></td>
       <td>มือ 2 · iPhone 12 64GB ดำ (Black) <span class="imei">4177</span></td>
       <td class="num" style="font-weight:700">฿2,000</td>
       <td style="white-space:nowrap;color:var(--muted)">11/07/26</td>
@@ -717,84 +877,54 @@
       <td class="num in">฿100</td>
       <td class="num" style="color:var(--gold-soft);font-weight:700">฿2,100</td>
       <td class="num" style="white-space:nowrap">
-        <button class="btn btn-ghost btn-sm" onclick="printPawn(&#39;mqtdbn1q6z3p&#39;)">🖨️</button>
-        <button class="btn btn-ghost btn-sm" onclick="openPawnEdit(&#39;mqtdbn1q6z3p&#39;)" data-admin-only="" style="display: none;">✏️</button>
-        <button class="btn btn-green btn-sm" onclick="openRedeem(&#39;mqtdbn1q6z3p&#39;)" data-no-partner="">จัดการ</button>
+        <button class="btn btn-ghost btn-sm" onclick="printPawn(&#39;mqthxtkt6c9m&#39;)">🖨️</button>
+        <button class="btn btn-ghost btn-sm" onclick="openPawnEdit(&#39;mqthxtkt6c9m&#39;)" data-admin-only="">✏️</button>
+        <button class="btn btn-green btn-sm" onclick="openRedeem(&#39;mqthxtkt6c9m&#39;)" data-no-partner="">จัดการ</button>
       </td>
     </tr><tr class="row-buy">
       <td style="font-weight:600">PW-260003</td>
-      <td style="color:var(--muted);white-space:nowrap">20/06/26<div style="font-size:10px;color:var(--muted);font-weight:400">17:34 น.</div></td>
-      <td>ณัฐกฤษ ขุนนางค่า<div style="font-size:11px;color:var(--muted)">0811380177</div></td>
-      <td>มือ 2 · iPad Gen11 128GB สตาร์ไลท์ (Starlight) <span class="imei">WG21</span></td>
+      <td style="color:var(--muted);white-space:nowrap">20/06/26<div style="font-size:10px;color:var(--muted);font-weight:400">19:00 น.</div></td>
+      <td>ณัฐกฤต ขุนนางด่า<div style="font-size:11px;color:var(--muted)">0811380177</div></td>
+      <td>มือ 2 · iPad Gen11 128GB ขาว (White) <span class="imei">WG21</span></td>
       <td class="num" style="font-weight:700">฿5,000</td>
       <td style="white-space:nowrap;color:var(--muted)">10/07/26</td>
       <td><span class="tag tag-etc">ยังไม่ไถ่</span></td>
       <td class="num in">฿250</td>
       <td class="num" style="color:var(--gold-soft);font-weight:700">฿5,250</td>
       <td class="num" style="white-space:nowrap">
-        <button class="btn btn-ghost btn-sm" onclick="printPawn(&#39;mqtd7e5i8qlf&#39;)">🖨️</button>
-        <button class="btn btn-ghost btn-sm" onclick="openPawnEdit(&#39;mqtd7e5i8qlf&#39;)" data-admin-only="" style="display: none;">✏️</button>
-        <button class="btn btn-green btn-sm" onclick="openRedeem(&#39;mqtd7e5i8qlf&#39;)" data-no-partner="">จัดการ</button>
+        <button class="btn btn-ghost btn-sm" onclick="printPawn(&#39;mqtgb0df8bh4&#39;)">🖨️</button>
+        <button class="btn btn-ghost btn-sm" onclick="openPawnEdit(&#39;mqtgb0df8bh4&#39;)" data-admin-only="">✏️</button>
+        <button class="btn btn-green btn-sm" onclick="openRedeem(&#39;mqtgb0df8bh4&#39;)" data-no-partner="">จัดการ</button>
+      </td>
+    </tr><tr class="row-buy">
+      <td style="font-weight:600">PW-260011</td>
+      <td style="color:var(--muted);white-space:nowrap">11/06/26<div style="font-size:10px;color:var(--muted);font-weight:400">19:29 น.</div></td>
+      <td>วาสนา ภู่ระหงษ์<div style="font-size:11px;color:var(--muted)">0969524497</div></td>
+      <td>มือ 2 · Apple Watch Se2/44 32GB ขาว (White) <span class="imei">K225X</span></td>
+      <td class="num" style="font-weight:700">฿2,000</td>
+      <td style="white-space:nowrap;color:var(--muted)">01/07/26</td>
+      <td><span class="tag tag-etc">ยังไม่ไถ่</span></td>
+      <td class="num in">฿170</td>
+      <td class="num" style="color:var(--gold-soft);font-weight:700">฿2,170</td>
+      <td class="num" style="white-space:nowrap">
+        <button class="btn btn-ghost btn-sm" onclick="printPawn(&#39;mquws03necum&#39;)">🖨️</button>
+        <button class="btn btn-ghost btn-sm" onclick="openPawnEdit(&#39;mquws03necum&#39;)" data-admin-only="">✏️</button>
+        <button class="btn btn-green btn-sm" onclick="openRedeem(&#39;mquws03necum&#39;)" data-no-partner="">จัดการ</button>
       </td>
     </tr><tr class="row-buy">
       <td style="font-weight:600">PW-260004</td>
-      <td style="color:var(--muted);white-space:nowrap">10/06/26<div style="font-size:10px;color:var(--muted);font-weight:400">17:35 น.</div></td>
-      <td>สุรศักดิ์ สวัสดิมงคล (พี่หนึ่งสนรงค์)<div style="font-size:11px;color:var(--muted)">0936799935</div></td>
-      <td>มือ 2 · iPad Gen9 64GB ดำ (Black) <span class="imei">DDHP</span></td>
+      <td style="color:var(--muted);white-space:nowrap">10/06/26<div style="font-size:10px;color:var(--muted);font-weight:400">19:45 น.</div></td>
+      <td>สุรศักดิ์ สวัสดิมงคล<div style="font-size:11px;color:var(--muted)">0936799935</div></td>
+      <td>มือ 2 · iPad gen9 64GB ดำ (Black) <span class="imei">DDHP</span></td>
       <td class="num" style="font-weight:700">฿2,000</td>
       <td style="white-space:nowrap;color:var(--muted)">30/06/26</td>
       <td><span class="tag tag-etc">ยังไม่ไถ่</span></td>
-      <td class="num in">฿150</td>
-      <td class="num" style="color:var(--gold-soft);font-weight:700">฿2,150</td>
+      <td class="num in">฿180</td>
+      <td class="num" style="color:var(--gold-soft);font-weight:700">฿2,180</td>
       <td class="num" style="white-space:nowrap">
-        <button class="btn btn-ghost btn-sm" onclick="printPawn(&#39;mqtd9kp2kx9e&#39;)">🖨️</button>
-        <button class="btn btn-ghost btn-sm" onclick="openPawnEdit(&#39;mqtd9kp2kx9e&#39;)" data-admin-only="" style="display: none;">✏️</button>
-        <button class="btn btn-green btn-sm" onclick="openRedeem(&#39;mqtd9kp2kx9e&#39;)" data-no-partner="">จัดการ</button>
-      </td>
-    </tr><tr class="row-buy">
-      <td style="font-weight:600">PW-260007</td>
-      <td style="color:var(--muted);white-space:nowrap">07/06/26<div style="font-size:10px;color:var(--muted);font-weight:400">17:41 น.</div></td>
-      <td>ธนพล แสงมุกดา<div style="font-size:11px;color:var(--muted)">0819319241</div></td>
-      <td>มือ 2 · Samsung A07 -/- <span class="imei">3114</span></td>
-      <td class="num" style="font-weight:700">฿1,000</td>
-      <td style="white-space:nowrap;color:var(--muted)">27/06/26</td>
-      <td><span class="tag tag-etc">ยังไม่ไถ่</span></td>
-      <td class="num in">฿90</td>
-      <td class="num" style="color:var(--gold-soft);font-weight:700">฿1,090</td>
-      <td class="num" style="white-space:nowrap">
-        <button class="btn btn-ghost btn-sm" onclick="printPawn(&#39;mqtdhg5kxnf6&#39;)">🖨️</button>
-        <button class="btn btn-ghost btn-sm" onclick="openPawnEdit(&#39;mqtdhg5kxnf6&#39;)" data-admin-only="" style="display: none;">✏️</button>
-        <button class="btn btn-green btn-sm" onclick="openRedeem(&#39;mqtdhg5kxnf6&#39;)" data-no-partner="">จัดการ</button>
-      </td>
-    </tr><tr class="row-buy">
-      <td style="font-weight:600">PW-260009</td>
-      <td style="color:var(--muted);white-space:nowrap">06/06/26<div style="font-size:10px;color:var(--muted);font-weight:400">17:45 น.</div></td>
-      <td>แพรวา โอ้อากาศ<div style="font-size:11px;color:var(--muted)">0960231468</div></td>
-      <td>มือ 2 · iPad Gen9 64GB ดำ (Black) <span class="imei">4KLH</span></td>
-      <td class="num" style="font-weight:700">฿1,500</td>
-      <td style="white-space:nowrap;color:var(--muted)">26/06/26</td>
-      <td><span class="tag tag-etc">ยังไม่ไถ่</span></td>
-      <td class="num in">฿140</td>
-      <td class="num" style="color:var(--gold-soft);font-weight:700">฿1,640</td>
-      <td class="num" style="white-space:nowrap">
-        <button class="btn btn-ghost btn-sm" onclick="printPawn(&#39;mqtdljj4d8mu&#39;)">🖨️</button>
-        <button class="btn btn-ghost btn-sm" onclick="openPawnEdit(&#39;mqtdljj4d8mu&#39;)" data-admin-only="" style="display: none;">✏️</button>
-        <button class="btn btn-green btn-sm" onclick="openRedeem(&#39;mqtdljj4d8mu&#39;)" data-no-partner="">จัดการ</button>
-      </td>
-    </tr><tr class="row-buy">
-      <td style="font-weight:600">PW-260008</td>
-      <td style="color:var(--muted);white-space:nowrap">06/06/26<div style="font-size:10px;color:var(--muted);font-weight:400">17:43 น.</div></td>
-      <td>จิรนันท์ พุ่มจันทร์<div style="font-size:11px;color:var(--muted)">0614179747</div></td>
-      <td>มือ 2 · iPad Air5 256GB ดำ (Black) <span class="imei">QRRF</span></td>
-      <td class="num" style="font-weight:700">฿4,000</td>
-      <td style="white-space:nowrap;color:var(--muted)">26/06/26</td>
-      <td><span class="tag tag-etc">ยังไม่ไถ่</span></td>
-      <td class="num in">฿380</td>
-      <td class="num" style="color:var(--gold-soft);font-weight:700">฿4,380</td>
-      <td class="num" style="white-space:nowrap">
-        <button class="btn btn-ghost btn-sm" onclick="printPawn(&#39;mqtdjkcfm3el&#39;)">🖨️</button>
-        <button class="btn btn-ghost btn-sm" onclick="openPawnEdit(&#39;mqtdjkcfm3el&#39;)" data-admin-only="" style="display: none;">✏️</button>
-        <button class="btn btn-green btn-sm" onclick="openRedeem(&#39;mqtdjkcfm3el&#39;)" data-no-partner="">จัดการ</button>
+        <button class="btn btn-ghost btn-sm" onclick="printPawn(&#39;mqthvpeb91e7&#39;)">🖨️</button>
+        <button class="btn btn-ghost btn-sm" onclick="openPawnEdit(&#39;mqthvpeb91e7&#39;)" data-admin-only="">✏️</button>
+        <button class="btn btn-green btn-sm" onclick="openRedeem(&#39;mqthvpeb91e7&#39;)" data-no-partner="">จัดการ</button>
       </td>
     </tr></tbody>
             </table>
@@ -806,7 +936,7 @@
       <section id="view-customers" class="hidden">
         <div class="panel">
           <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
-            <button class="btn btn-gold btn-sm" onclick="openCustAdd()" data-admin-only="" style="display: none;">+ เพิ่มลูกค้า</button>
+            <button class="btn btn-gold btn-sm" onclick="openCustAdd()" data-admin-only="" style="">+ เพิ่มลูกค้า</button>
             <button class="btn btn-ghost btn-sm" onclick="exportCustomersCSV()">📥 ดาวน์โหลด CSV (Excel/Sheets)</button>
             <button class="btn btn-ghost btn-sm" onclick="exportCustomersPDF()">📄 ออก PDF รายชื่อ</button>
           </div>
@@ -897,7 +1027,7 @@
       <section id="view-report" class="hidden">
         <div class="panel" style="margin-bottom:14px;border:1px solid rgba(212,175,55,.3)">
           <div class="panel-head"><h2>💾 สำรองข้อมูล (Backup)</h2></div>
-          <div id="backupInfo" style="font-size:13px;color:var(--muted);margin-bottom:12px">สำรองล่าสุด: <b>25/06/26 18:09 น.</b> · 0 รายการ</div>
+          <div id="backupInfo" style="font-size:13px;color:var(--muted);margin-bottom:12px">สำรองล่าสุด: <b>26/06/26 19:50 น.</b> · 41 รายการ</div>
           <div style="display:flex;gap:8px;flex-wrap:wrap">
             <button class="btn btn-gold btn-sm" onclick="manualBackup()">💾 สำรองทันที (ทับไฟล์เดิม)</button>
             <button class="btn btn-ghost btn-sm" onclick="downloadBackup()">📥 ดาวน์โหลดไฟล์ .json</button>
@@ -928,20 +1058,38 @@
           <button class="btn btn-ghost btn-sm" onclick="printOfficialReport(&#39;cash&#39;)">💵 เงินสดส่งธนาคาร</button>
         </div>
         <div class="kpi-row">
-          <div class="kpi"><div class="label">ยอดขายรวม</div><div class="val gold" id="rpSales">฿0</div></div>
-          <div class="kpi"><div class="label">กำไรขั้นต้น</div><div class="val green" id="rpProfit">฿0</div></div>
-          <div class="kpi"><div class="label">ค่าใช้จ่ายร้าน</div><div class="val red" id="rpExpense">฿0</div></div>
-          <div class="kpi"><div class="label">กำไรสุทธิ</div><div class="val gold" id="rpNet">฿0</div></div>
+          <div class="kpi"><div class="label">ยอดขายรวม</div><div class="val gold" id="rpSales">฿161,110</div></div>
+          <div class="kpi"><div class="label">กำไรขั้นต้น</div><div class="val green" id="rpProfit">฿18,490</div></div>
+          <div class="kpi"><div class="label">ค่าใช้จ่ายร้าน</div><div class="val red" id="rpExpense">฿100</div></div>
+          <div class="kpi"><div class="label">กำไรสุทธิ</div><div class="val gold" id="rpNet">฿54,940</div></div>
         </div>
         <div class="kpi-row" style="grid-template-columns:repeat(3,1fr)">
-          <div class="kpi"><div class="label">ขายเครื่อง (จำนวน)</div><div class="val" id="rpSoldUnits">0<span class="unit">เครื่อง</span></div></div>
-          <div class="kpi"><div class="label">รายได้งานซ่อม</div><div class="val green" id="rpRepair">฿0</div></div>
-          <div class="kpi"><div class="label">เครื่องในสต็อก</div><div class="val blue" id="rpStockUnits">0<span class="unit">เครื่อง</span></div></div>
+          <div class="kpi"><div class="label">ขายเครื่อง (จำนวน)</div><div class="val" id="rpSoldUnits">13<span class="unit">เครื่อง</span></div></div>
+          <div class="kpi"><div class="label">รายได้งานซ่อม</div><div class="val green" id="rpRepair">฿3,500</div></div>
+          <div class="kpi"><div class="label">เครื่องในสต็อก</div><div class="val blue" id="rpStockUnits">19<span class="unit">เครื่อง</span></div></div>
         </div>
         <div class="panel">
           <div class="panel-head"><h2>แยกตามหมวด</h2></div>
           <div class="tablewrap" style="max-height:none">
-            <table id="catTable"><thead><tr><th>หมวด</th><th class="num">รับ</th><th class="num">จ่าย</th><th class="num">สุทธิ</th></tr></thead><tbody><tr><td colspan="4" class="empty">ไม่มีข้อมูล</td></tr></tbody></table>
+            <table id="catTable"><thead><tr><th>หมวด</th><th class="num">รับ</th><th class="num">จ่าย</th><th class="num">สุทธิ</th></tr></thead><tbody><tr>
+    <td>รับเครื่องเข้า</td><td class="num in">—</td>
+    <td class="num out">฿255,900</td>
+    <td class="num bal">-฿255,900</td></tr><tr>
+    <td>ขายสินค้า</td><td class="num in">฿161,110</td>
+    <td class="num out">—</td>
+    <td class="num bal">฿161,110</td></tr><tr>
+    <td>อื่นๆ</td><td class="num in">฿59,440</td>
+    <td class="num out">฿27,060</td>
+    <td class="num bal">฿32,380</td></tr><tr>
+    <td>งานซ่อม</td><td class="num in">฿3,500</td>
+    <td class="num out">—</td>
+    <td class="num bal">฿3,500</td></tr><tr>
+    <td>อุปกรณ์เสริม</td><td class="num in">฿350</td>
+    <td class="num out">—</td>
+    <td class="num bal">฿350</td></tr><tr>
+    <td>ค่าใช้จ่ายร้าน</td><td class="num in">—</td>
+    <td class="num out">฿100</td>
+    <td class="num bal">-฿100</td></tr></tbody></table>
           </div>
         </div>
       </section>
@@ -1090,17 +1238,17 @@
 <!-- ===== REDEEM MODAL (ไถ่คืน / ต่อดอก / หลุด) ===== -->
 <div class="overlay" id="redeemModal">
   <div class="modal">
-    <div class="modal-head"><h3 id="redeemTitle">จัดการตั๋ว PW-260001</h3><button class="x" data-close="">×</button></div>
+    <div class="modal-head"><h3 id="redeemTitle">จัดการตั๋ว PW-260010</h3><button class="x" data-close="">×</button></div>
     <div class="modal-body" id="redeemBody">
     <div style="margin-bottom:14px">
-      <div style="font-weight:700;font-size:15px">มือ 2 · iPad Gen10 64GB ขาว (White)</div>
-      <div style="font-size:13px;color:var(--muted);margin-top:2px">ศศิธร เจริญชื่น · 0929401314</div>
+      <div style="font-weight:700;font-size:15px">มือ 2 · Samsung A07 8/256</div>
+      <div style="font-size:13px;color:var(--muted);margin-top:2px">ธนพล แสงมุกดา · 0819319241</div>
     </div>
     <div style="background:var(--bg);border:1px solid var(--line);border-radius:11px;padding:14px;margin-bottom:14px">
-      <div style="display:flex;justify-content:space-between;padding:4px 0;font-size:13px"><span style="color:var(--muted)">เงินต้น</span><span class="num">฿3,500</span></div>
-      <div style="display:flex;justify-content:space-between;padding:4px 0;font-size:13px"><span style="color:var(--muted)">รับฝากมาแล้ว</span><span class="num">0 วัน</span></div>
-      <div style="display:flex;justify-content:space-between;padding:4px 0;font-size:13px"><span style="color:var(--muted)">ดอกเบี้ยถึงวันนี้</span><span class="num in">฿180</span></div>
-      <div style="display:flex;justify-content:space-between;border-top:2px solid var(--gold-dim);padding-top:9px;margin-top:6px;font-size:17px;font-weight:800"><span>ยอดไถ่คืน</span><span class="num gold" style="color:var(--gold-soft)">฿3,680</span></div>
+      <div style="display:flex;justify-content:space-between;padding:4px 0;font-size:13px"><span style="color:var(--muted)">เงินต้น</span><span class="num">฿1,000</span></div>
+      <div style="display:flex;justify-content:space-between;padding:4px 0;font-size:13px"><span style="color:var(--muted)">รับฝากมาแล้ว</span><span class="num">1 วัน</span></div>
+      <div style="display:flex;justify-content:space-between;padding:4px 0;font-size:13px"><span style="color:var(--muted)">ดอกเบี้ยถึงวันนี้</span><span class="num in">฿50</span></div>
+      <div style="display:flex;justify-content:space-between;border-top:2px solid var(--gold-dim);padding-top:9px;margin-top:6px;font-size:17px;font-weight:800"><span>ยอดไถ่คืน</span><span class="num gold" style="color:var(--gold-soft)">฿1,050</span></div>
     </div>
     <div class="field">
       <label>รับเงินไถ่ผ่านช่องทาง</label>
@@ -1111,10 +1259,11 @@
     </div></div>
     <div class="modal-foot" id="redeemFoot">
     <button class="btn btn-danger" onclick="forfeitPawn()" style="margin-right:auto">หลุดรับฝาก →สต็อก</button>
+    <button class="btn btn-gold" onclick="renewInterest()" style="background:linear-gradient(135deg,#e6c75a,#9a7b13)">🔄 ต่อดอกเบี้ย</button>
     <button class="btn btn-ghost" onclick="addPrincipal()">➕ เพิ่มยอดต้น</button>
     <button class="btn btn-ghost" onclick="payPrincipal()">➖ จ่ายต้นบางส่วน</button>
     <button class="btn btn-ghost" data-close="">ปิด</button>
-    <button class="btn btn-gold" onclick="redeemPawn(180)">✓ รับไถ่คืน ฿3,680</button></div>
+    <button class="btn btn-gold" onclick="redeemPawn(50)">✓ รับไถ่คืน ฿1,050</button></div>
   </div>
 </div>
 
@@ -1409,8 +1558,22 @@
 <div class="overlay" id="pawnEditModal">
   <div class="modal">
     <div class="modal-head"><h3>✏️ แก้ไขข้อมูลรับฝาก</h3><button class="x" data-close="">×</button></div>
-    <div class="modal-body" id="pawnEditBody"></div>
-    <div class="modal-foot" id="pawnEditFoot"></div>
+    <div class="modal-body" id="pawnEditBody">
+    <div style="font-size:11.5px;color:var(--muted);margin-bottom:12px">เลขตั๋ว PW-260001 · รับฝาก 25/06/26 15:07 น.</div>
+    <div class="field-row">
+      <div class="field"><label>ชื่อผู้ฝาก</label><input id="pe_name" value="ศศิธร เจริญชื่น"></div>
+      <div class="field"><label>เบอร์โทร</label><input id="pe_phone" value="0929401314"></div>
+    </div>
+    <div class="field"><label>เลขบัตรประชาชน</label><input id="pe_idcard" value="1779900372818"></div>
+    <div class="field"><label>รายการที่รับฝาก (ข้อมูลเครื่อง)</label><input id="pe_item" value="มือ 2 · iPad Gen10 64GB ขาว (White)"></div>
+    <div class="field-row">
+      <div class="field"><label>IMEI / Serial</label><input id="pe_imei" value=""></div>
+      <div class="field"><label>เงินต้น (บาท)</label><input type="number" id="pe_principal" value="3500"></div>
+    </div>
+    <div class="field"><label>สภาพ/หมายเหตุ</label><input id="pe_note" value="สภาพ: สวยไม่มีรอย"></div>
+    <div class="field"><label>📅 วันที่รับฝาก (แก้ได้ — มีผลต่อการคิดดอกเบี้ย)</label><input type="date" id="pe_date" value="2026-06-25"></div>
+    <div style="font-size:11.5px;color:var(--muted);background:rgba(255,255,255,.03);border-radius:8px;padding:8px 11px">⚠️ การแก้เงินต้นจะไม่ปรับยอดกองทุนย้อนหลังอัตโนมัติ — แก้เฉพาะกรณีลงข้อมูลผิด</div></div>
+    <div class="modal-foot" id="pawnEditFoot"><button class="btn btn-danger" onclick="adminDeletePawn(&#39;mqt7yu3frwlh&#39;)" style="margin-right:auto">🗑️ ลบตั๋วนี้</button><button class="btn btn-ghost" data-close="">ยกเลิก</button><button class="btn btn-gold" onclick="savePawnEdit(&#39;mqt7yu3frwlh&#39;)">✓ บันทึกการแก้ไข</button></div>
   </div>
 </div>
 
@@ -1428,7 +1591,7 @@
 <!-- ===== TRANSACTION MODAL ===== -->
 <div class="overlay" id="txnModal">
   <div class="modal">
-    <div class="modal-head"><h3 id="txnTitle">บันทึกรายการ</h3><button class="x" data-close="">×</button></div>
+    <div class="modal-head"><h3 id="txnTitle">🔧 ใบเสร็จงานซ่อม</h3><button class="x" data-close="">×</button></div>
     <div class="modal-body">
 
       <!-- SELL: pick from stock -->
@@ -1437,7 +1600,102 @@
           <label>เลือกเครื่องจากสต็อก</label>
           <input class="search" style="width:100%" id="sellSearch" placeholder="ค้นหา รุ่น / IMEI…">
         </div>
-        <div id="sellList" style="max-height:200px;overflow-y:auto;margin-bottom:6px"></div>
+        <div id="sellList" style="max-height:200px;overflow-y:auto;margin-bottom:6px">
+    <div class="pick" onclick="loadSellDevice(&#39;mqtbf3o6qjy7&#39;)" style="display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 13px;border:1px solid var(--line);border-radius:10px;margin-bottom:7px;cursor:pointer">
+      <div><div style="font-weight:600;font-size:14px">มือ 2 · iPhone 11 64GB ดำ (Black) · 7025</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:2px">ทุนรวม ฿3,000 · 100</div></div>
+      <div style="color:var(--gold-soft);font-weight:700;font-size:13px">เลือก →</div>
+    </div>
+    <div class="pick" onclick="loadSellDevice(&#39;mqtm6ywsff0a&#39;)" style="display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 13px;border:1px solid var(--line);border-radius:10px;margin-bottom:7px;cursor:pointer">
+      <div><div style="font-weight:600;font-size:14px">มือ 2 · iPhone 11 64GB ดำ (Black) · 5792</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:2px">ทุนรวม ฿4,000 · 100</div></div>
+      <div style="color:var(--gold-soft);font-weight:700;font-size:13px">เลือก →</div>
+    </div>
+    <div class="pick" onclick="loadSellDevice(&#39;mqtmamt4ztfg&#39;)" style="display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 13px;border:1px solid var(--line);border-radius:10px;margin-bottom:7px;cursor:pointer">
+      <div><div style="font-weight:600;font-size:14px">มือ 2 · iPhone XR 64GB ดำ (Black) · 1360</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:2px">ทุนรวม ฿1,500 · 100</div></div>
+      <div style="color:var(--gold-soft);font-weight:700;font-size:13px">เลือก →</div>
+    </div>
+    <div class="pick" onclick="loadSellDevice(&#39;mqtmoe0tzwy5&#39;)" style="display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 13px;border:1px solid var(--line);border-radius:10px;margin-bottom:7px;cursor:pointer">
+      <div><div style="font-weight:600;font-size:14px">มือ 2 · iPhone 11 Pro Max 64GB เขียวมิดไนท์ (Midnight Green) · 9541</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:2px">ทุนรวม ฿2,430 · 100</div></div>
+      <div style="color:var(--gold-soft);font-weight:700;font-size:13px">เลือก →</div>
+    </div>
+    <div class="pick" onclick="loadSellDevice(&#39;mqtn2cmyeaqn&#39;)" style="display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 13px;border:1px solid var(--line);border-radius:10px;margin-bottom:7px;cursor:pointer">
+      <div><div style="font-weight:600;font-size:14px">มือ 2 · iPhone 14 128GB มิดไนท์ (Midnight) · 9267</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:2px">ทุนรวม ฿12,000 · 100</div></div>
+      <div style="color:var(--gold-soft);font-weight:700;font-size:13px">เลือก →</div>
+    </div>
+    <div class="pick" onclick="loadSellDevice(&#39;mqtn7giudia4&#39;)" style="display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 13px;border:1px solid var(--line);border-radius:10px;margin-bottom:7px;cursor:pointer">
+      <div><div style="font-weight:600;font-size:14px">มือ 2 · iPhone 13 128GB มิดไนท์ (Midnight) · 5380</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:2px">ทุนรวม ฿9,500 · 88</div></div>
+      <div style="color:var(--gold-soft);font-weight:700;font-size:13px">เลือก →</div>
+    </div>
+    <div class="pick" onclick="loadSellDevice(&#39;mqtnc8tw7qfy&#39;)" style="display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 13px;border:1px solid var(--line);border-radius:10px;margin-bottom:7px;cursor:pointer">
+      <div><div style="font-weight:600;font-size:14px">มือ 2 · iPhone 16 Pro 128GB ไทเทเนียมทะเลทราย (Desert Titanium) · 3761</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:2px">ทุนรวม ฿24,500 · 96</div></div>
+      <div style="color:var(--gold-soft);font-weight:700;font-size:13px">เลือก →</div>
+    </div>
+    <div class="pick" onclick="loadSellDevice(&#39;mqtnln3apqqj&#39;)" style="display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 13px;border:1px solid var(--line);border-radius:10px;margin-bottom:7px;cursor:pointer">
+      <div><div style="font-weight:600;font-size:14px">มือ 2 · iPhone Air 256GB ฟ้าหมอก (Sky Blue) · 1877</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:2px">ทุนรวม ฿22,000 · 100</div></div>
+      <div style="color:var(--gold-soft);font-weight:700;font-size:13px">เลือก →</div>
+    </div>
+    <div class="pick" onclick="loadSellDevice(&#39;mqtodmfqvb48&#39;)" style="display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 13px;border:1px solid var(--line);border-radius:10px;margin-bottom:7px;cursor:pointer">
+      <div><div style="font-weight:600;font-size:14px">มือ 2 · iPhone 13 Pro Max 128GB ทอง (Gold) · 7125</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:2px">ทุนรวม ฿12,400 · 100</div></div>
+      <div style="color:var(--gold-soft);font-weight:700;font-size:13px">เลือก →</div>
+    </div>
+    <div class="pick" onclick="loadSellDevice(&#39;mqtojczttc28&#39;)" style="display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 13px;border:1px solid var(--line);border-radius:10px;margin-bottom:7px;cursor:pointer">
+      <div><div style="font-weight:600;font-size:14px">มือ 2 · MacBook Pro13/2017/ขาว เงิน (Silver) · HV27</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:2px">ทุนรวม ฿3,800 · 100</div></div>
+      <div style="color:var(--gold-soft);font-weight:700;font-size:13px">เลือก →</div>
+    </div>
+    <div class="pick" onclick="loadSellDevice(&#39;mqtp5fcapagi&#39;)" style="display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 13px;border:1px solid var(--line);border-radius:10px;margin-bottom:7px;cursor:pointer">
+      <div><div style="font-weight:600;font-size:14px">มือ 2 · AirPods Gen2 · 4LX2Y</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:2px">ทุนรวม ฿1,200 · 100</div></div>
+      <div style="color:var(--gold-soft);font-weight:700;font-size:13px">เลือก →</div>
+    </div>
+    <div class="pick" onclick="loadSellDevice(&#39;mqtp7gre8vbw&#39;)" style="display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 13px;border:1px solid var(--line);border-radius:10px;margin-bottom:7px;cursor:pointer">
+      <div><div style="font-weight:600;font-size:14px">มือ 2 · AirPods Gen2 · BLX2Y</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:2px">ทุนรวม ฿1,200 · 100</div></div>
+      <div style="color:var(--gold-soft);font-weight:700;font-size:13px">เลือก →</div>
+    </div>
+    <div class="pick" onclick="loadSellDevice(&#39;mqtp9wl4f38y&#39;)" style="display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 13px;border:1px solid var(--line);border-radius:10px;margin-bottom:7px;cursor:pointer">
+      <div><div style="font-weight:600;font-size:14px">มือ 2 · AirPods Gen2 wirelesscharger · MJMMT</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:2px">ทุนรวม ฿1,300 · 100</div></div>
+      <div style="color:var(--gold-soft);font-weight:700;font-size:13px">เลือก →</div>
+    </div>
+    <div class="pick" onclick="loadSellDevice(&#39;mqtpaxrcc5iu&#39;)" style="display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 13px;border:1px solid var(--line);border-radius:10px;margin-bottom:7px;cursor:pointer">
+      <div><div style="font-weight:600;font-size:14px">มือ 2 · AirPods Gen3 · P7Q3H</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:2px">ทุนรวม ฿1,700 · 100</div></div>
+      <div style="color:var(--gold-soft);font-weight:700;font-size:13px">เลือก →</div>
+    </div>
+    <div class="pick" onclick="loadSellDevice(&#39;mqtpbpqcv8t8&#39;)" style="display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 13px;border:1px solid var(--line);border-radius:10px;margin-bottom:7px;cursor:pointer">
+      <div><div style="font-weight:600;font-size:14px">มือ 2 · AirPods Gen3 · W1W5C</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:2px">ทุนรวม ฿1,700 · 100</div></div>
+      <div style="color:var(--gold-soft);font-weight:700;font-size:13px">เลือก →</div>
+    </div>
+    <div class="pick" onclick="loadSellDevice(&#39;mqtpcnpriw52&#39;)" style="display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 13px;border:1px solid var(--line);border-radius:10px;margin-bottom:7px;cursor:pointer">
+      <div><div style="font-weight:600;font-size:14px">มือ 2 · AirPods Gen3 · Q73VD</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:2px">ทุนรวม ฿1,700 · 100</div></div>
+      <div style="color:var(--gold-soft);font-weight:700;font-size:13px">เลือก →</div>
+    </div>
+    <div class="pick" onclick="loadSellDevice(&#39;mqum99reyt2b&#39;)" style="display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 13px;border:1px solid var(--line);border-radius:10px;margin-bottom:7px;cursor:pointer">
+      <div><div style="font-weight:600;font-size:14px">มือ 2 · iPhone 13 256GB ฟ้า (Blue) · 3689</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:2px">ทุนรวม ฿9,060 · 65</div></div>
+      <div style="color:var(--gold-soft);font-weight:700;font-size:13px">เลือก →</div>
+    </div>
+    <div class="pick" onclick="loadSellDevice(&#39;mqxog1tc498i&#39;)" style="display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 13px;border:1px solid var(--line);border-radius:10px;margin-bottom:7px;cursor:pointer">
+      <div><div style="font-weight:600;font-size:14px">มือ 2 · iPad Gen9 64GB ขาว (White) · XRGP</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:2px">ทุนรวม ฿4,700 · 100</div></div>
+      <div style="color:var(--gold-soft);font-weight:700;font-size:13px">เลือก →</div>
+    </div>
+    <div class="pick" onclick="loadSellDevice(&#39;mqy4aekc286e&#39;)" style="display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 13px;border:1px solid var(--line);border-radius:10px;margin-bottom:7px;cursor:pointer">
+      <div><div style="font-weight:600;font-size:14px">มือ 2 · iPhone 13 128GB มิดไนท์ (Midnight) · 2815</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:2px">ทุนรวม ฿7,960 · 77</div></div>
+      <div style="color:var(--gold-soft);font-weight:700;font-size:13px">เลือก →</div>
+    </div></div>
       </div>
 
       <!-- BUY / SELL device fields -->
@@ -1546,7 +1804,7 @@
       </div>
 
       <!-- repair job (ใบเสร็จงานซ่อม) -->
-      <div id="repairType" class="hidden">
+      <div id="repairType" class="">
         <div class="field-row">
           <div class="field"><label>ชื่อลูกค้า</label><div style="display:flex;gap:6px"><input id="t_rcust" placeholder="ชื่อ-นามสกุล" style="flex:1"><button type="button" class="btn btn-ghost btn-sm" style="white-space:nowrap" onclick="openCustLookup(&#39;t_rcust&#39;,&#39;t_rphone&#39;)">👥 เก่า</button></div></div>
           <div class="field"><label>เบอร์โทร</label><input id="t_rphone" inputmode="tel" placeholder="08x-xxx-xxxx"></div>
@@ -1558,7 +1816,16 @@
 
         <div class="acc-block">
           <div class="acc-title">🔧 รายการซ่อม <span>(กดเลือกงาน → เลือกชนิด → ใส่ราคา)</span></div>
-          <div id="repairJobList"></div>
+          <div id="repairJobList"><div class="rjob" data-idx="0">
+    <div class="rjob-top">
+      <select class="rjob-type"><option value="screen">เปลี่ยนหน้าจอ</option><option value="battery">เปลี่ยนแบตเตอรี่</option><option value="camera">กล้อง</option><option value="speaker">ลำโพง</option><option value="body">บอดี้</option><option value="board">เมนบอร์ด</option><option value="glass">ลอกกระจก</option><option value="other">อื่นๆ</option></select>
+      <select class="rjob-sub"><option value="incell">incell</option><option value="OLED">OLED</option><option value="จอแท้">จอแท้</option></select>
+      <button type="button" class="rjob-del" title="ลบ">✕</button>
+    </div>
+    <div class="rjob-prices">
+      <div><label>ต้นทุนอะไหล่</label><input type="number" class="rjob-part" inputmode="numeric" placeholder="0"></div>
+      <div><label>ค่าซ่อม (คิดลูกค้า)</label><input type="number" class="rjob-price" inputmode="numeric" placeholder="0"></div>
+    </div></div></div>
           <button type="button" class="btn btn-ghost btn-sm" id="addRepairJob" style="margin-top:8px;width:100%;justify-content:center">+ เพิ่มรายการซ่อม</button>
         </div>
 
@@ -1597,13 +1864,13 @@
       </div>
 
       <!-- amounts -->
-      <div id="amountBlock">
+      <div id="amountBlock" class="hidden">
         <div class="field-row">
           <div class="field" id="amtMain">
             <label id="amtLabel">จำนวนเงิน (บาท) *</label>
             <input type="number" id="t_amount" inputmode="numeric">
           </div>
-          <div class="field" id="costExtraWrap">
+          <div class="field hidden" id="costExtraWrap">
             <label>ต้นทุนเพิ่ม/ค่าอะไหล่</label>
             <input type="number" id="t_costextra" inputmode="numeric" placeholder="0">
           </div>
@@ -1651,7 +1918,7 @@
           </div>
         </div>
 
-        <div class="field" id="downWrap">
+        <div class="field hidden" id="downWrap">
           <label>★ ขายผ่อน — กรอกเงินดาวน์ที่รับจริง (กำไรลงเต็ม)</label>
           <input type="number" id="t_down" inputmode="numeric" placeholder="เช่น 5000">
         </div>
@@ -1681,18 +1948,18 @@
 
     </div>
     <div class="modal-foot">
-      <label style="display:flex;align-items:center;gap:6px;margin-right:auto;font-size:13px;color:var(--muted);cursor:pointer">
+      <label style="display: none; align-items: center; gap: 6px; margin-right: auto; font-size: 13px; color: var(--muted); cursor: pointer;">
         <input type="checkbox" id="t_installment" style="width:auto"> ขายแบบผ่อน
       </label>
       <button class="btn btn-ghost" data-close="">ยกเลิก</button>
-      <button class="btn btn-gold" id="saveTxn">บันทึก</button>
+      <button class="btn btn-gold" id="saveTxn">👁️ ดูใบเสร็จซ่อม</button>
     </div>
   </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./APA POS — แอปเปิ้ลอาร์ม เพชรบุรี_files/html2canvas.min.js.ดาวน์โหลด"></script>
+<script src="./APA POS — แอปเปิ้ลอาร์ม เพชรบุรี_files/jspdf.umd.min.js.ดาวน์โหลด"></script>
+<script src="./APA POS — แอปเปิ้ลอาร์ม เพชรบุรี_files/supabase-js@2"></script>
 <script>
 const $=id=>document.getElementById(id);
 /* ===================================================================
@@ -3905,12 +4172,16 @@ window.openRedeem=id=>{
       </div>
     </div>`;
   document.getElementById('redeemFoot').innerHTML=`
-    <button class="btn btn-danger" onclick="forfeitPawn()" style="margin-right:auto">หลุดรับฝาก →สต็อก</button>
-    <button class="btn btn-gold" onclick="renewInterest()" style="background:linear-gradient(135deg,#e6c75a,#9a7b13)">🔄 ต่อดอกเบี้ย</button>
-    <button class="btn btn-ghost" onclick="addPrincipal()">➕ เพิ่มยอดต้น</button>
-    <button class="btn btn-ghost" onclick="payPrincipal()">➖ จ่ายต้นบางส่วน</button>
-    <button class="btn btn-ghost" data-close>ปิด</button>
-    <button class="btn btn-gold" onclick="redeemPawn(${int})">✓ รับไถ่คืน ${baht(redeem)}</button>`;
+    <div style="display:flex;gap:8px;flex-wrap:wrap;width:100%;margin-bottom:8px">
+      <button class="btn btn-gold btn-sm" onclick="renewInterest()" style="flex:1;min-width:130px;background:linear-gradient(135deg,#e6c75a,#9a7b13)">🔄 ต่อดอกเบี้ย</button>
+      <button class="btn btn-ghost btn-sm" onclick="addPrincipal()" style="flex:1;min-width:110px">➕ เพิ่มยอดต้น</button>
+      <button class="btn btn-ghost btn-sm" onclick="payPrincipal()" style="flex:1;min-width:120px">➖ จ่ายต้นบางส่วน</button>
+      <button class="btn btn-danger btn-sm" onclick="forfeitPawn()" style="flex:1;min-width:130px">⚠️ หลุดรับฝาก →สต็อก</button>
+    </div>
+    <div style="display:flex;gap:8px;width:100%">
+      <button class="btn btn-ghost" data-close style="flex:0 0 auto">ปิด</button>
+      <button class="btn btn-gold" onclick="redeemPawn(${int})" style="flex:1">✓ รับไถ่คืน ${baht(redeem)}</button>
+    </div>`;
   document.getElementById('redeemFoot').querySelector('[data-close]').onclick=closeModals;
   let rm='cash';
   document.querySelectorAll('#redeemMethodSeg button').forEach(b=>b.onclick=()=>{
@@ -5358,6 +5629,7 @@ window.addEventListener('load',()=>{
   }catch(e){}
 });
 </script>
+
 
 
 
