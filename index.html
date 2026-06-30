@@ -1171,7 +1171,7 @@
       <div class="field">
         <label>จ่ายเงินต้นให้ลูกค้าด้วยช่องทาง</label>
         <div class="seg method" id="pawnMethodSeg" style="width:100%">
-          <button class="on" data-m="cash" style="flex:1">💵 เงินสด</button>
+          <button data-m="cash" style="flex:1">💵 เงินสด</button>
           <button data-m="bank" style="flex:1">🏦 เงินโอน</button>
           <button data-m="split" style="flex:1">🔀 จ่ายผสม</button>
         </div>
@@ -1253,7 +1253,7 @@
     <div class="field">
       <label>รับเงินไถ่ผ่านช่องทาง</label>
       <div class="seg method" id="redeemMethodSeg" style="width:100%">
-        <button class="on" data-m="cash" style="flex:1">💵 เงินสด</button>
+        <button data-m="cash" style="flex:1">💵 เงินสด</button>
         <button data-m="bank" style="flex:1">🏦 เงินโอน</button>
       </div>
     </div></div>
@@ -1330,7 +1330,7 @@
       <div class="field">
         <label>ช่องทางรับเงินมัดจำ</label>
         <div class="seg method" id="dpMethodSeg" style="width:100%">
-          <button class="on" data-m="cash" style="flex:1">💵 เงินสด</button>
+          <button data-m="cash" style="flex:1">💵 เงินสด</button>
           <button data-m="bank" style="flex:1">🏦 เงินโอน</button>
           <button data-m="split" style="flex:1">🔀 จ่ายผสม</button>
         </div>
@@ -1431,7 +1431,7 @@
       <div class="field">
         <label>ช่องทางรับเงิน</label>
         <div class="seg method" id="accMethodSeg" style="width:100%">
-          <button class="on" data-m="cash" style="flex:1">💵 เงินสด</button>
+          <button data-m="cash" style="flex:1">💵 เงินสด</button>
           <button data-m="bank" style="flex:1">🏦 เงินโอน</button>
           <button data-m="split" style="flex:1">🔀 จ่ายผสม</button>
         </div>
@@ -1927,7 +1927,7 @@
       <div class="field" id="methodWrap">
         <label>ช่องทางการเงิน</label>
         <div class="seg method" id="methodSeg" style="width:100%">
-          <button class="on" data-m="cash" style="flex:1">💵 เงินสด</button>
+          <button data-m="cash" style="flex:1">💵 เงินสด</button>
           <button data-m="bank" style="flex:1">🏦 เงินโอน</button>
           <button data-m="split" style="flex:1">🔀 จ่ายผสม</button>
         </div>
@@ -2476,7 +2476,12 @@ function renderCustomers(q=''){
   closeCustDetail();
   const list=gatherCustomers();
   const kw=(q||'').trim().toLowerCase();
-  const filtered=kw?list.filter(c=>c.name.toLowerCase().includes(kw)||normPhone(c.phone).includes(normPhone(kw))):list;
+  const kwPhone=normPhone(kw);
+  const filtered=kw?list.filter(c=>{
+    const nameHit=(c.name||'').toLowerCase().includes(kw);
+    const phoneHit=kwPhone?normPhone(c.phone).includes(kwPhone):false;
+    return nameHit||phoneHit;
+  }):list;
   const box=$('custList');
   if(!filtered.length){box.innerHTML='<div class="empty"><div class="big">👥</div>'+(kw?'ไม่พบลูกค้าที่ค้นหา':'ยังไม่มีประวัติลูกค้า')+'</div>';return;}
   box.innerHTML=`<div style="font-size:12px;color:var(--muted);margin-bottom:8px">ลูกค้าทั้งหมด ${filtered.length} ราย</div>`+
@@ -2573,7 +2578,12 @@ window.openCustLookup=(nameId,phoneId)=>{
 function renderLookup(q){
   const list=gatherCustomers();
   const kw=(q||'').trim().toLowerCase();
-  const filtered=kw?list.filter(c=>c.name.toLowerCase().includes(kw)||normPhone(c.phone).includes(normPhone(kw))):list.slice(0,30);
+  const kwPhone=normPhone(kw);
+  const filtered=kw?list.filter(c=>{
+    const nameHit=(c.name||'').toLowerCase().includes(kw);
+    const phoneHit=kwPhone?normPhone(c.phone).includes(kwPhone):false;
+    return nameHit||phoneHit;
+  }):list.slice(0,30);
   const box=$('lookupResults');
   if(!filtered.length){box.innerHTML='<div class="empty" style="padding:24px"><div class="big">🔍</div>'+(kw?'ไม่พบลูกค้า':'ยังไม่มีประวัติลูกค้า')+'</div>';return;}
   box.innerHTML=filtered.map(c=>`<div class="custcard" onclick="pickCustomer('${encodeURIComponent(c.name||'')}','${encodeURIComponent(c.phone||'')}')">
@@ -2997,7 +3007,7 @@ window.printOfficialReport=(mode)=>{
 /* ===================================================================
    TRANSACTION MODAL — หัวใจของการลิงก์สต็อก-บัญชี
    =================================================================== */
-let txnMode='etc', txnMethod='cash', repairDir='service', etcDir='in', sellStockId=null;
+let txnMode='etc', txnMethod='', repairDir='service', etcDir='in', sellStockId=null;
 
 /* ===================================================================
    BUY DEVICE PICKER — ตัวเลือกข้อมูลเครื่องแบบชั้นๆ (โหมดรับเครื่อง)
@@ -3218,7 +3228,7 @@ function renderPartsPrice(){
 
 
 function openTxn(mode,stockId){
-  txnMode=mode;sellStockId=stockId||null;txnMethod='cash';repairDir='service';etcDir='in';
+  txnMode=mode;sellStockId=stockId||null;txnMethod='';repairDir='service';etcDir='in';
   // reset
   ['t_name','t_imei','t_batt','t_fix','t_desc','t_amount','t_costextra','t_down','t_cust','t_custphone','t_defect','t_discount','t_buyname','t_buyphone','t_splitcash','t_splitbank','t_warrcenter'].forEach(i=>{if($(i))$(i).value=''});
   $('t_installment').checked=false;
@@ -3227,7 +3237,7 @@ function openTxn(mode,stockId){
     const sel=row.querySelector('.acc-sel');
     if(sel){sel.value='0';sel.classList.remove('has')}
   });
-  $('methodSeg').querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.m==='cash'));
+  $('methodSeg').querySelectorAll('button').forEach(b=>b.classList.remove('on'));
   show('splitWrap',false);
   // section visibility
   show('sellPick',mode==='sell'&&!stockId);
@@ -3427,6 +3437,7 @@ $('saveTxn').onclick=()=>{
     // ราคาอะไหล่ทุกชิ้นที่เลือกต้องกรอก
     const missingPart=fixArr.filter(p=>!partPrices[p]||partPrices[p]<=0);
     if(missingPart.length)miss.push('• ราคาอะไหล่: '+missingPart.join(', '));
+    if(!txnMethod)miss.push('• ช่องทางการเงิน (เลือก เงินสด/โอน/ผสม)');
     if(miss.length){alert('กรุณากรอกข้อมูลให้ครบก่อนไปขั้นถัดไป:\n\n'+miss.join('\n'));return}
     // ผนวกมือ1/2 เข้าชื่อ + ตำหนิ
     name=buyGrade+' · '+name;
@@ -3457,6 +3468,7 @@ $('saveTxn').onclick=()=>{
     if(!device)miss.push('• ราคาขาย');
     if(!custVal)miss.push('• ชื่อลูกค้า');
     if(!phoneVal)miss.push('• เบอร์โทรลูกค้า');
+    if(!txnMethod)miss.push('• ช่องทางการเงิน (เลือก เงินสด/โอน/ผสม)');
     if(miss.length){alert('กรุณากรอกข้อมูลให้ครบก่อนไปขั้นถัดไป:\n\n'+miss.join('\n'));return}
     const s=DB.stock.find(x=>x.id===sellStockId);
     if(s)s.imei=imeiVal;
@@ -3484,6 +3496,7 @@ $('saveTxn').onclick=()=>{
     const parts=jobs.reduce((s,j)=>s+j.part,0);
     const service=jobs.reduce((s,j)=>s+j.price,0);
     if(!service){alert('กรอกค่าซ่อมที่คิดลูกค้า');return}
+    if(!txnMethod){alert('กรุณาเลือกช่องทางการเงิน (เงินสด / โอน / ผสม)');return}
     const warr=+(document.querySelector('#warrantySeg button.on')?.dataset.w||0);
     let repairSplit=null;
     if(txnMethod==='split'){repairSplit=getSplit(service,'in');if(!repairSplit)return;}
@@ -3498,6 +3511,7 @@ $('saveTxn').onclick=()=>{
   else { // etc
     const desc=$('t_desc').value.trim();const amt=+$('t_amount').value||0;
     if(!desc||!amt){alert('กรอกรายการและจำนวนเงิน');return}
+    if(!method){alert('กรุณาเลือกช่องทางการเงิน (เงินสด / โอน / ผสม)');return}
     const isIn=etcDir==='in';
     const rec={id:uid(),ts:nowISO(),type:'etc',desc,method,in:isIn?amt:0,out:isIn?0:amt,cat:$('t_cat').value};
     if(method==='split'){const sp=getSplit(amt,isIn?'in':'out');if(!sp)return;Object.assign(rec,sp);}
@@ -3999,10 +4013,10 @@ if($('ppCondOtherAdd'))$('ppCondOtherAdd').onclick=ppAddCondTag;
 if($('pp_cond_other')){$('pp_cond_other').oninput=ppUpdateCondPreview;$('pp_cond_other').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();ppAddCondTag();}});}
 
 function openPawn(){
-  pawnMethod='cash';
+  pawnMethod='';
   ['p_name','p_phone','p_idcard','p_item','p_imei','p_note','p_principal','p_splitcash','p_splitbank'].forEach(i=>document.getElementById(i).value='');
   document.getElementById('p_date').value=new Date().toISOString().slice(0,10);
-  document.getElementById('pawnMethodSeg').querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.m==='cash'));
+  document.getElementById('pawnMethodSeg').querySelectorAll('button').forEach(b=>b.classList.remove('on'));
   show('pawnSplitWrap',false);
   resetPawnPicker();
   updatePawnPreview();
@@ -4062,6 +4076,7 @@ document.getElementById('savePawn').onclick=()=>{
   if(!pawnSerialVal)miss.push('• IMEI / Serial');
   if(!condArr.length)miss.push('• ตำหนิ/สภาพเครื่อง');
   if(!principal)miss.push('• เงินต้น');
+  if(!pawnMethod)miss.push('• ช่องทางการเงิน (เลือก เงินสด/โอน/ผสม)');
   if(miss.length){alert('กรอกข้อมูลให้ครบ:\n\n'+miss.join('\n'));return}
   if(principal>DB.fund.balance){alert('กองทุนรับฝากมีไม่พอ\nคงเหลือ '+baht(DB.fund.balance)+'\nต้องใช้ '+baht(principal));return}
   // วันที่รับฝากจริง: ใช้วันที่ที่กรอก (เวลาให้คงเป็นเวลาปัจจุบัน เพื่อให้ลำดับรายการในวันเดียวกันสมเหตุสมผล)
@@ -4167,7 +4182,7 @@ window.openRedeem=id=>{
     <div class="field">
       <label>รับเงินไถ่ผ่านช่องทาง</label>
       <div class="seg method" id="redeemMethodSeg" style="width:100%">
-        <button class="on" data-m="cash" style="flex:1">💵 เงินสด</button>
+        <button data-m="cash" style="flex:1">💵 เงินสด</button>
         <button data-m="bank" style="flex:1">🏦 เงินโอน</button>
       </div>
     </div>`;
@@ -4658,18 +4673,25 @@ function addRepairJobRow(){
     <div class="rjob-top">
       <select class="rjob-type">${REPAIR_CATALOG.map(c=>`<option value="${c.k}">${c.name}</option>`).join('')}</select>
       <select class="rjob-sub"></select>
+      <input type="text" class="rjob-other" placeholder="ระบุงานซ่อม เช่น แกะฝุ่นด้านใน" style="display:none;flex:1">
       <button type="button" class="rjob-del" title="ลบ">✕</button>
     </div>
     <div class="rjob-prices">
-      <div><label>ต้นทุนอะไหล่</label><input type="number" class="rjob-part" inputmode="numeric" placeholder="0"></div>
+      <div><label>ต้นทุนอะไหล่ (ไม่มีก็เว้นว่าง)</label><input type="number" class="rjob-part" inputmode="numeric" placeholder="0"></div>
       <div><label>ค่าซ่อม (คิดลูกค้า)</label><input type="number" class="rjob-price" inputmode="numeric" placeholder="0"></div>
     </div>`;
   $('repairJobList').appendChild(div);
   const typeSel=div.querySelector('.rjob-type');
   const subSel=div.querySelector('.rjob-sub');
+  const otherInput=div.querySelector('.rjob-other');
   function fillSubs(){
     const cat=REPAIR_CATALOG.find(c=>c.k===typeSel.value);
-    if(cat&&cat.subs.length){
+    const isOther=typeSel.value==='other';
+    otherInput.style.display=isOther?'':'none';
+    if(isOther){
+      subSel.style.display='none';subSel.innerHTML='';
+      repairJobRows[idx].sub=otherInput.value.trim();
+    } else if(cat&&cat.subs.length){
       subSel.innerHTML=cat.subs.map(s=>`<option value="${s}">${s}</option>`).join('');
       subSel.style.display='';repairJobRows[idx].sub=cat.subs[0];
     }else{subSel.innerHTML='';subSel.style.display='none';repairJobRows[idx].sub='';}
@@ -4678,6 +4700,7 @@ function addRepairJobRow(){
   fillSubs();
   typeSel.onchange=()=>{fillSubs();updateRepairCalc()};
   subSel.onchange=()=>{repairJobRows[idx].sub=subSel.value};
+  otherInput.oninput=()=>{repairJobRows[idx].sub=otherInput.value.trim()};
   div.querySelector('.rjob-part').oninput=e=>{repairJobRows[idx].part=+e.target.value||0;updateRepairCalc()};
   div.querySelector('.rjob-price').oninput=e=>{repairJobRows[idx].price=+e.target.value||0;updateRepairCalc()};
   div.querySelector('.rjob-del').onclick=()=>{
@@ -4695,7 +4718,11 @@ function collectRepairJobs(){
   document.querySelectorAll('#repairJobList .rjob').forEach(div=>{
     const i=+div.dataset.idx;const r=repairJobRows[i];if(!r)return;
     const cat=REPAIR_CATALOG.find(c=>c.k===r.job);
-    rows.push({name:cat?cat.name:r.job,sub:r.sub||'',part:r.part||0,price:r.price||0});
+    let name=cat?cat.name:r.job;
+    let sub=r.sub||'';
+    // งานอื่นๆ ที่พิมพ์เอง → ใช้ข้อความที่พิมพ์เป็นชื่อรายการ
+    if(r.job==='other'&&sub){name=sub;sub='';}
+    rows.push({name,sub,part:r.part||0,price:r.price||0});
   });
   return rows;
 }
@@ -4901,10 +4928,10 @@ function peekDepositNo(){const yr=(new Date().getFullYear())%100;return 'DP-'+yr
 function nextDepositNo(){const yr=(new Date().getFullYear())%100;DB.dpSeq=(DB.dpSeq||0)+1;return 'DP-'+yr+String(DB.dpSeq).padStart(4,'0')}
 
 window.openDeposit=()=>{
-  dpMethod='cash';
+  dpMethod='';
   ['dp_cust','dp_phone','dp_brand','dp_model','dp_storage','dp_color','dp_imei','dp_full','dp_deposit','dp_pickup','dp_splitcash','dp_splitbank'].forEach(i=>{if($(i))$(i).value=''});
   $('dp_brand').value='Apple';
-  $('dpMethodSeg').querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.m==='cash'));
+  $('dpMethodSeg').querySelectorAll('button').forEach(b=>b.classList.remove('on'));
   show('dpSplitWrap',false);
   updateDepositCalc();
   $('depositModal').classList.add('show');
@@ -4945,6 +4972,7 @@ $('saveDeposit').onclick=()=>{
   if(!full){alert('กรอกยอดเต็มตัวเครื่อง');return}
   if(!dep){alert('กรอกเงินมัดจำที่รับ');return}
   if(dep>full){alert('เงินมัดจำมากกว่ายอดเต็ม กรุณาตรวจสอบ');return}
+  if(!dpMethod){alert('กรุณาเลือกช่องทางการเงิน (เงินสด / โอน / ผสม)');return}
   let dpSplit=null;
   if(dpMethod==='split'){dpSplit=getSplitDP(dep);if(!dpSplit)return;}
   pendingDeposit={id:uid(),ts:nowISO(),no:peekDepositNo(),
@@ -5329,7 +5357,7 @@ let accCart=[], accPickType=null, accPickPrice=null, accMethod='cash';
 function peekAccNo(){const yr=(new Date().getFullYear())%100;return 'AC-'+yr+String((DB.acSeq||0)+1).padStart(4,'0')}
 function nextAccNo(){const yr=(new Date().getFullYear())%100;DB.acSeq=(DB.acSeq||0)+1;return 'AC-'+yr+String(DB.acSeq).padStart(4,'0')}
 window.openAccessory=()=>{
-  accCart=[];accPickType=null;accPickPrice=null;accMethod='cash';
+  accCart=[];accPickType=null;accPickPrice=null;accMethod='';
   ['acc_othername','acc_customprice','acc_cust','acc_phone','acc_splitcash','acc_splitbank'].forEach(i=>{if($(i))$(i).value=''});
   $('accTypeChips').innerHTML=ACC_TYPES.map(t=>`<button type="button" data-t="${t.n}">${t.n}</button>`).join('');
   $('accTypeChips').querySelectorAll('button').forEach(b=>b.onclick=()=>{
@@ -5344,7 +5372,7 @@ window.openAccessory=()=>{
     show('accCustomPriceWrap',accPickPrice==='custom');
   });
   show('accOtherWrap',false);show('accCustomPriceWrap',false);show('accSplitWrap',false);
-  $('accMethodSeg').querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.m==='cash'));
+  $('accMethodSeg').querySelectorAll('button').forEach(b=>b.classList.remove('on'));
   renderAccCart();
   $('accModal').classList.add('show');
 };
@@ -5389,6 +5417,7 @@ function updateAccSplit(){
 ['acc_splitcash','acc_splitbank'].forEach(id=>{const el=$(id);if(el)el.oninput=updateAccSplit});
 $('saveAccessory').onclick=()=>{
   if(!accCart.length){alert('ยังไม่มีรายการในบิล');return}
+  if(!accMethod){alert('กรุณาเลือกช่องทางการเงิน (เงินสด / โอน / ผสม)');return}
   const total=accCart.reduce((s,x)=>s+x.price,0);
   let split=null;
   if(accMethod==='split'){
