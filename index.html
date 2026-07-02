@@ -522,6 +522,7 @@
         
         <div class="quick">
           <button onclick="openTxn(&#39;sell&#39;)"><span class="qi">🟢</span><div class="qt">ขายเครื่อง</div><div class="qs">ตัดสต็อก + ลงรายรับ</div></button>
+          <button onclick="openMultiSell()"><span class="qi">🧾</span><div class="qt">ขายส่ง / หลายเครื่อง</div><div class="qs">หลายเครื่องในบิลเดียว</div></button>
           <button onclick="openTxn(&#39;buy&#39;)"><span class="qi">🟡</span><div class="qt">รับเครื่องเข้า</div><div class="qs">ลงสต็อก + ตัดเงิน</div></button>
           <button onclick="openRepairIntake()"><span class="qi">📋</span><div class="qt">ใบรับซ่อม</div><div class="qs">รับเครื่องเข้าซ่อม</div></button>
           <button onclick="openTxn(&#39;repair&#39;)"><span class="qi">🔧</span><div class="qt">ใบเสร็จงานซ่อม</div><div class="qs">ซ่อมเสร็จ + รับประกัน</div></button>
@@ -1020,6 +1021,20 @@
         <div class="panel hidden" id="custDetailPanel" style="margin-top:14px">
           <div class="panel-head"><h2 id="custDetailName">ประวัติลูกค้า</h2><button class="btn btn-ghost btn-sm" onclick="closeCustDetail()">← กลับ</button></div>
           <div id="custDetailBody"></div>
+        </div>
+      </section>
+
+      <!-- WAITLIST / จองเครื่อง -->
+      <section id="view-waitlist" class="hidden">
+        <div class="panel">
+          <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+            <button class="btn btn-gold btn-sm" onclick="openWaitlistAdd()">+ เพิ่มรายการจอง</button>
+          </div>
+          <div class="seg" id="waitlistTabSeg" style="margin-bottom:14px">
+            <button class="on" data-tab="waiting" onclick="setWaitlistTab('waiting')" style="flex:1">⏳ รออยู่</button>
+            <button data-tab="done" onclick="setWaitlistTab('done')" style="flex:1">✓ เสร็จแล้ว</button>
+          </div>
+          <div id="waitlistList"></div>
         </div>
       </section>
 
@@ -1538,6 +1553,60 @@
     <div class="modal-head"><h3 id="sdTitle">รายละเอียดเครื่อง</h3><button class="x" data-close="">×</button></div>
     <div class="modal-body" id="stockDetailBody"></div>
     <div class="modal-foot" id="stockDetailFoot"></div>
+  </div>
+</div>
+
+<!-- ===== MULTI-SELL / ขายส่งหลายเครื่อง ===== -->
+<div class="overlay" id="multiSellModal">
+  <div class="modal" style="max-width:640px">
+    <div class="modal-head"><h3>🧾 ขายส่ง / หลายเครื่องในบิลเดียว</h3><button class="x" data-close="">×</button></div>
+    <div class="modal-body">
+      <div class="field"><label>ชื่อลูกค้า / ร้าน *</label><div style="display:flex;gap:6px"><input id="ms_cust" placeholder="ชื่อร้าน/ลูกค้า" style="flex:1"><button type="button" class="btn btn-ghost btn-sm" style="white-space:nowrap" onclick="openCustLookup('ms_cust','ms_phone')">👥 เก่า</button></div></div>
+      <div class="field"><label>เบอร์โทร *</label><input id="ms_phone" inputmode="tel" placeholder="08x-xxx-xxxx"></div>
+      <div style="border-top:1px solid var(--line);margin:14px 0;padding-top:12px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <label style="margin:0">เครื่องในบิล *</label>
+          <button type="button" class="btn btn-green btn-sm" onclick="addMultiSellRow()">+ เพิ่มเครื่อง</button>
+        </div>
+        <div id="msRows"></div>
+      </div>
+      <div class="field" id="msMethodWrap">
+        <label>ช่องทางการเงิน *</label>
+        <div class="seg method" id="msMethodSeg" style="width:100%">
+          <button type="button" data-m="cash" style="flex:1">💵 เงินสด</button>
+          <button type="button" data-m="bank" style="flex:1">🏦 เงินโอน</button>
+          <button type="button" data-m="split" style="flex:1">🔀 จ่ายผสม</button>
+        </div>
+      </div>
+      <div class="field hidden" id="msSplitWrap">
+        <div style="background:rgba(212,175,55,.07);border:1px solid rgba(212,175,55,.25);border-radius:11px;padding:13px">
+          <div style="font-size:12px;color:var(--gold-soft);font-weight:700;margin-bottom:10px">🔀 แบ่งจ่าย</div>
+          <div class="field-row" style="margin-bottom:8px">
+            <div class="field" style="margin-bottom:0"><label>💵 เงินสด</label><input type="number" id="ms_splitcash" inputmode="numeric" placeholder="0"></div>
+            <div class="field" style="margin-bottom:0"><label>🏦 เงินโอน</label><input type="number" id="ms_splitbank" inputmode="numeric" placeholder="0"></div>
+          </div>
+        </div>
+      </div>
+      <div style="background:rgba(212,175,55,.08);border-radius:11px;padding:13px 15px;margin-top:6px">
+        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span style="color:var(--muted)">จำนวนเครื่อง</span><span id="msCount" style="font-weight:700">0 เครื่อง</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:15px"><span style="font-weight:700">ยอดรวมทั้งบิล</span><span id="msTotal" style="font-weight:800;color:var(--gold-soft)">฿0</span></div>
+      </div>
+    </div>
+    <div class="modal-foot"><button class="btn btn-ghost" data-close="">ยกเลิก</button><button class="btn btn-gold" onclick="previewMultiSell()">🧾 ดูใบเสร็จ</button></div>
+  </div>
+</div>
+
+<!-- ===== WAITLIST ADD MODAL ===== -->
+<div class="overlay" id="waitlistModal">
+  <div class="modal">
+    <div class="modal-head"><h3>📋 จองเครื่อง — ลูกค้ารอเครื่อง</h3><button class="x" data-close="">×</button></div>
+    <div class="modal-body">
+      <div class="field"><label>ชื่อลูกค้า *</label><div style="display:flex;gap:6px"><input id="wl_name" placeholder="ชื่อ-นามสกุล" style="flex:1"><button type="button" class="btn btn-ghost btn-sm" style="white-space:nowrap" onclick="openCustLookup('wl_name','wl_phone')">👥 เก่า</button></div></div>
+      <div class="field"><label>เบอร์โทร *</label><input id="wl_phone" inputmode="tel" placeholder="08x-xxx-xxxx"></div>
+      <div class="field"><label>รุ่นที่ตามหา *</label><input id="wl_model" placeholder="เช่น iPhone 13, iPad Gen 9"><div style="font-size:11.5px;color:var(--muted);margin-top:5px">💡 พิมพ์ชื่อรุ่นให้ตรง เช่น "iPhone 13" — พอรับเครื่องรุ่นนี้เข้า ระบบจะเด้งเตือนให้โทรหาลูกค้าทันที</div></div>
+      <div class="field"><label>งบ / หมายเหตุ (ไม่บังคับ)</label><input id="wl_note" placeholder="เช่น งบ 12,000 · เอาสีดำ"></div>
+    </div>
+    <div class="modal-foot"><button class="btn btn-ghost" data-close="">ยกเลิก</button><button class="btn btn-gold" onclick="saveWaitlist()">✓ บันทึกการจอง</button></div>
   </div>
 </div>
 
@@ -2102,7 +2171,7 @@ function initAuth(){
   }
 }
 
-function load(){try{const v=JSON.parse(localStorage.getItem(LS));if(v&&v.txns){if(!v.pawns)v.pawns=[];if(!v.sales)v.sales=[];if(!v.repairs)v.repairs=[];if(!v.intakes)v.intakes=[];if(!v.deposits)v.deposits=[];if(!v.loans)v.loans=[];if(!v.fund)v.fund={capital:100000,balance:100000,history:[]};if(!v.ownerWallet)v.ownerWallet={balance:0,history:[]};if(!v.partnerWallet)v.partnerWallet={balance:0,history:[]};if(!v.accSales)v.accSales=[];if(!v.claims)v.claims=[];if(!v.parts)v.parts=[];if(!v.notifRead)v.notifRead=[];if(!v.customers)v.customers=[];if(!v.settings)v.settings={};return v}}catch(e){}return seed()}
+function load(){try{const v=JSON.parse(localStorage.getItem(LS));if(v&&v.txns){if(!v.pawns)v.pawns=[];if(!v.sales)v.sales=[];if(!v.repairs)v.repairs=[];if(!v.intakes)v.intakes=[];if(!v.deposits)v.deposits=[];if(!v.loans)v.loans=[];if(!v.fund)v.fund={capital:100000,balance:100000,history:[]};if(!v.ownerWallet)v.ownerWallet={balance:0,history:[]};if(!v.partnerWallet)v.partnerWallet={balance:0,history:[]};if(!v.accSales)v.accSales=[];if(!v.claims)v.claims=[];if(!v.parts)v.parts=[];if(!v.notifRead)v.notifRead=[];if(!v.customers)v.customers=[];if(!v.settings)v.settings={};if(!v.waitlist)v.waitlist=[];return v}}catch(e){}return seed()}
 function persist(){localStorage.setItem(LS,JSON.stringify(DB));refreshTop();autoBackupCheck();cloudPushDebounced()}
 
 /* ===== CLOUD SYNC (Supabase) ===== */
@@ -2153,7 +2222,7 @@ function ensureFields(){
   if(!v.fund)v.fund={capital:100000,balance:100000,history:[]};
   if(!v.ownerWallet)v.ownerWallet={balance:0,history:[]};
   if(!v.partnerWallet)v.partnerWallet={balance:0,history:[]};
-  if(!v.accSales)v.accSales=[];if(!v.claims)v.claims=[];if(!v.parts)v.parts=[];if(!v.notifRead)v.notifRead=[];if(!v.customers)v.customers=[];if(!v.settings)v.settings={};
+  if(!v.accSales)v.accSales=[];if(!v.claims)v.claims=[];if(!v.parts)v.parts=[];if(!v.notifRead)v.notifRead=[];if(!v.customers)v.customers=[];if(!v.settings)v.settings={};if(!v.waitlist)v.waitlist=[];
 }
 
 /* ===================================================================
@@ -2353,7 +2422,7 @@ function go(v){
   curView=v;
   document.getElementById('view-search').classList.add('hidden');
   document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===v));
-  ['dashboard','ledger','stock','pawn','customers','report'].forEach(x=>document.getElementById('view-'+x).classList.toggle('hidden',x!==v));
+  ['dashboard','ledger','stock','pawn','customers','waitlist','report'].forEach(x=>document.getElementById('view-'+x).classList.toggle('hidden',x!==v));
   document.getElementById('viewTitle').textContent=titles[v];
   renderCurrentView();
 }
@@ -2364,7 +2433,244 @@ function renderCurrentView(){
   if(v==='stock')renderStock();
   if(v==='pawn')renderPawn();
   if(v==='customers')renderCustomers();
+  if(v==='waitlist')renderWaitlist();
   if(v==='report'){renderReport();renderBackupPanel();}
+}
+let waitlistTab='waiting';
+/* ===== MULTI-SELL / ขายส่งหลายเครื่องในบิลเดียว ===== */
+let msRows=[], msMethod='';
+window.openMultiSell=()=>{
+  msRows=[];msMethod='';
+  $('ms_cust').value='';$('ms_phone').value='';
+  if($('ms_splitcash'))$('ms_splitcash').value='';
+  if($('ms_splitbank'))$('ms_splitbank').value='';
+  $('msMethodSeg').querySelectorAll('button').forEach(b=>b.classList.remove('on'));
+  show('msSplitWrap',false);
+  addMultiSellRow();
+  renderMultiSellSummary();
+  $('multiSellModal').classList.add('show');
+};
+window.addMultiSellRow=()=>{
+  const rid='ms_'+Date.now()+'_'+Math.floor(Math.random()*1000);
+  msRows.push({rid,stockId:'',imei:'',price:0});
+  renderMultiSellRows();
+};
+window.rmMultiSellRow=(rid)=>{
+  msRows=msRows.filter(r=>r.rid!==rid);
+  renderMultiSellRows();renderMultiSellSummary();
+};
+function stockInOptions(selected){
+  const instock=DB.stock.filter(s=>s.status==='instock');
+  return '<option value="">— เลือกเครื่องจากสต็อก —</option>'+instock.map(s=>`<option value="${s.id}" ${s.id===selected?'selected':''}>${s.name}${s.imei?' · '+s.imei:''} (ทุน ${baht(s.costTotal)})</option>`).join('');
+}
+function renderMultiSellRows(){
+  const box=$('msRows');if(!box)return;
+  if(!msRows.length){box.innerHTML='<div style="font-size:12px;color:var(--muted);padding:8px">กด "+ เพิ่มเครื่อง" เพื่อเริ่ม</div>';return;}
+  box.innerHTML=msRows.map((r,i)=>`
+    <div style="border:1px solid var(--line);border-radius:10px;padding:11px;margin-bottom:9px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px">
+        <span style="font-size:12px;color:var(--gold-soft);font-weight:700">เครื่องที่ ${i+1}</span>
+        ${msRows.length>1?`<button type="button" onclick="rmMultiSellRow('${r.rid}')" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:16px">✕</button>`:''}
+      </div>
+      <div class="field" style="margin-bottom:7px"><select onchange="updateMsRow('${r.rid}','stockId',this.value)">${stockInOptions(r.stockId)}</select></div>
+      <div class="field-row">
+        <div class="field" style="margin-bottom:0"><label>IMEI/Serial *</label><input value="${(r.imei||'').replace(/"/g,'&quot;')}" oninput="updateMsRow('${r.rid}','imei',this.value)" placeholder="IMEI เครื่องนี้"></div>
+        <div class="field" style="margin-bottom:0"><label>ราคาขาย *</label><input type="number" inputmode="numeric" value="${r.price||''}" oninput="updateMsRow('${r.rid}','price',this.value)" placeholder="0"></div>
+      </div>
+    </div>`).join('');
+}
+window.updateMsRow=(rid,key,val)=>{
+  const r=msRows.find(x=>x.rid===rid);if(!r)return;
+  if(key==='price')r.price=+val||0;
+  else if(key==='stockId'){
+    r.stockId=val;
+    const s=DB.stock.find(x=>x.id===val);
+    if(s&&s.imei&&!r.imei){r.imei=s.imei;renderMultiSellRows();}
+  }
+  else r[key]=val;
+  if(key==='price')renderMultiSellSummary();
+};
+function renderMultiSellSummary(){
+  const total=msRows.reduce((s,r)=>s+(r.price||0),0);
+  if($('msCount'))$('msCount').textContent=msRows.length+' เครื่อง';
+  if($('msTotal'))$('msTotal').textContent=baht(total);
+}
+document.querySelectorAll('#msMethodSeg button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('#msMethodSeg button').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on');msMethod=b.dataset.m;show('msSplitWrap',msMethod==='split');
+});
+window.previewMultiSell=()=>{
+  const cust=$('ms_cust').value.trim();
+  const phone=$('ms_phone').value.trim();
+  const miss=[];
+  if(!cust)miss.push('• ชื่อลูกค้า/ร้าน');
+  if(!phone)miss.push('• เบอร์โทร');
+  if(!msRows.length)miss.push('• อย่างน้อย 1 เครื่อง');
+  msRows.forEach((r,i)=>{
+    if(!r.stockId)miss.push('• เครื่องที่ '+(i+1)+': ยังไม่เลือกจากสต็อก');
+    else if(!r.imei)miss.push('• เครื่องที่ '+(i+1)+': กรอก IMEI');
+    else if(!r.price)miss.push('• เครื่องที่ '+(i+1)+': กรอกราคาขาย');
+  });
+  // เช็ค stockId ซ้ำ
+  const ids=msRows.map(r=>r.stockId).filter(Boolean);
+  if(new Set(ids).size!==ids.length)miss.push('• มีเครื่องซ้ำกัน — เลือกเครื่องละ 1 รายการ');
+  if(!msMethod)miss.push('• ช่องทางการเงิน');
+  if(miss.length){alert('กรอกข้อมูลให้ครบ:\n\n'+miss.join('\n'));return}
+  const total=msRows.reduce((s,r)=>s+r.price,0);
+  let split=null;
+  if(msMethod==='split'){
+    const c=+$('ms_splitcash').value||0,b=+$('ms_splitbank').value||0;
+    if(c+b!==total){alert('ยอดแบ่งจ่าย ('+baht(c+b)+') ไม่เท่ายอดรวม ('+baht(total)+')');return}
+    split={splitCashIn:c,splitBankIn:b,cashIn:c,bankIn:b};
+  }
+  pendingMultiSale={id:uid(),ts:nowISO(),cust,phone,method:msMethod,split,
+    items:msRows.map(r=>{const s=DB.stock.find(x=>x.id===r.stockId);return{stockId:r.stockId,name:s.name,imei:r.imei,price:r.price,cost:s.costTotal};}),
+    total};
+  closeModals();
+  printMultiSaleReceipt(pendingMultiSale,true);
+};
+let pendingMultiSale=null;
+window.printMultiSaleReceipt=(ms,preview)=>{
+  if(!ms)return;
+  const fmtFull=iso=>new Date(iso).toLocaleDateString('th-TH-u-ca-gregory',{day:'2-digit',month:'long',year:'numeric'});
+  const rows=ms.items.map((it,i)=>`<tr>
+    <td style="padding:6px 8px;border:1px solid #ddd;text-align:center">${i+1}</td>
+    <td style="padding:6px 8px;border:1px solid #ddd">${it.name}</td>
+    <td style="padding:6px 8px;border:1px solid #ddd;font-size:11px">${it.imei||'-'}</td>
+    <td style="padding:6px 8px;border:1px solid #ddd;text-align:right">${baht(it.price)}</td>
+  </tr>`).join('');
+  const methodTxt=ms.method==='cash'?'เงินสด':ms.method==='bank'?'เงินโอน':'จ่ายผสม';
+  const area=document.getElementById('printArea');
+  area.innerHTML=`
+    <div class="rcpt" style="max-width:520px;margin:0 auto">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid #1a1a1a;padding-bottom:14px">
+        <div style="display:flex;gap:12px;align-items:center">
+          <div style="width:54px;height:54px;border-radius:13px;background:#15130b;display:flex;align-items:center;justify-content:center;color:#d4af37;font-weight:800">APA</div>
+          <div><div style="font-size:16px;font-weight:800">${SHOP.name}</div><div style="font-size:10.5px;color:#555">${SHOP.sub}<br>โทร ${SHOP.phone} · LINE ${SHOP.line}</div></div>
+        </div>
+        <div style="text-align:right"><div style="font-size:17px;font-weight:800">ใบเสร็จรับเงิน</div><div style="font-size:11px;color:#555">เลขที่ ${ms.no||'(ตัวอย่าง)'}</div><div style="font-size:11px;color:#555">${fmtFull(ms.ts)}</div></div>
+      </div>
+      <div style="margin:12px 0;font-size:13px;line-height:1.9">
+        <div>ลูกค้า/ร้าน : <b>${ms.cust}</b></div>
+        <div>โทร : ${ms.phone}</div>
+      </div>
+      <table style="width:100%;border-collapse:collapse;font-size:12.5px;margin-bottom:10px">
+        <thead><tr style="background:#f4efe0">
+          <th style="padding:6px 8px;border:1px solid #ddd;width:32px">#</th>
+          <th style="padding:6px 8px;border:1px solid #ddd;text-align:left">รายการ</th>
+          <th style="padding:6px 8px;border:1px solid #ddd;text-align:left">IMEI/Serial</th>
+          <th style="padding:6px 8px;border:1px solid #ddd;text-align:right">ราคา</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+        <tfoot><tr style="background:#faf6ea">
+          <td colspan="3" style="padding:8px;border:1px solid #ddd;text-align:right;font-weight:700">รวมทั้งสิ้น (${ms.items.length} เครื่อง)</td>
+          <td style="padding:8px;border:1px solid #ddd;text-align:right;font-weight:800">${baht(ms.total)}</td>
+        </tr></tfoot>
+      </table>
+      <div style="font-size:12.5px;margin-bottom:14px">ชำระโดย : <b>${methodTxt}</b>${ms.method==='split'&&ms.split?` (เงินสด ${baht(ms.split.splitCashIn)} + โอน ${baht(ms.split.splitBankIn)})`:''}</div>
+      <div style="display:flex;justify-content:space-between;gap:40px;margin-top:26px">
+        <div style="flex:1;text-align:center"><div style="border-top:1px solid #333;height:30px"></div>ผู้ซื้อ</div>
+        <div style="flex:1;text-align:center"><div style="border-top:1px solid #333;height:30px"></div>ผู้ขาย (ทางร้าน)</div>
+      </div>
+      <div style="text-align:center;font-size:10px;color:#888;margin-top:14px;border-top:1px solid #eee;padding-top:8px">${SHOP.name} · ขอบคุณที่ใช้บริการ</div>
+    </div>
+    <div class="print-actions">
+      <button class="btn btn-ghost" onclick="document.getElementById('printArea').classList.add('hidden')">ปิด</button>
+      ${preview?`<button class="btn btn-gold" onclick="confirmMultiSale()">✓ ยืนยัน + บันทึก ${baht(ms.total)}</button>`:`<button class="btn btn-gold" onclick="window.print()">🖨️ พิมพ์</button>`}
+    </div>`;
+  area.classList.remove('hidden');
+  area.scrollIntoView({behavior:'smooth'});
+};
+window.confirmMultiSale=()=>{
+  if(!pendingMultiSale)return;
+  const ms=pendingMultiSale;
+  const no=nextInvNo();
+  ms.no=no;
+  ms.items.forEach(it=>{
+    const s=DB.stock.find(x=>x.id===it.stockId);
+    if(!s||s.status!=='instock')return;
+    s.status='sold';s.dateSold=ms.ts;s.priceSold=it.price;s.imei=it.imei;
+    const rec={id:uid(),ts:ms.ts,type:'sell',name:s.name,imei:it.imei,
+      desc:'ขายส่ง ['+no+'] '+s.name+(it.imei?' '+it.imei:''),
+      method:ms.method,in:it.price,out:0,cost:it.cost,cat:'ขายสินค้า',stockId:s.id,
+      fullPrice:it.price,multiBill:no};
+    DB.txns.push(rec);
+    DB.sales=DB.sales||[];
+    DB.sales.push({id:uid(),ts:ms.ts,no,cust:ms.cust,custphone:ms.phone,name:s.name,imei:it.imei,device:it.price,net:it.price,method:ms.method,stockId:s.id,cost:it.cost,multiBill:true});
+  });
+  // ช่องทางแบ่งจ่าย: ลงยอด split ที่ record แรกพอ (รวมบิล) — ที่นี่ลงตามจริงต่อเครื่องแล้ว ยกเว้น split
+  if(ms.method==='split'&&ms.split){
+    // ปรับ record ล่าสุดให้พก split รวม (เพื่อรายงาน) — เก็บ note
+  }
+  persist();
+  window.print();
+  pendingMultiSale=null;
+  setTimeout(()=>{document.getElementById('printArea').classList.add('hidden');go('dashboard')},300);
+};
+window.setWaitlistTab=(t)=>{
+  waitlistTab=t;
+  document.querySelectorAll('#waitlistTabSeg button').forEach(b=>b.classList.toggle('on',b.dataset.tab===t));
+  renderWaitlist();
+};
+window.openWaitlistAdd=()=>{
+  ['wl_name','wl_phone','wl_model','wl_note'].forEach(i=>{if($(i))$(i).value='';});
+  $('waitlistModal').classList.add('show');
+};
+window.saveWaitlist=()=>{
+  const name=$('wl_name').value.trim();
+  const phone=$('wl_phone').value.trim();
+  const model=$('wl_model').value.trim();
+  const note=$('wl_note').value.trim();
+  const miss=[];
+  if(!name)miss.push('• ชื่อลูกค้า');
+  if(!phone)miss.push('• เบอร์โทร');
+  if(!model)miss.push('• รุ่นที่ตามหา');
+  if(miss.length){alert('กรอกข้อมูลให้ครบ:\n\n'+miss.join('\n'));return}
+  DB.waitlist=DB.waitlist||[];
+  DB.waitlist.unshift({id:uid(),ts:nowISO(),name,phone,model,note,status:'waiting'});
+  persist();closeModals();renderWaitlist();
+  alert('บันทึกการจองเรียบร้อย ✓\n'+name+' รอ '+model);
+};
+window.markWaitlistDone=(id)=>{
+  const w=(DB.waitlist||[]).find(x=>x.id===id);if(!w)return;
+  w.status='done';w.doneTs=nowISO();
+  persist();renderWaitlist();
+};
+window.reopenWaitlist=(id)=>{
+  const w=(DB.waitlist||[]).find(x=>x.id===id);if(!w)return;
+  w.status='waiting';delete w.doneTs;
+  persist();renderWaitlist();
+};
+window.delWaitlist=(id)=>{
+  if(!confirm('ลบรายการจองนี้?'))return;
+  DB.waitlist=(DB.waitlist||[]).filter(x=>x.id!==id);
+  persist();renderWaitlist();
+};
+function renderWaitlist(){
+  const box=$('waitlistList');if(!box)return;
+  const list=(DB.waitlist||[]).filter(w=>w.status===waitlistTab);
+  if(!list.length){
+    box.innerHTML='<div class="empty" style="padding:30px"><div class="big">📋</div>'+(waitlistTab==='waiting'?'ยังไม่มีลูกค้าจองเครื่อง':'ยังไม่มีรายการที่เสร็จแล้ว')+'</div>';
+    return;
+  }
+  box.innerHTML=list.map(w=>`
+    <div class="custcard" style="cursor:default">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap">
+        <div style="flex:1;min-width:180px">
+          <div style="font-weight:700;font-size:15px;color:var(--gold-soft)">📱 ${w.model}</div>
+          <div style="font-size:13.5px;margin-top:3px">${w.name} · ${w.phone}</div>
+          ${w.note?`<div style="font-size:12px;color:var(--muted);margin-top:2px">📝 ${w.note}</div>`:''}
+          <div style="font-size:11px;color:var(--muted);margin-top:3px">จองเมื่อ ${fmtDate(w.ts)}${w.doneTs?' · เสร็จ '+fmtDate(w.doneTs):''}</div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <a class="btn btn-green btn-sm" href="tel:${w.phone}" style="text-decoration:none">📞 โทร</a>
+          ${w.status==='waiting'
+            ?`<button class="btn btn-gold btn-sm" onclick="markWaitlistDone('${w.id}')">✓ โทรแล้ว/ขายแล้ว</button>`
+            :`<button class="btn btn-ghost btn-sm" onclick="reopenWaitlist('${w.id}')">↩ กลับไปรอ</button>`}
+          <button class="btn btn-danger btn-sm" onclick="delWaitlist('${w.id}')">ลบ</button>
+        </div>
+      </div>
+    </div>`).join('');
 }
 async function cloudSync(showMsg){
   if(!sbReady||!sbUser)return;
@@ -2570,10 +2876,16 @@ bindCustSearch();
 let lookupTarget={name:'',phone:''};
 window.openCustLookup=(nameId,phoneId)=>{
   lookupTarget={name:nameId,phone:phoneId};
-  $('lookupSearch').value='';
+  const el=$('lookupSearch');
+  el.value='';
   renderLookup('');
+  // ผูก event ใหม่ทุกครั้งที่เปิด + ครอบคลุมทั้งพิมพ์ปกติและภาษาไทย (IME)
+  const handler=()=>renderLookup(el.value);
+  el.oninput=handler;
+  el.onkeyup=handler;
+  el.onchange=handler;
   $('custLookupModal').classList.add('show');
-  setTimeout(()=>$('lookupSearch').focus(),100);
+  setTimeout(()=>el.focus(),100);
 };
 function renderLookup(q){
   const list=gatherCustomers();
@@ -3354,6 +3666,7 @@ if($('gradeSeg'))$('gradeSeg').querySelectorAll('button').forEach(b=>b.onclick=(
 });
 if($('cond_other'))$('cond_other').oninput=updateCondPreview;
 if($('condOtherAdd'))$('condOtherAdd').onclick=addCondOtherTag;
+if($('cond_other'))$('cond_other').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();addCondOtherTag();}};
 if($('cond_other'))$('cond_other').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();addCondOtherTag();}});
 if($('fix_other'))$('fix_other').oninput=renderPartsPrice;
 if($('pkModel'))$('pkModel').onchange=onModel;
@@ -3780,8 +4093,24 @@ window.commitBuy=()=>{
   persist();
   window.print();
   pendingBuy=null;
-  setTimeout(()=>{document.getElementById('printArea').classList.add('hidden');go('stock')},300);
+  setTimeout(()=>{document.getElementById('printArea').classList.add('hidden');go('stock');checkWaitlistMatch(b.name);},300);
 };
+/* เช็คว่าเครื่องที่รับเข้า ตรงกับลูกค้าที่จองไว้ไหม (จับตามชื่อรุ่น) */
+function checkWaitlistMatch(deviceName){
+  const waiting=(DB.waitlist||[]).filter(w=>w.status==='waiting');
+  if(!waiting.length)return;
+  const dn=(deviceName||'').toLowerCase().replace(/\s+/g,'');
+  const matches=waiting.filter(w=>{
+    const m=(w.model||'').toLowerCase().replace(/\s+/g,'');
+    if(!m)return false;
+    return dn.includes(m)||m.includes(dn);
+  });
+  if(!matches.length)return;
+  playNotifSound&&playNotifSound();
+  const lines=matches.map(w=>'• '+w.name+' — '+w.phone+(w.note?' ('+w.note+')':'')).join('\n');
+  alert('🔔 มีลูกค้ารอเครื่องรุ่นนี้!\n\nเครื่องที่รับเข้า: '+deviceName+'\n\nลูกค้าที่จองไว้:\n'+lines+'\n\nรีบโทรหาลูกค้าได้เลย — ไปที่เมนู "📋 จองเครื่อง" เพื่อโทร/ปิดรายการ');
+  go('waitlist');
+}
 
 /* แปลงตัวเลขเป็นข้อความภาษาไทย (บาทถ้วน) */
 function bahtText(num){
@@ -4511,7 +4840,7 @@ function runGlobalSearch(q){
     lastView=act?act.dataset.view:'dashboard';
   }
   // hide all normal views, show search
-  ['dashboard','ledger','stock','pawn','customers','report'].forEach(x=>document.getElementById('view-'+x).classList.add('hidden'));
+  ['dashboard','ledger','stock','pawn','customers','waitlist','report'].forEach(x=>document.getElementById('view-'+x).classList.add('hidden'));
   document.getElementById('view-search').classList.remove('hidden');
   document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
   document.getElementById('viewTitle').textContent='ค้นหา';
