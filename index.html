@@ -6033,28 +6033,5 @@ window.addEventListener('load',()=>{
 
 
 
-<script>
-/* ===== PWA — ลงเป็นโปรแกรมบน PC/มือถือ ===== */
-(function(){
-  // 1) Manifest: ใช้ไฟล์ manifest.json ถ้ามี (แนะนำ) ไม่งั้นสร้าง inline
-  try{
-    fetch('manifest.json',{method:'HEAD'}).then(r=>{
-      if(r.ok){
-        const l=document.createElement('link');l.rel='manifest';l.href='manifest.json';document.head.appendChild(l);
-      }else{throw 0;}
-    }).catch(()=>{
-      const iconEl=document.querySelector('link[rel="apple-touch-icon"]');
-      const icon=iconEl?iconEl.getAttribute('href'):'';
-      const manifest={name:'APA POS — แอปเปิ้ลอาร์ม เพชรบุรี',short_name:'APA POS',start_url:'.',scope:'.',display:'standalone',background_color:'#15130b',theme_color:'#15130b',icons:[{src:icon,sizes:'300x300',type:'image/png',purpose:'any maskable'}]};
-      const url=URL.createObjectURL(new Blob([JSON.stringify(manifest)],{type:'application/manifest+json'}));
-      const l=document.createElement('link');l.rel='manifest';l.href=url;document.head.appendChild(l);
-    });
-  }catch(e){console.warn('manifest',e)}
-
-  // 2) Service Worker: ใช้ sw.js ที่ root (ทำให้ติดตั้ง+ออฟไลน์ได้เต็มรูปแบบ)
-  if('serviceWorker' in navigator){
-    navigator.serviceWorker.register('sw.js').catch(err=>console.warn('SW (ต้องมีไฟล์ sw.js บน GitHub)',err));
-  }
-})();
-</script>
+<script>if("serviceWorker" in navigator){navigator.serviceWorker.getRegistrations().then(function(rs){rs.forEach(function(r){r.unregister()})});if(window.caches){caches.keys().then(function(ks){ks.forEach(function(k){caches.delete(k)})})}}</script>
 </body></html>
