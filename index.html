@@ -414,6 +414,7 @@
     </div>
     <nav class="nav">
       <button data-view="dashboard" class="" data-roles="admin,staff"><span class="ic">▦</span><span>แดชบอร์ด</span></button>
+      <button data-view="personal" data-roles="admin" class=""><span class="ic">💰</span><span>บัญชีส่วนตัว</span></button>
       <button data-view="stock" data-roles="admin,staff" class=""><span class="ic">📦</span><span>สต็อกสินค้า</span></button>
       <button data-view="pawn" data-roles="admin,staff,partner,viewer" class="active"><span class="ic">🏷️</span><span>ระบบรับฝาก</span></button>
       <button data-view="customers" data-roles="admin,staff" class=""><span class="ic">👥</span><span>ลูกค้า</span></button>
@@ -528,17 +529,17 @@
         
         <div class="quick">
           <button onclick="openTxn(&#39;sell&#39;)"><span class="qi">🟢</span><div class="qt">ขายเครื่อง</div><div class="qs">ตัดสต็อก + ลงรายรับ</div></button>
-          <button onclick="openMultiSell()"><span class="qi">🧾</span><div class="qt">ขายส่ง / หลายเครื่อง</div><div class="qs">หลายเครื่องในบิลเดียว</div></button>
           <button onclick="openTxn(&#39;buy&#39;)"><span class="qi">🟡</span><div class="qt">รับเครื่องเข้า</div><div class="qs">ลงสต็อก + ตัดเงิน</div></button>
-          <button onclick="openRepairIntake()"><span class="qi">📋</span><div class="qt">ใบรับซ่อม</div><div class="qs">รับเครื่องเข้าซ่อม</div></button>
-          <button onclick="openTxn(&#39;repair&#39;)"><span class="qi">🔧</span><div class="qt">ใบเสร็จงานซ่อม</div><div class="qs">ซ่อมเสร็จ + รับประกัน</div></button>
-          <button onclick="openDeposit()"><span class="qi">📝</span><div class="qt">ใบมัดจำ</div><div class="qs">รับมัดจำ + นัดรับเครื่อง</div></button>
-          <button onclick="openLoan()"><span class="qi">📲</span><div class="qt">ยืมเครื่องสำรอง</div><div class="qs">ให้ลูกค้ายืมเครื่องสต็อก</div></button>
           <button onclick="openPawn()"><span class="qi">🏷️</span><div class="qt">รับฝาก</div><div class="qs">ออกตั๋ว + ตัดเงิน</div></button>
+          <button onclick="openTxn(&#39;repair&#39;)"><span class="qi">🔧</span><div class="qt">ใบเสร็จงานซ่อม</div><div class="qs">ซ่อมเสร็จ + รับประกัน</div></button>
           <button onclick="openAccessory()"><span class="qi">🎧</span><div class="qt">ขายอุปกรณ์เสริม</div><div class="qs">ฟิล์ม/เคส/สายชาร์จ</div></button>
-          <button onclick="openClaim()"><span class="qi">🛠️</span><div class="qt">ระบบเคลม</div><div class="qs">เคลมซ่อม/เคลมขาย</div></button>
-          <button onclick="openParts()"><span class="qi">📦</span><div class="qt">อะไหล่ค้างจ่าย</div><div class="qs">รับอะไหล่ก่อน เคลียร์ทีหลัง</div></button>
           <button onclick="openTxn(&#39;etc&#39;)"><span class="qi">💸</span><div class="qt">รับ-จ่ายอื่นๆ</div><div class="qs">อุปกรณ์ / ค่าใช้จ่าย</div></button>
+          <button onclick="openRepairIntake()"><span class="qi">📋</span><div class="qt">ใบรับซ่อม</div><div class="qs">รับเครื่องเข้าซ่อม</div></button>
+          <button onclick="openDeposit()"><span class="qi">📝</span><div class="qt">ใบมัดจำ</div><div class="qs">รับมัดจำ + นัดรับเครื่อง</div></button>
+          <button onclick="openParts()"><span class="qi">📦</span><div class="qt">อะไหล่ค้างจ่าย</div><div class="qs">รับอะไหล่ก่อน เคลียร์ทีหลัง</div></button>
+          <button onclick="openLoan()"><span class="qi">📲</span><div class="qt">ยืมเครื่องสำรอง</div><div class="qs">ให้ลูกค้ายืมเครื่องสต็อก</div></button>
+          <button onclick="openClaim()"><span class="qi">🛠️</span><div class="qt">ระบบเคลม</div><div class="qs">เคลมซ่อม/เคลมขาย</div></button>
+          <button onclick="openMultiSell()"><span class="qi">🧾</span><div class="qt">ขายส่ง / หลายเครื่อง</div><div class="qs">หลายเครื่องในบิลเดียว</div></button>
         </div>
         <div class="kpi-row">
           <div class="kpi"><div class="label">รายรับวันนี้</div><div class="val green" id="kpiIn">฿49,500</div></div>
@@ -688,6 +689,28 @@
     <td style="color:var(--muted)">27/06/26 19:15</td><td>ขาย มือ 2 · iPad Gen8 32GB ขาว (White) Q1GD</td><td><span class="tag tag-sell">ขาย</span></td>
     <td style="color:var(--muted)">เงินโอน</td>
     <td class="num in">+฿3,900</td></tr></tbody></table>
+          </div>
+        </div>
+      </section>
+
+      <!-- บัญชีส่วนตัว (admin เท่านั้น) -->
+      <section id="view-personal" class="hidden">
+        <div class="panel" style="margin-bottom:16px">
+          <div class="panel-head"><h2>💰 บัญชีส่วนตัว</h2><button class="btn btn-gold btn-sm" onclick="openPersonalTxn()">+ บันทึกรายการ</button></div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;padding:16px">
+            <div class="kpi"><div class="label">รายรับเดือนนี้</div><div class="val green" id="persIncome">฿0</div></div>
+            <div class="kpi"><div class="label">รายจ่ายเดือนนี้</div><div class="val red" id="persExpense">฿0</div></div>
+            <div class="kpi"><div class="label">สุทธิเดือนนี้</div><div class="val gold" id="persNet">฿0</div></div>
+          </div>
+          <div style="padding:0 16px 16px;font-size:11px;color:var(--muted)">บัญชีนี้แยกจากบัญชีร้านโดยสิ้นเชิง ไม่กระทบเงินทุนร้าน (fund) แต่อย่างใด · มองเห็นเฉพาะผู้ดูแลระบบ (Admin)</div>
+        </div>
+        <div class="panel">
+          <div class="panel-head" style="flex-wrap:wrap;gap:8px">
+            <h2>รายการ</h2>
+            <div id="persCatChips" style="display:flex;gap:6px;flex-wrap:wrap"></div>
+          </div>
+          <div class="tablewrap" style="max-height:none">
+            <table id="persTable"><thead><tr><th>วันที่</th><th>รายการ</th><th>หมวด</th><th class="num">จำนวน</th><th class="num"></th></tr></thead><tbody></tbody></table>
           </div>
         </div>
       </section>
@@ -1240,6 +1263,33 @@
     <div class="modal-foot">
       <button class="btn btn-ghost" data-close="">ยกเลิก</button>
       <button class="btn btn-gold" id="doWithdraw">✓ ยืนยันถอนเงิน</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PERSONAL TXN MODAL (บัญชีส่วนตัว) ===== -->
+<div class="overlay" id="personalTxnModal">
+  <div class="modal">
+    <div class="modal-head"><h3>💰 บันทึกรายการส่วนตัว</h3><button class="x" data-close="">×</button></div>
+    <div class="modal-body">
+      <div class="field-row" id="personalDirSeg" style="gap:8px;margin-bottom:14px">
+        <button type="button" class="btn btn-ghost" data-dir="out" style="flex:1" onclick="setPersonalDir('out')">🔴 รายจ่าย</button>
+        <button type="button" class="btn btn-ghost" data-dir="in" style="flex:1" onclick="setPersonalDir('in')">🟢 รายรับ</button>
+      </div>
+      <div class="field"><label>วันที่ *</label><input type="date" id="pt_date"></div>
+      <div class="field"><label>รายการ *</label><input id="pt_desc" placeholder="เช่น ค่าแพมเพิสลูก"></div>
+      <div class="field"><label>จำนวนเงิน (บาท) *</label><input type="number" id="pt_amount" inputmode="numeric" placeholder="0"></div>
+      <div class="field">
+        <label>หมวดหมู่</label>
+        <div style="display:flex;gap:8px">
+          <select id="pt_cat" style="flex:1"></select>
+          <button type="button" class="btn btn-ghost btn-sm" onclick="addPersonalCat()">+ หมวดใหม่</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" data-close="">ยกเลิก</button>
+      <button class="btn btn-gold" onclick="savePersonalTxn()">✓ บันทึก</button>
     </div>
   </div>
 </div>
@@ -1925,15 +1975,21 @@
       <div id="catField" class="hidden">
         <div class="field"><label>หมวด</label>
           <select id="t_cat">
-            <option>อุปกรณ์เสริม</option><option>ค่าคอมไฟแนนซ์</option>
-            <option>ค่าใช้จ่ายร้าน</option><option>รับฝาก/รับซาก</option>
-            <option>เบิก/ยืม/ส่วนตัว</option><option>อื่นๆ</option>
+            <option>ค่าใช้จ่ายร้าน</option>
+            <option>ค่าใช้จ่ายส่วนตัว</option>
+            <option>ย้ายเงิน</option>
           </select>
         </div>
-        <div class="field"><label>ทิศทาง</label>
+        <div class="field" id="dirWrap"><label>ทิศทาง</label>
           <div class="pillrow" id="dirPills">
             <div class="pill on" data-d="in">รับเงินเข้า</div>
             <div class="pill" data-d="out">จ่ายเงินออก</div>
+          </div>
+        </div>
+        <div class="field hidden" id="transferWrap"><label>ทิศทางการย้าย</label>
+          <div class="pillrow" id="transferPills">
+            <div class="pill on" data-t="cash2bank">💵 เงินสด → 🏦 บัญชี</div>
+            <div class="pill" data-t="bank2cash">🏦 บัญชี → 💵 เงินสด</div>
           </div>
         </div>
       </div>
@@ -2177,7 +2233,7 @@ function initAuth(){
   }
 }
 
-function load(){try{const v=JSON.parse(localStorage.getItem(LS));if(v&&v.txns){if(!v.pawns)v.pawns=[];if(!v.sales)v.sales=[];if(!v.repairs)v.repairs=[];if(!v.intakes)v.intakes=[];if(!v.deposits)v.deposits=[];if(!v.loans)v.loans=[];if(!v.fund)v.fund={capital:100000,balance:100000,history:[]};if(!v.ownerWallet)v.ownerWallet={balance:0,history:[]};if(!v.partnerWallet)v.partnerWallet={balance:0,history:[]};if(!v.accSales)v.accSales=[];if(!v.claims)v.claims=[];if(!v.parts)v.parts=[];if(!v.notifRead)v.notifRead=[];if(!v.customers)v.customers=[];if(!v.settings)v.settings={};if(!v.waitlist)v.waitlist=[];return v}}catch(e){}return seed()}
+function load(){try{const v=JSON.parse(localStorage.getItem(LS));if(v&&v.txns){if(!v.pawns)v.pawns=[];if(!v.sales)v.sales=[];if(!v.repairs)v.repairs=[];if(!v.intakes)v.intakes=[];if(!v.deposits)v.deposits=[];if(!v.loans)v.loans=[];if(!v.fund)v.fund={capital:100000,balance:100000,history:[]};if(!v.ownerWallet)v.ownerWallet={balance:0,history:[]};if(!v.partnerWallet)v.partnerWallet={balance:0,history:[]};if(!v.accSales)v.accSales=[];if(!v.claims)v.claims=[];if(!v.parts)v.parts=[];if(!v.notifRead)v.notifRead=[];if(!v.customers)v.customers=[];if(!v.settings)v.settings={};if(!v.waitlist)v.waitlist=[];ensurePersonalFields(v);return v}}catch(e){}return seed()}
 function persist(){localStorage.setItem(LS,JSON.stringify(DB));refreshTop();autoBackupCheck();cloudPushDebounced()}
 
 /* ===== CLOUD SYNC (Supabase) ===== */
@@ -2229,6 +2285,40 @@ function ensureFields(){
   if(!v.ownerWallet)v.ownerWallet={balance:0,history:[]};
   if(!v.partnerWallet)v.partnerWallet={balance:0,history:[]};
   if(!v.accSales)v.accSales=[];if(!v.claims)v.claims=[];if(!v.parts)v.parts=[];if(!v.notifRead)v.notifRead=[];if(!v.customers)v.customers=[];if(!v.settings)v.settings={};if(!v.waitlist)v.waitlist=[];
+  ensurePersonalFields(v);
+}
+
+/* ===== บัญชีส่วนตัว (Personal Ledger) — แยกจากบัญชีร้านโดยสิ้นเชิง ไม่แตะ fund/txns ของร้าน ===== */
+const PERSONAL_CATS_DEFAULT=['เบิก/ยืม','ค่ารถ','ค่าเน็ต','ดอกเบี้ยทอง','ค่าแพมเพิสลูก','เงินเดือนภรรยา','กับข้าว/ของใช้','อื่นๆ'];
+function ensurePersonalFields(v){
+  v=v||DB;
+  if(!v.personalTxns)v.personalTxns=[];
+  if(!v.personalCats)v.personalCats=[...PERSONAL_CATS_DEFAULT];
+  if(!v.personalMigrated){
+    seedPersonalHistory(v);
+    v.personalMigrated=true;
+  }
+}
+// นำเข้าประวัติ 14 รายการที่เคยติดปนอยู่ในบัญชีร้าน (หมวด เบิก/ยืม/ส่วนตัว, อื่นๆ, อุปกรณ์เสริม)
+// ทำครั้งเดียวเท่านั้น (คุมด้วย personalMigrated) — ไม่ไปแก้ไข fund/txns ของร้านเดิม
+function seedPersonalHistory(v){
+  const items=[
+    {ts:'2026-06-26T06:17:35.009Z',cat:'ค่ารถ',desc:'เติมนำ้มันก้อต (ยืมรถไปซื้อของ)',out:100},
+    {ts:'2026-06-26T10:14:57.584Z',cat:'เบิก/ยืม',desc:'อามเบิก',out:1000},
+    {ts:'2026-06-29T12:55:36.835Z',cat:'กับข้าว/ของใช้',desc:'เซเว่น',out:200},
+    {ts:'2026-06-30T13:00:57.530Z',cat:'เบิก/ยืม',desc:'ก้อตแลกเงิน',out:140},
+    {ts:'2026-07-01T06:12:01.078Z',cat:'เบิก/ยืม',desc:'อามเบิก',out:100},
+    {ts:'2026-07-02T05:47:46.930Z',cat:'เงินเดือนภรรยา',desc:'เงินเดือนภรรยา',out:6000},
+    {ts:'2026-07-04T12:49:45.661Z',cat:'เบิก/ยืม',desc:'ก้อตแลกเงิน',out:8000},
+    {ts:'2026-07-04T12:49:56.745Z',cat:'เบิก/ยืม',desc:'ก้อตแลกเงิน (เงินคืน)',in:300},
+    {ts:'2026-07-06T16:00:48.014Z',cat:'ค่าเน็ต',desc:'ค่าเน็ตบ้าน',out:1300},
+    {ts:'2026-07-09T07:34:25.158Z',cat:'เบิก/ยืม',desc:'ก็อตแลกเงิน',out:3700},
+    {ts:'2026-07-11T10:40:19.693Z',cat:'ค่ารถ',desc:'จ่ายค่ารถ',out:15000},
+    {ts:'2026-07-14T04:10:56.243Z',cat:'ดอกเบี้ยทอง',desc:'จ่ายดอกเบี้ยทอง',out:2700},
+    {ts:'2026-07-14T04:18:07.217Z',cat:'ค่าเน็ต',desc:'จ่ายเน็ตร้าน (เงินคืน)',in:2000},
+    {ts:'2026-07-14T14:49:50.454Z',cat:'ค่าแพมเพิสลูก',desc:'แพมเพิร์สลูกและค่าน้ำมันรถ',out:2500}
+  ];
+  items.forEach(it=>v.personalTxns.push({id:uid(),ts:it.ts,cat:it.cat,desc:it.desc,in:it.in||0,out:it.out||0}));
 }
 
 /* ===================================================================
@@ -2422,13 +2512,13 @@ function refreshTop(){
 }
 
 /* ---------- NAV ---------- */
-const titles={dashboard:'แดชบอร์ด',ledger:'รายการล่าสุด',stock:'สต็อกสินค้า',pawn:'ระบบรับฝาก',customers:'ลูกค้า',report:'สรุปยอด'};
+const titles={dashboard:'แดชบอร์ด',ledger:'รายการล่าสุด',stock:'สต็อกสินค้า',pawn:'ระบบรับฝาก',customers:'ลูกค้า',report:'สรุปยอด',personal:'บัญชีส่วนตัว'};
 let curView='dashboard';
 function go(v){
   curView=v;
   document.getElementById('view-search').classList.add('hidden');
   document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===v));
-  ['dashboard','ledger','stock','pawn','customers','waitlist','report'].forEach(x=>document.getElementById('view-'+x).classList.toggle('hidden',x!==v));
+  ['dashboard','ledger','stock','pawn','customers','waitlist','report','personal'].forEach(x=>document.getElementById('view-'+x).classList.toggle('hidden',x!==v));
   document.getElementById('viewTitle').textContent=titles[v];
   renderCurrentView();
 }
@@ -2441,6 +2531,7 @@ function renderCurrentView(){
   if(v==='customers')renderCustomers();
   if(v==='waitlist')renderWaitlist();
   if(v==='report'){renderReport();renderBackupPanel();}
+  if(v==='personal')renderPersonal();
 }
 let waitlistTab='waiting';
 /* ===== MULTI-SELL / ขายส่งหลายเครื่องในบิลเดียว ===== */
@@ -3137,6 +3228,77 @@ window.deleteTxn=id=>{
   alert('ลบรายการเรียบร้อย ✓');
 };
 
+/* ---------- บัญชีส่วนตัว (Personal Ledger) ---------- */
+let personalFilterCat='all', personalDir='out';
+function renderPersonal(){
+  ensurePersonalFields();
+  const rows=[...DB.personalTxns].sort((a,b)=>b.ts.localeCompare(a.ts));
+  const filtered = personalFilterCat==='all'?rows:rows.filter(r=>r.cat===personalFilterCat);
+  const now=new Date(), ym=now.toISOString().slice(0,7);
+  let inc=0,exp=0;
+  rows.forEach(r=>{ if((r.ts||'').slice(0,7)===ym){inc+=r.in||0;exp+=r.out||0;} });
+  $('persIncome').textContent=baht(inc);
+  $('persExpense').textContent=baht(exp);
+  $('persNet').textContent=baht(inc-exp);
+  const cats=['all',...DB.personalCats];
+  $('persCatChips').innerHTML=cats.map(c=>`<button class="btn btn-sm ${c===personalFilterCat?'btn-gold':'btn-ghost'}" onclick="setPersonalFilter('${c.replace(/'/g,"\\'")}')">${c==='all'?'ทั้งหมด':c}</button>`).join('');
+  const tb=document.querySelector('#persTable tbody');
+  tb.innerHTML = filtered.length ? filtered.map(r=>`
+    <tr>
+      <td style="color:var(--muted)">${fmtDate(r.ts)}</td>
+      <td>${r.desc}</td>
+      <td><span class="tag tag-etc">${r.cat}</span></td>
+      <td class="num ${r.in?'in':'out'}">${r.in?'+':'−'}${baht(r.in||r.out)}</td>
+      <td class="num"><button class="btn btn-ghost btn-sm" onclick="deletePersonalTxn('${r.id}')">🗑️</button></td>
+    </tr>`).join('') : '<tr><td colspan="5" class="empty"><div class="big">💰</div>ยังไม่มีรายการในหมวดนี้</td></tr>';
+}
+window.setPersonalFilter=(c)=>{personalFilterCat=c;renderPersonal();};
+window.openPersonalTxn=()=>{
+  ensurePersonalFields();
+  $('pt_date').value=new Date().toISOString().slice(0,10);
+  $('pt_desc').value='';$('pt_amount').value='';
+  personalDir='out';
+  updatePersonalDirUI();
+  renderPersonalCatOptions();
+  $('personalTxnModal').classList.add('show');
+};
+window.setPersonalDir=(d)=>{personalDir=d;updatePersonalDirUI();};
+function updatePersonalDirUI(){
+  document.querySelectorAll('#personalDirSeg button').forEach(b=>{
+    b.classList.toggle('btn-gold',b.dataset.dir===personalDir);
+    b.classList.toggle('btn-ghost',b.dataset.dir!==personalDir);
+  });
+}
+function renderPersonalCatOptions(sel){
+  $('pt_cat').innerHTML = DB.personalCats.map(c=>`<option value="${c}" ${c===sel?'selected':''}>${c}</option>`).join('');
+}
+window.addPersonalCat=()=>{
+  const name=prompt('ชื่อหมวดหมู่ใหม่');
+  if(name && name.trim() && !DB.personalCats.includes(name.trim())){
+    DB.personalCats.push(name.trim());
+    renderPersonalCatOptions(name.trim());
+    persist();
+  }
+};
+window.savePersonalTxn=()=>{
+  const date=$('pt_date').value;
+  const desc=$('pt_desc').value.trim();
+  const amount=+$('pt_amount').value||0;
+  const cat=$('pt_cat').value;
+  if(!date||!desc||!amount){alert('กรอกวันที่ รายการ และจำนวนเงินให้ครบ');return;}
+  const ts=new Date(date+'T'+new Date().toTimeString().slice(0,8)).toISOString();
+  DB.personalTxns.push({id:uid(),ts,cat,desc,in:personalDir==='in'?amount:0,out:personalDir==='out'?amount:0});
+  persist();
+  closeModals();
+  renderPersonal();
+};
+window.deletePersonalTxn=(id)=>{
+  if(!confirm('ลบรายการนี้?'))return;
+  DB.personalTxns=DB.personalTxns.filter(x=>x.id!==id);
+  persist();
+  renderPersonal();
+};
+
 /* ---------- STOCK ---------- */
 let stockF='instock';
 function renderStock(q=''){
@@ -3357,7 +3519,7 @@ window.printOfficialReport=(mode)=>{
 /* ===================================================================
    TRANSACTION MODAL — หัวใจของการลิงก์สต็อก-บัญชี
    =================================================================== */
-let txnMode='etc', txnMethod='', repairDir='service', etcDir='in', sellStockId=null;
+let txnMode='etc', txnMethod='', repairDir='service', etcDir='in', etcTransferDir='cash2bank', sellStockId=null;
 
 /* ===================================================================
    BUY DEVICE PICKER — ตัวเลือกข้อมูลเครื่องแบบชั้นๆ (โหมดรับเครื่อง)
@@ -3595,6 +3757,12 @@ function openTxn(mode,stockId){
   show('descField',mode==='etc');
   show('repairType',mode==='repair');
   show('catField',mode==='etc');
+  if(mode==='etc'){
+    $('t_cat').value='ค่าใช้จ่ายร้าน';
+    etcTransferDir='cash2bank';
+    $('transferPills').querySelectorAll('.pill').forEach(x=>x.classList.toggle('on',x.dataset.t==='cash2bank'));
+    updateEtcCatUI();
+  }
   show('sellExtra',mode==='sell');
   show('costExtraWrap',mode==='buy'&&false); // ซ่อนช่องทุนเพิ่มเดิม (ใช้ราคาอะไหล่แยกแทน)
   show('fixFieldPlain',mode==='repair'); // ช่องที่ซ่อมเฉพาะใบเสร็จซ่อม
@@ -3751,6 +3919,19 @@ $('dirPills').querySelectorAll('.pill').forEach(p=>p.onclick=()=>{
   $('dirPills').querySelectorAll('.pill').forEach(x=>x.classList.remove('on'));
   p.classList.add('on');etcDir=p.dataset.d;
 });
+/* หมวด "ย้ายเงิน" ใช้ UI คนละแบบ (ไม่มีทิศทางรับ/จ่าย ไม่มีช่องทางการเงินแบบปกติ) */
+function updateEtcCatUI(){
+  const isTransfer = $('t_cat').value==='ย้ายเงิน';
+  show('dirWrap', !isTransfer);
+  show('methodWrap', !isTransfer);
+  show('transferWrap', isTransfer);
+  if(isTransfer)show('splitWrap',false);
+}
+$('t_cat').addEventListener('change',updateEtcCatUI);
+$('transferPills').querySelectorAll('.pill').forEach(p=>p.onclick=()=>{
+  $('transferPills').querySelectorAll('.pill').forEach(x=>x.classList.remove('on'));
+  p.classList.add('on');etcTransferDir=p.dataset.t;
+});
 /* installment toggle */
 $('t_installment').onchange=e=>{show('downWrap',e.target.checked)};
 
@@ -3860,13 +4041,34 @@ $('saveTxn').onclick=()=>{
     return;
   }
   else { // etc
-    const desc=$('t_desc').value.trim();const amt=+$('t_amount').value||0;
-    if(!desc||!amt){alert('กรอกรายการและจำนวนเงิน');return}
-    if(!method){alert('กรุณาเลือกช่องทางการเงิน (เงินสด / โอน / ผสม)');return}
-    const isIn=etcDir==='in';
-    const rec={id:uid(),ts:nowISO(),type:'etc',desc,method,in:isIn?amt:0,out:isIn?0:amt,cat:$('t_cat').value};
-    if(method==='split'){const sp=getSplit(amt,isIn?'in':'out');if(!sp)return;Object.assign(rec,sp);}
-    DB.txns.push(rec);
+    const cat=$('t_cat').value;
+    if(cat==='ย้ายเงิน'){
+      const amt=+$('t_amount').value||0;
+      if(!amt){alert('กรอกจำนวนเงินที่จะย้าย');return}
+      const descRaw=$('t_desc').value.trim();
+      const dirLabel=etcTransferDir==='cash2bank'?'เงินสด → บัญชี':'บัญชี → เงินสด';
+      const desc=descRaw||('ย้ายเงิน '+dirLabel);
+      const rec={id:uid(),ts:nowISO(),type:'etc',desc,method:'split',in:0,out:0,cat:'ย้ายเงิน',
+        splitCashOut: etcTransferDir==='cash2bank'?amt:0,
+        splitBankIn: etcTransferDir==='cash2bank'?amt:0,
+        splitBankOut: etcTransferDir==='bank2cash'?amt:0,
+        splitCashIn: etcTransferDir==='bank2cash'?amt:0};
+      DB.txns.push(rec);
+    } else {
+      const desc=$('t_desc').value.trim();const amt=+$('t_amount').value||0;
+      if(!desc||!amt){alert('กรอกรายการและจำนวนเงิน');return}
+      if(!method){alert('กรุณาเลือกช่องทางการเงิน (เงินสด / โอน / ผสม)');return}
+      const isIn=etcDir==='in';
+      const rec={id:uid(),ts:nowISO(),type:'etc',desc,method,in:isIn?amt:0,out:isIn?0:amt,cat};
+      if(method==='split'){const sp=getSplit(amt,isIn?'in':'out');if(!sp)return;Object.assign(rec,sp);}
+      DB.txns.push(rec);
+      // "ค่าใช้จ่ายส่วนตัว": หักเงินสด/บัญชีร้านจริง (ด้านบน) + sync เข้าบัญชีส่วนตัวให้อัตโนมัติ
+      if(cat==='ค่าใช้จ่ายส่วนตัว'){
+        ensurePersonalFields();
+        if(!DB.personalCats.includes('ค่าใช้จ่ายส่วนตัว'))DB.personalCats.push('ค่าใช้จ่ายส่วนตัว');
+        DB.personalTxns.push({id:uid(),ts:nowISO(),cat:'ค่าใช้จ่ายส่วนตัว',desc,in:isIn?amt:0,out:isIn?0:amt});
+      }
+    }
   }
   persist();closeModals();
   go(document.querySelector('.nav button.active').dataset.view);
@@ -4473,6 +4675,12 @@ document.getElementById('savePawn').onclick=()=>{
   DB.pawns.push(p);
   // ตัดเงินต้นออกจาก "กองทุนรับฝาก" (ไม่ใช่บัญชีหลัก)
   fundMove(-principal,'ปล่อยรับฝาก','['+p.no+'] '+item+' ('+name+')');
+  // บันทึกเงินสด/โอนที่จ่ายออกจริงให้ลูกค้า เข้าบัญชีหลักของร้าน (ให้ยอดเงินสด/บัญชีตรงกับความเป็นจริง)
+  {
+    const txRec={id:uid(),ts:pawnTs,type:'pawn',desc:'ปล่อยรับฝาก ['+p.no+'] '+item+' ('+name+')',method:pawnMethod,in:0,out:principal,cat:'รับฝาก/รับซาก',pawnId:p.id};
+    if(pawnMethod==='split'&&pSplit){txRec.splitCashOut=pSplit.splitCash;txRec.splitBankOut=pSplit.splitBank;txRec.splitCashIn=0;txRec.splitBankIn=0;}
+    DB.txns.push(txRec);
+  }
   persist();closeModals();
   sendLineNotify('🏦 รับฝากเครื่อง ['+p.no+']\n'+item+'\nลูกค้า: '+name+'\nเงินต้น '+baht(principal));
   go('pawn');
@@ -4636,6 +4844,11 @@ window.redeemPawn=(int)=>{
   const half=Math.round(int/2);
   walletAdd('owner',half,'ส่วนแบ่งดอกเบี้ย','['+p.no+'] ไถ่ถอน '+p.item);
   walletAdd('partner',int-half,'ส่วนแบ่งดอกเบี้ย','['+p.no+'] ไถ่ถอน '+p.item);
+  // บันทึกเงินสด/โอนที่รับจริงจากลูกค้า (ต้น+ดอก) เข้าบัญชีหลักของร้าน (ให้ยอดเงินสด/บัญชีตรงกับความเป็นจริง)
+  {
+    const m=redeemMethod==='bank'?'bank':'cash';
+    DB.txns.push({id:uid(),ts:nowISO(),type:'pawn',desc:'ไถ่ถอนรับฝาก ['+p.no+'] '+p.name,method:m,in:p.principal+int,out:0,cat:'รับฝาก/รับซาก',pawnId:p.id});
+  }
   persist();closeModals();renderPawn();
   const pid=p.id;
   if(confirm('รับไถ่คืนเรียบร้อย ✓\nเงินต้น '+baht(p.principal)+' กลับเข้ากองทุน\nดอกเบี้ย '+baht(int)+' แบ่ง ร้าน/หุ้นส่วน คนละ '+baht(half)+'\n\nต้องการพิมพ์ใบรับเครื่องคืน (ให้ลูกค้าเซ็น) หรือไม่?')){
