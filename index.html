@@ -466,7 +466,7 @@
       </div>
       <div class="cashpills">
         <div class="cashpill cash"><div class="l">เงินสดคงเหลือ</div><div class="v" id="cashBal">฿1,800</div></div>
-        <div class="cashpill bank"><div class="l">เงินโอนคงเหลือ</div><div class="v" id="bankBal">-฿64,863</div></div>
+        <div class="cashpill bank"><div class="l">มูลค่าสต็อก</div><div class="v" id="stockValTop">฿0</div></div>
         <button class="theme-toggle" id="themeToggle" title="สลับธีม สว่าง/มืด">🌙</button>
         <button class="theme-toggle" id="viewModeToggle" title="สลับเป็นโหมดมือถือ">📱</button>
         <button class="theme-toggle" id="syncBtn" title="ดึงข้อมูลล่าสุดจากคลาวด์" onclick="cloudSyncNow()" style="transition: none; transform: none;">🔄</button>
@@ -631,7 +631,7 @@
           <div class="kpi"><div class="label">รายรับวันนี้</div><div class="val green" id="kpiIn">฿0</div></div>
           <div class="kpi"><div class="label">รายจ่ายวันนี้</div><div class="val red" id="kpiOut">฿0</div></div>
           <div class="kpi" data-admin-only="" style=""><div class="label">กำไรวันนี้</div><div class="val gold" id="kpiProfit">฿0</div></div>
-          <div class="kpi" data-admin-only="" style=""><div class="label">มูลค่าสต็อก (ต้นทุน)</div><div class="val blue" id="kpiStock">฿318,254</div></div>
+          <div class="kpi" style=""><div class="label">มูลค่าสต็อก (ต้นทุน)</div><div class="val blue" id="kpiStock">฿318,254</div></div>
         </div>
         <div class="panel">
           <div class="panel-head">
@@ -2615,7 +2615,8 @@ function balances(){
 function refreshTop(){
   const b=balances();
   document.getElementById('cashBal').textContent=baht(b.cash);
-  document.getElementById('bankBal').textContent=baht(b.bank);
+  const stockVal=DB.stock.filter(s=>s.status==='instock').reduce((s,i)=>s+i.costTotal,0);
+  document.getElementById('stockValTop').textContent=baht(stockVal);
 }
 
 /* ---------- NAV ---------- */
@@ -3512,10 +3513,15 @@ window.reprintDoc=(id)=>{
   if(t.type==='buy'&&t.stockId){
     const st=DB.stock.find(x=>x.id===t.stockId);
     if(st){
-      alert('⚠️ นี่คือรายการรับซื้อเก่า ระบบไม่ได้เก็บสัญญาต้นฉบับแบบเต็มไว้ (เช่น ชื่อ/เลขบัตรผู้ขาย) จะพิมพ์ซ้ำโดยใช้ข้อมูลเท่าที่มีในสต็อกแทน กรุณาเติมข้อมูลผู้ขายเองก่อนให้ลูกค้าเซ็น');
+      const hasSeller=st.sellerName||st.sellerPhone;
+      if(!hasSeller){
+        alert('⚠️ นี่คือรายการรับซื้อเก่า ระบบไม่ได้เก็บสัญญาต้นฉบับแบบเต็มไว้ (เช่น ชื่อ/เลขบัตรผู้ขาย) จะพิมพ์ซ้ำโดยใช้ข้อมูลเท่าที่มีในสต็อกแทน กรุณาเติมข้อมูลผู้ขายเองก่อนให้ลูกค้าเซ็น');
+      }
+      const splitObj=t.method==='split'?{splitCashOut:t.splitCashOut||0,splitBankOut:t.splitBankOut||0,splitCashIn:0,splitBankIn:0}:null;
       printBuyContract({ts:t.ts,name:st.name,imei:st.imei,batt:st.batt,fix:st.fix,grade:st.grade,
         condition:st.condition,condNoteExtra:st.condNoteExtra,warrCenter:st.warrCenter,
-        costBuy:st.costBuy,costExtra:st.costExtra,method:t.method,split:null,seller:'',sellerphone:''},false);
+        costBuy:st.costBuy,costExtra:st.costExtra,method:t.method,split:splitObj,
+        seller:st.sellerName||'',sellerphone:st.sellerPhone||''},false);
       return;
     }
   }
@@ -4693,6 +4699,7 @@ window.commitBuy=()=>{
   const b=pendingBuy;
   const st=mkStock(b.name,b.imei,b.batt,b.fix,b.costBuy,b.costExtra,b.ts);
   if(b.seller)st.note='ผู้ขาย: '+b.seller+(b.sellerphone?' '+b.sellerphone:'');
+  st.sellerName=b.seller||'';st.sellerPhone=b.sellerphone||'';
   st.grade=b.grade;st.condition=b.condition;st.warrCenter=b.warrCenter||'';st.condNoteExtra=b.condNoteExtra||'';
   st.warrMonths=b.grade==='มือ 1'?12:3;
   st.category=b.category||'อื่นๆ';
@@ -5244,6 +5251,13 @@ window.openRedeem=id=>{
       <div class="seg method" id="redeemMethodSeg" style="width:100%">
         <button data-m="cash" style="flex:1">💵 เงินสด</button>
         <button data-m="bank" style="flex:1">🏦 เงินโอน</button>
+        <button data-m="split" style="flex:1">🔀 ผสม</button>
+      </div>
+      <div class="field hidden" id="redeemSplitWrap" style="margin-top:8px">
+        <div class="field-row">
+          <div class="field" style="margin-bottom:0"><label>เงินสด</label><input type="number" inputmode="numeric" id="redeemSplitCash" placeholder="0"></div>
+          <div class="field" style="margin-bottom:0"><label>เงินโอน</label><input type="number" inputmode="numeric" id="redeemSplitBank" placeholder="0"></div>
+        </div>
       </div>
     </div>`;
   document.getElementById('redeemFoot').innerHTML=`
@@ -5263,11 +5277,23 @@ window.openRedeem=id=>{
   document.querySelectorAll('#redeemMethodSeg button').forEach(b=>b.onclick=()=>{
     document.querySelectorAll('#redeemMethodSeg button').forEach(x=>x.classList.remove('on'));
     b.classList.add('on');redeemMethod=b.dataset.m;
+    show('redeemSplitWrap',redeemMethod==='split');
   });
   redeemMethod='cash';
+  if($('redeemSplitCash'))$('redeemSplitCash').value='';
+  if($('redeemSplitBank'))$('redeemSplitBank').value='';
+  show('redeemSplitWrap',false);
   document.getElementById('redeemModal').classList.add('show');
 };
 let redeemMethod='cash';
+/* ตรวจสอบยอดผสม (สด+โอน) สำหรับรับไถ่คืน/หลุดจำนำ ต้องรวมเท่ากับยอดที่ต้องได้รับพอดี */
+function getRedeemSplit(target){
+  const c=+$('redeemSplitCash').value||0, b=+$('redeemSplitBank').value||0;
+  if(c<0||b<0){alert('ยอดต้องไม่ติดลบ');return null;}
+  if(c+b===0){alert('กรอกยอดจ่ายผสมอย่างน้อย 1 ช่อง');return null;}
+  if(c+b!==target){alert('ยอดจ่ายผสม ('+baht(c+b)+') ไม่เท่ากับยอดที่ต้องได้รับ ('+baht(target)+')\nกรุณาแก้ให้ตรงกัน');return null;}
+  return {splitCashIn:c,splitBankIn:b,splitCashOut:0,splitBankOut:0};
+}
 /* ต่อดอกเบี้ย (ข้อ 8) — ลูกค้าจ่ายเฉพาะดอกรอบนี้ เริ่มนับรอบใหม่ ไม่ต้องไถ่+ลงใหม่ */
 window.renewInterest=()=>{
   const p=DB.pawns.find(x=>x.id===redeemId);if(!p)return;
@@ -5344,6 +5370,8 @@ window.editPrincipal=()=>{
 };
 window.redeemPawn=(int)=>{
   const p=DB.pawns.find(x=>x.id===redeemId);
+  let splitObj=null;
+  if(redeemMethod==='split'){splitObj=getRedeemSplit(p.principal+int);if(!splitObj)return;}
   p.status='redeemed';p.redeemTs=nowISO();p.paidInterest=int;
   // เงินต้นกลับเข้ากองทุนหลัก
   fundMove(p.principal,'ไถ่ถอน-เงินต้นคืน','['+p.no+'] '+p.item);
@@ -5353,9 +5381,11 @@ window.redeemPawn=(int)=>{
   walletAdd('partner',int-half,'ส่วนแบ่งดอกเบี้ย','['+p.no+'] ไถ่ถอน '+p.item);
   // บันทึกเงินสด/โอนที่รับจริงจากลูกค้า (ต้น+ดอก) เข้าบัญชีหลักของร้าน (ให้ยอดเงินสด/บัญชีตรงกับความเป็นจริง)
   {
-    const m=redeemMethod==='bank'?'bank':'cash';
-    DB.txns.push({id:uid(),ts:nowISO(),type:'pawn',desc:'ไถ่ถอนรับฝาก ['+p.no+'] '+p.name,method:m,in:p.principal+int,out:0,cat:'รับฝาก/รับซาก',pawnId:p.id,pawnNo:p.no,
-      walletMoves:[{which:'owner',amount:half},{which:'partner',amount:int-half}]});
+    const m=redeemMethod==='split'?'split':(redeemMethod==='bank'?'bank':'cash');
+    const rec={id:uid(),ts:nowISO(),type:'pawn',desc:'ไถ่ถอนรับฝาก ['+p.no+'] '+p.name,method:m,in:p.principal+int,out:0,cat:'รับฝาก/รับซาก',pawnId:p.id,pawnNo:p.no,
+      walletMoves:[{which:'owner',amount:half},{which:'partner',amount:int-half}]};
+    if(splitObj)Object.assign(rec,splitObj);
+    DB.txns.push(rec);
   }
   persist();closeModals();renderPawn();
   const pid=p.id;
@@ -5415,8 +5445,11 @@ window.forfeitPawn=()=>{
   const total=p.principal+int;
   const due=pawnDue(p);
   const early=new Date(now)<new Date(due);
-  const fm=redeemMethod==='cash'?'cash':'bank';
-  let msg='ยืนยันให้ตั๋วนี้หลุดรับฝาก?\n\n• เครื่องจะเข้าสต็อกขาย (ต้นทุน = เงินต้น '+baht(p.principal)+')\n• ดึงเงิน '+baht(total)+' จากยอด'+(fm==='cash'?'เงินสด':'โอน')+'บัญชีหลัก → กองทุน\n• เงินต้น '+baht(p.principal)+' กลับเข้ากองทุน\n• ดอกเบี้ย '+baht(int)+' เข้ากระเป๋าหุ้นส่วน 100%';
+  let splitObj=null;
+  if(redeemMethod==='split'){splitObj=getRedeemSplit(total);if(!splitObj)return;}
+  const fm=redeemMethod==='split'?'split':(redeemMethod==='cash'?'cash':'bank');
+  const fmLabel=fm==='split'?'ผสม (สด+โอน)':(fm==='cash'?'เงินสด':'โอน');
+  let msg='ยืนยันให้ตั๋วนี้หลุดรับฝาก?\n\n• เครื่องจะเข้าสต็อกขาย (ต้นทุน = เงินต้น '+baht(p.principal)+')\n• ดึงเงิน '+baht(total)+' จากยอด'+fmLabel+'บัญชีหลัก → กองทุน\n• เงินต้น '+baht(p.principal)+' กลับเข้ากองทุน\n• ดอกเบี้ย '+baht(int)+' เข้ากระเป๋าหุ้นส่วน 100%';
   if(early){
     msg='🔴 ตั๋วนี้ยังไม่ครบกำหนดไถ่ถอน!\nครบกำหนดจริง: '+fmtDate(due)+'\nวันนี้: '+fmtDate(now)+'\n\nการหลุดจำนำก่อนครบกำหนดอาจถูกครหาว่าหลุดเร็วเกินไปได้ ระบบจะบันทึกวันครบกำหนดจริงเทียบกับวันที่กดหลุดไว้ในประวัติตั๋วเสมอ\n\n'+msg;
   }
@@ -5428,10 +5461,14 @@ window.forfeitPawn=()=>{
   st.note='จากตั๋วรับฝาก '+p.no;
   st.grade=p.grade;st.warrMonths=p.grade==='มือ 1'?12:3;st.category=p.category||'อื่นๆ';
   DB.stock.push(st);
-  // 2) ดึงเงิน (ต้น+ดอก) จากบัญชีหลัก (เลือกได้สด/โอน ตามช่องทางที่เลือกไว้) → โอนเข้ากองทุน
-  DB.txns.push({id:uid(),ts:now,type:'etc',desc:'หลุดรับฝาก '+p.item+' ['+p.no+'] โอนเข้ากองทุน',
-    method:fm,in:0,out:total,cat:'รับฝาก/รับซาก',pawnId:p.id,pawnNo:p.no,
-    walletMoves:[{which:'partner',amount:int}]});
+  // 2) ดึงเงิน (ต้น+ดอก) จากบัญชีหลัก (เลือกได้สด/โอน/ผสม ตามช่องทางที่เลือกไว้) → โอนเข้ากองทุน
+  {
+    const rec={id:uid(),ts:now,type:'etc',desc:'หลุดรับฝาก '+p.item+' ['+p.no+'] โอนเข้ากองทุน',
+      method:fm,in:0,out:total,cat:'รับฝาก/รับซาก',pawnId:p.id,pawnNo:p.no,
+      walletMoves:[{which:'partner',amount:int}]};
+    if(splitObj)Object.assign(rec,splitObj);
+    DB.txns.push(rec);
+  }
   // 3) เงินต้นกลับเข้ากองทุน
   fundMove(p.principal,'หลุดรับฝาก-เงินต้นคืน','['+p.no+'] '+p.item);
   // 4) ดอกเบี้ยเข้ากระเป๋าหุ้นส่วน 100% (รอบนี้ไม่แบ่งร้าน)
