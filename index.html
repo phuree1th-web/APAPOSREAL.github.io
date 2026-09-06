@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- saved from url=(0053)https://phuree1th-web.github.io/APAPOSREAL.github.io/ -->
 <html lang="th"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -133,12 +134,14 @@
   .overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;z-index:100;padding:20px}
   #custLookupModal,#claimHistModal,#walletModal,#withdrawModal,#partnerReportModal{z-index:200}
   .overlay.show{display:flex}
-  .modal{background:var(--panel);border:1px solid var(--line);border-radius:18px;width:100%;max-width:520px;max-height:92vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.5)}
-  .modal-head{display:flex;align-items:center;justify-content:space-between;padding:17px 22px;border-bottom:1px solid var(--line)}
+  /* .modal เป็น flex column: หัว/ท้ายตรึงขนาดคงที่ ส่วน body เท่านั้นที่เลื่อนได้ —
+     ปุ่มบันทึกใน modal-foot จะกดถึงเสมอไม่ว่าจะเลื่อนแค่ไหนหรือคีย์บอร์ดมือถือเด้งขึ้นมาบังแค่ไหน */
+  .modal{background:var(--panel);border:1px solid var(--line);border-radius:18px;width:100%;max-width:520px;max-height:92vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+  .modal-head{display:flex;align-items:center;justify-content:space-between;padding:17px 22px;border-bottom:1px solid var(--line);flex:0 0 auto}
   .modal-head h3{font-size:16.5px;font-weight:700}
   .modal-head .x{background:none;border:none;color:var(--muted);font-size:22px;cursor:pointer;line-height:1}
-  .modal-body{padding:18px 22px}
-  .modal-foot{display:flex;gap:10px;justify-content:flex-end;padding:15px 22px;border-top:1px solid var(--line);flex-wrap:wrap}
+  .modal-body{padding:18px 22px;overflow-y:auto;flex:1 1 auto;min-height:0;-webkit-overflow-scrolling:touch}
+  .modal-foot{display:flex;gap:10px;justify-content:flex-end;padding:15px 22px;border-top:1px solid var(--line);flex-wrap:wrap;flex:0 0 auto}
 
   .search{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:9px 14px;color:var(--text);font-family:inherit;font-size:14px;width:230px}
   .search:focus{outline:none;border-color:var(--gold-dim)}
@@ -384,6 +387,28 @@
   .ri-role{font-size:11px;color:#333;font-weight:600}
   .ri-keep{text-align:center;font-size:9.5px;color:#999;margin-top:11px;border-top:1px solid #eee;padding-top:7px}
   @media print{.print-actions{display:none}}
+  /* ปิดลูกศรเพิ่ม/ลดตัวเลขทุกช่อง input type=number ทั้งระบบ (กันคีย์บอร์ด/เมาส์ลั่นทำเงินเพี้ยน) — ยังพิมพ์ตัวเลขได้ปกติ */
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+  input[type="number"]{-moz-appearance:textfield}
+  /* ===== เมนูไฟแนนซ์ (EasyPay / Hiplus) — ธีมสีตามโลโก้จริงของแต่ละไฟแนนซ์ ===== */
+  #view-finance.fin-easypay{--fin-c1:#f5821f;--fin-c2:#1b3a6b;--fin-bg:rgba(245,130,31,.09);--fin-line:rgba(245,130,31,.4)}
+  #view-finance.fin-hiplus{--fin-c1:#e52322;--fin-c2:#131c3b;--fin-bg:rgba(229,35,34,.09);--fin-line:rgba(229,35,34,.4)}
+  .fin-toggle{display:flex;gap:10px;margin-bottom:14px}
+  .fin-toggle button{flex:1;padding:14px;border-radius:14px;border:2px solid var(--line);background:var(--panel-2);cursor:pointer;font-weight:800;font-size:15px;color:var(--muted);font-family:inherit;transition:.15s}
+  .fin-toggle button.on{border-color:var(--fin-c1);color:var(--fin-c2);background:var(--fin-bg)}
+  .fin-card{background:var(--panel);border:1px solid var(--fin-line,var(--line));border-radius:16px;padding:20px}
+  .fin-chip-row{display:flex;gap:8px;flex-wrap:wrap}
+  .fin-chip{padding:8px 16px;border-radius:20px;border:1.5px solid var(--line);background:var(--panel-2);cursor:pointer;font-size:13px;font-weight:700;color:var(--muted);font-family:inherit}
+  .fin-chip.on{border-color:var(--fin-c1);background:var(--fin-bg);color:var(--fin-c2)}
+  .fin-price-label{font-size:13px;color:var(--muted);margin-bottom:2px}
+  .fin-price{font-size:clamp(34px,9vw,50px);font-weight:800;color:var(--fin-c2);letter-spacing:-.5px;font-variant-numeric:tabular-nums;line-height:1.1}
+  .fin-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+  .fin-row:last-child{border-bottom:none}
+  .fin-tbl-row{display:flex;justify-content:space-between;align-items:center;padding:13px 0;border-bottom:1px solid var(--line)}
+  .fin-tbl-row:last-child{border-bottom:none}
+  .fin-tbl-row .p{font-weight:700;font-size:15px}
+  .fin-tbl-row .m{font-weight:800;font-size:17px;color:var(--fin-c1)}
 </style>
 </head>
 <body class="role-admin">
@@ -413,18 +438,19 @@
       </div>
     </div>
     <nav class="nav">
-      <button data-view="dashboard" class="" data-roles="admin,staff"><span class="ic">▦</span><span>แดชบอร์ด</span></button>
+      <button data-view="dashboard" class="active" data-roles="admin,staff"><span class="ic">▦</span><span>แดชบอร์ด</span></button>
       <button data-view="personal" data-roles="admin" class=""><span class="ic">💰</span><span>บัญชีส่วนตัว</span></button>
       <button data-view="stock" data-roles="admin,staff" class=""><span class="ic">📦</span><span>สต็อกสินค้า</span></button>
-      <button data-view="pawn" data-roles="admin,staff,partner,viewer" class="active"><span class="ic">🏷️</span><span>ระบบรับฝาก</span></button>
+      <button data-view="pawn" data-roles="admin,staff,partner,viewer" class=""><span class="ic">🏷️</span><span>ระบบรับฝาก</span></button>
       <button data-view="customers" data-roles="admin,staff" class=""><span class="ic">👥</span><span>ลูกค้า</span></button>
       <button data-view="waitlist" data-roles="admin,staff" class=""><span class="ic">📋</span><span>จองเครื่อง</span></button>
+      <button data-view="finance" data-roles="admin,staff" class=""><span class="ic">💳</span><span>ไฟแนนซ์</span></button>
       <button data-view="report" data-roles="admin" class=""><span class="ic">📊</span><span>สรุปยอด</span></button>
       <button data-view="ledger" data-roles="admin,staff" class=""><span class="ic">🕐</span><span>รายการล่าสุด</span></button>
     </nav>
     <div class="nav-foot">
       <div id="roleBadge" style="margin-bottom:8px;padding:7px 10px;background:rgba(212,175,55,.12);border-radius:8px;color:var(--gold-soft);font-weight:600">👤 ผู้ดูแลระบบ (Admin)</div>
-      <div id="cloudStatus" style="margin-bottom:8px;font-size:10.5px;color:var(--muted)">☁️ ซิงค์ล่าสุด 03:04</div>
+      <div id="cloudStatus" style="margin-bottom:8px;font-size:10.5px;color:var(--muted)">☁️ ซิงค์ล่าสุด 02:29</div>
       <button class="btn btn-ghost btn-sm" style="width:100%;margin-bottom:10px" onclick="logout()">🚪 ออกจากระบบ</button>
       ☎ 096-557-2230<br>LINE: Phuree_1212<br><span style="opacity:.6">ตัวอย่าง · เก็บในเครื่อง</span>
     </div>
@@ -432,20 +458,20 @@
 
   <div class="main">
     <div class="topbar">
-      <h1 id="viewTitle">ระบบรับฝาก</h1>
+      <h1 id="viewTitle">แดชบอร์ด</h1>
       <div class="globalsearch">
         <span class="gs-ic">🔍</span>
         <input id="globalSearch" placeholder="ค้นหา IMEI / รุ่น / ลูกค้า" autocomplete="off">
         <button class="gs-clear hidden" id="gsClear">×</button>
       </div>
       <div class="cashpills">
-        <div class="cashpill cash"><div class="l">เงินสดคงเหลือ</div><div class="v" id="cashBal">฿1,330</div></div>
-        <div class="cashpill bank"><div class="l">เงินโอนคงเหลือ</div><div class="v" id="bankBal">-฿59,990</div></div>
+        <div class="cashpill cash"><div class="l">เงินสดคงเหลือ</div><div class="v" id="cashBal">฿1,800</div></div>
+        <div class="cashpill bank"><div class="l">เงินโอนคงเหลือ</div><div class="v" id="bankBal">-฿64,863</div></div>
         <button class="theme-toggle" id="themeToggle" title="สลับธีม สว่าง/มืด">🌙</button>
         <button class="theme-toggle" id="viewModeToggle" title="สลับเป็นโหมดมือถือ">📱</button>
         <button class="theme-toggle" id="syncBtn" title="ดึงข้อมูลล่าสุดจากคลาวด์" onclick="cloudSyncNow()" style="transition: none; transform: none;">🔄</button>
         <button class="theme-toggle" id="logoutBtn" title="ออกจากระบบ" onclick="logout()">🚪</button>
-        <button class="theme-toggle" id="bellBtn" title="การแจ้งเตือน" style="position:relative" onclick="toggleNotif()">🔔<span id="bellBadge" style="display:none;position:absolute;top:-4px;right:-4px;background:#e5484d;color:#fff;font-size:10px;font-weight:800;min-width:17px;height:17px;border-radius:9px;align-items:center;justify-content:center;padding:0 4px">0</span></button>
+        <button class="theme-toggle" id="bellBtn" title="การแจ้งเตือน" style="position:relative" onclick="toggleNotif()">🔔<span id="bellBadge" style="display: flex; position: absolute; top: -4px; right: -4px; background: rgb(229, 72, 77); color: rgb(255, 255, 255); font-size: 10px; font-weight: 800; min-width: 17px; height: 17px; border-radius: 9px; align-items: center; justify-content: center; padding: 0px 4px;">2</span></button>
       </div>
     </div>
     <!-- NOTIFICATION DROPDOWN -->
@@ -456,15 +482,75 @@
       </div>
       <div id="notifList" style="max-height:60vh;overflow-y:auto"><div style="padding:12px 16px;border-bottom:1px solid var(--line);display:flex;gap:11px;opacity:.5">
         <span style="font-size:18px">⏰</span>
-        <div style="flex:1"><div style="font-weight:700;font-size:13.5px;color:var(--gold-soft)">ตั๋วรับฝากใกล้ครบกำหนด</div><div style="font-size:12px;color:var(--muted);margin-top:2px">PW-260004 · มือ 2 · iPad gen9 64GB ดำ (Black) (เหลือ 2 วัน)</div></div>
+        <div style="flex:1"><div style="font-weight:700;font-size:13.5px;color:var(--gold-soft)">ตั๋วรับฝากใกล้ครบกำหนด</div><div style="font-size:12px;color:var(--muted);margin-top:2px">PW-260014 · มือ 2 · iPad Gen9 64GB ดำ (Black) (WiFi) (เหลือ 0 วัน)</div></div>
         
       </div><div style="padding:12px 16px;border-bottom:1px solid var(--line);display:flex;gap:11px;opacity:.5">
-        <span style="font-size:18px">⏰</span>
-        <div style="flex:1"><div style="font-weight:700;font-size:13.5px;color:var(--gold-soft)">ตั๋วรับฝากใกล้ครบกำหนด</div><div style="font-size:12px;color:var(--muted);margin-top:2px">PW-260011 · มือ 2 · Apple Watch Se2/44 32GB ขาว (White) (เหลือ 3 วัน)</div></div>
+        <span style="font-size:18px">🔧</span>
+        <div style="flex:1"><div style="font-weight:700;font-size:13.5px;color:var(--gold-soft)">เครื่องซ่อมค้างนาน</div><div style="font-size:12px;color:var(--muted);margin-top:2px">14Pm · ทิ้งไว้ 70 วัน</div></div>
         
+      </div><div style="padding:12px 16px;border-bottom:1px solid var(--line);display:flex;gap:11px;opacity:.5">
+        <span style="font-size:18px">🔧</span>
+        <div style="flex:1"><div style="font-weight:700;font-size:13.5px;color:var(--gold-soft)">เครื่องซ่อมค้างนาน</div><div style="font-size:12px;color:var(--muted);margin-top:2px">Ipad pro 13 2020 · ทิ้งไว้ 60 วัน</div></div>
+        
+      </div><div style="padding:12px 16px;border-bottom:1px solid var(--line);display:flex;gap:11px;opacity:.5">
+        <span style="font-size:18px">🔧</span>
+        <div style="flex:1"><div style="font-weight:700;font-size:13.5px;color:var(--gold-soft)">เครื่องซ่อมค้างนาน</div><div style="font-size:12px;color:var(--muted);margin-top:2px">15 · ทิ้งไว้ 50 วัน</div></div>
+        
+      </div><div style="padding:12px 16px;border-bottom:1px solid var(--line);display:flex;gap:11px;opacity:.5">
+        <span style="font-size:18px">🔧</span>
+        <div style="flex:1"><div style="font-weight:700;font-size:13.5px;color:var(--gold-soft)">เครื่องซ่อมค้างนาน</div><div style="font-size:12px;color:var(--muted);margin-top:2px">iPadPro 2020 ขาว · ทิ้งไว้ 40 วัน</div></div>
+        
+      </div><div style="padding:12px 16px;border-bottom:1px solid var(--line);display:flex;gap:11px;">
+        <span style="font-size:18px">🔧</span>
+        <div style="flex:1"><div style="font-weight:700;font-size:13.5px;color:var(--gold-soft)">เครื่องซ่อมค้างนาน</div><div style="font-size:12px;color:var(--muted);margin-top:2px">iPad Air4 · ทิ้งไว้ 30 วัน</div></div>
+        <span style="width:8px;height:8px;border-radius:50%;background:#e5484d;flex-shrink:0;margin-top:5px"></span>
+      </div><div style="padding:12px 16px;border-bottom:1px solid var(--line);display:flex;gap:11px;">
+        <span style="font-size:18px">🔧</span>
+        <div style="flex:1"><div style="font-weight:700;font-size:13.5px;color:var(--gold-soft)">เครื่องซ่อมค้างนาน</div><div style="font-size:12px;color:var(--muted);margin-top:2px">Air4 · ทิ้งไว้ 30 วัน</div></div>
+        <span style="width:8px;height:8px;border-radius:50%;background:#e5484d;flex-shrink:0;margin-top:5px"></span>
       </div><div style="padding:12px 16px;border-bottom:1px solid var(--line);display:flex;gap:11px;opacity:.5">
         <span style="font-size:18px">📦</span>
-        <div style="flex:1"><div style="font-weight:700;font-size:13.5px;color:var(--gold-soft)">อะไหล่ค้างจ่ายสะสมสูง</div><div style="font-size:12px;color:var(--muted);margin-top:2px">ยอดค้าง ฿14,350 ควรเคลียร์</div></div>
+        <div style="flex:1"><div style="font-weight:700;font-size:13.5px;color:var(--gold-soft)">อะไหล่ค้างจ่ายสะสมสูง</div><div style="font-size:12px;color:var(--muted);margin-top:2px">ยอดค้าง ฿14,786 ควรเคลียร์</div></div>
+        
+      </div><div style="padding:12px 16px;border-bottom:1px solid var(--line);display:flex;gap:11px;opacity:.5">
+        <span style="font-size:18px">🏷️</span>
+        <div style="flex:1"><div style="font-weight:700;font-size:13.5px;color:var(--gold-soft)">เครื่องค้างสต็อกนาน</div><div style="font-size:12px;color:var(--muted);margin-top:2px">มือ 2 · AirPods Gen2 · 4LX2Y · ค้าง 72 วัน</div></div>
+        
+      </div><div style="padding:12px 16px;border-bottom:1px solid var(--line);display:flex;gap:11px;opacity:.5">
+        <span style="font-size:18px">🏷️</span>
+        <div style="flex:1"><div style="font-weight:700;font-size:13.5px;color:var(--gold-soft)">เครื่องค้างสต็อกนาน</div><div style="font-size:12px;color:var(--muted);margin-top:2px">มือ 2 · AirPods Gen2 · BLX2Y · ค้าง 72 วัน</div></div>
+        
+      </div><div style="padding:12px 16px;border-bottom:1px solid var(--line);display:flex;gap:11px;opacity:.5">
+        <span style="font-size:18px">🏷️</span>
+        <div style="flex:1"><div style="font-weight:700;font-size:13.5px;color:var(--gold-soft)">เครื่องค้างสต็อกนาน</div><div style="font-size:12px;color:var(--muted);margin-top:2px">มือ 2 · AirPods Gen2 wirelesscharger · MJMMT · ค้าง 72 วัน</div></div>
+        
+      </div><div style="padding:12px 16px;border-bottom:1px solid var(--line);display:flex;gap:11px;opacity:.5">
+        <span style="font-size:18px">🏷️</span>
+        <div style="flex:1"><div style="font-weight:700;font-size:13.5px;color:var(--gold-soft)">เครื่องค้างสต็อกนาน</div><div style="font-size:12px;color:var(--muted);margin-top:2px">มือ 2 · iPhone 13 256GB ฟ้า (Blue) · 3689 · ค้าง 34 วัน</div></div>
+        
+      </div><div style="padding:12px 16px;border-bottom:1px solid var(--line);display:flex;gap:11px;opacity:.5">
+        <span style="font-size:18px">🏷️</span>
+        <div style="flex:1"><div style="font-weight:700;font-size:13.5px;color:var(--gold-soft)">เครื่องค้างสต็อกนาน</div><div style="font-size:12px;color:var(--muted);margin-top:2px">มือ 2 · Apple Watch se 40mm 32GB ดำ (Black) · HJFT · ค้าง 31 วัน</div></div>
+        
+      </div><div style="padding:12px 16px;border-bottom:1px solid var(--line);display:flex;gap:11px;opacity:.5">
+        <span style="font-size:18px">🏷️</span>
+        <div style="flex:1"><div style="font-weight:700;font-size:13.5px;color:var(--gold-soft)">เครื่องค้างสต็อกนาน</div><div style="font-size:12px;color:var(--muted);margin-top:2px">มือ 2 · Apple Watch series 6 44mm 32GB ดำ (Black) · Q1RF · ค้าง 25 วัน</div></div>
+        
+      </div><div style="padding:12px 16px;border-bottom:1px solid var(--line);display:flex;gap:11px;opacity:.5">
+        <span style="font-size:18px">🏷️</span>
+        <div style="flex:1"><div style="font-weight:700;font-size:13.5px;color:var(--gold-soft)">เครื่องค้างสต็อกนาน</div><div style="font-size:12px;color:var(--muted);margin-top:2px">มือ 2 · iPhone XR 64GB ดำ (Black) · 9691 · ค้าง 19 วัน</div></div>
+        
+      </div><div style="padding:12px 16px;border-bottom:1px solid var(--line);display:flex;gap:11px;opacity:.5">
+        <span style="font-size:18px">🏷️</span>
+        <div style="flex:1"><div style="font-weight:700;font-size:13.5px;color:var(--gold-soft)">เครื่องค้างสต็อกนาน</div><div style="font-size:12px;color:var(--muted);margin-top:2px">มือ 2 · iPhone 11 Pro Max 256GB เทาสเปซเกรย์ (Space Gray) · 8142 · ค้าง 15 วัน</div></div>
+        
+      </div><div style="padding:12px 16px;border-bottom:1px solid var(--line);display:flex;gap:11px;opacity:.5">
+        <span style="font-size:18px">🏷️</span>
+        <div style="flex:1"><div style="font-weight:700;font-size:13.5px;color:var(--gold-soft)">เครื่องค้างสต็อกนาน</div><div style="font-size:12px;color:var(--muted);margin-top:2px">มือ 2 · iPhone 16 256GB ขาว (White) · 6557 · ค้าง 13 วัน</div></div>
+        
+      </div><div style="padding:12px 16px;border-bottom:1px solid var(--line);display:flex;gap:11px;opacity:.5">
+        <span style="font-size:18px">🏷️</span>
+        <div style="flex:1"><div style="font-weight:700;font-size:13.5px;color:var(--gold-soft)">เครื่องค้างสต็อกนาน</div><div style="font-size:12px;color:var(--muted);margin-top:2px">มือ 2 · iPhone 17 256GB ฟ้าหมอก (Mist Blue) · 6094 · ค้าง 11 วัน</div></div>
         
       </div></div>
     </div>
@@ -525,7 +611,7 @@
       </section>
 
       <!-- DASHBOARD -->
-      <section id="view-dashboard" class="hidden">
+      <section id="view-dashboard" class="">
         
         <div class="quick">
           <button onclick="openTxn(&#39;sell&#39;)"><span class="qi">🟢</span><div class="qt">ขายเครื่อง</div><div class="qs">ตัดสต็อก + ลงรายรับ</div></button>
@@ -542,10 +628,10 @@
           <button onclick="openMultiSell()"><span class="qi">🧾</span><div class="qt">ขายส่ง / หลายเครื่อง</div><div class="qs">หลายเครื่องในบิลเดียว</div></button>
         </div>
         <div class="kpi-row">
-          <div class="kpi"><div class="label">รายรับวันนี้</div><div class="val green" id="kpiIn">฿49,500</div></div>
-          <div class="kpi"><div class="label">รายจ่ายวันนี้</div><div class="val red" id="kpiOut">฿7,500</div></div>
-          <div class="kpi" data-admin-only="" style=""><div class="label">กำไรวันนี้</div><div class="val gold" id="kpiProfit">฿4,940</div></div>
-          <div class="kpi" data-admin-only="" style=""><div class="label">มูลค่าสต็อก (ต้นทุน)</div><div class="val blue" id="kpiStock">฿125,650</div></div>
+          <div class="kpi"><div class="label">รายรับวันนี้</div><div class="val green" id="kpiIn">฿0</div></div>
+          <div class="kpi"><div class="label">รายจ่ายวันนี้</div><div class="val red" id="kpiOut">฿0</div></div>
+          <div class="kpi" data-admin-only="" style=""><div class="label">กำไรวันนี้</div><div class="val gold" id="kpiProfit">฿0</div></div>
+          <div class="kpi" data-admin-only="" style=""><div class="label">มูลค่าสต็อก (ต้นทุน)</div><div class="val blue" id="kpiStock">฿318,254</div></div>
         </div>
         <div class="panel">
           <div class="panel-head">
@@ -560,12 +646,20 @@
             <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
               <div class="seg" id="ledgerFilter">
                 <button class="on" data-f="today">วันนี้</button>
-                <button data-f="week">7 วัน</button>
+                <button data-f="week" class="">7 วัน</button>
                 <button data-f="month">เดือนนี้</button>
                 <button data-f="all">ทั้งหมด</button>
+                <button data-f="custom">เลือกช่วง</button>
               </div>
               <button class="btn btn-closeout" onclick="openCloseout()">🧮 ปิดยอดวันนี้</button>
               <button class="btn btn-gold btn-sm" onclick="openTxn(&#39;etc&#39;)">+ บันทึกรายการ</button>
+            </div>
+          </div>
+          <div class="panel hidden" id="ledgerRangeBox" style="margin:0 0 14px">
+            <div class="field-row" style="align-items:end">
+              <div class="field" style="margin-bottom:0"><label>ตั้งแต่วันที่</label><input type="date" id="ledgerRangeFrom" class="acc-sel" style="width:100%"></div>
+              <div class="field" style="margin-bottom:0"><label>ถึงวันที่</label><input type="date" id="ledgerRangeTo" class="acc-sel" style="width:100%"></div>
+              <button class="btn btn-gold btn-sm" onclick="applyLedgerRange()" style="white-space:nowrap">ดูยอด</button>
             </div>
           </div>
           <div class="tablewrap">
@@ -575,49 +669,7 @@
                 <th class="num">เงินสดเข้า</th><th class="num">เงินสดออก</th><th class="num">สดคงเหลือ</th>
                 <th class="num">โอนเข้า</th><th class="num">โอนออก</th><th class="num">โอนคงเหลือ</th><th></th>
               </tr></thead>
-              <tbody><tr class="daystart"><td colspan="3">📅 29/06/26</td>
-        <td colspan="3" class="num" style="color:var(--gold-soft)">เริ่มสด: ฿1,330</td>
-        <td colspan="4" class="num" style="color:#6fa8dc">เริ่มโอน: -฿101,990</td></tr><tr class="row-buy">
-        <td style="color:var(--muted)">01:23</td>
-        <td>รับ มือ 2 · iPhone 13 128GB มิดไนท์ (Midnight) 2815</td><td><span class="tag tag-buy">รับเข้า</span></td>
-        <td class="num in"></td>
-        <td class="num out"></td>
-        <td class="num bal" style="color:var(--gold-soft)"></td>
-        <td class="num in"></td>
-        <td class="num out">฿7,500</td>
-        <td class="num bal" style="color:#6fa8dc">-฿109,490</td>
-        <td class="num"><button class="btn btn-danger btn-sm" onclick="voidTxn(&#39;mqy4aekcztnj&#39;)">ยกเลิก</button> <button class="btn btn-ghost btn-sm" onclick="deleteTxn(&#39;mqy4aekcztnj&#39;)" title="ลบถาวร">🗑️</button></td>
-      </tr><tr class="row-sell">
-        <td style="color:var(--muted)">02:10</td>
-        <td>ขาย มือ 2 · iPad pro 11นิ้ว gen3 128GB ดำ (Black) 0QV6</td><td><span class="tag tag-sell">ขาย</span></td>
-        <td class="num in"></td>
-        <td class="num out"></td>
-        <td class="num bal" style="color:var(--gold-soft)"></td>
-        <td class="num in">฿10,000</td>
-        <td class="num out"></td>
-        <td class="num bal" style="color:#6fa8dc">-฿99,490</td>
-        <td class="num"><button class="btn btn-danger btn-sm" onclick="voidTxn(&#39;mqy5zitflnql&#39;)">ยกเลิก</button> <button class="btn btn-ghost btn-sm" onclick="deleteTxn(&#39;mqy5zitflnql&#39;)" title="ลบถาวร">🗑️</button></td>
-      </tr><tr class="row-sell">
-        <td style="color:var(--muted)">02:13</td>
-        <td>ขาย มือ 2 · iPhone 14 Pro Max 256GB ทอง (Gold) 9925</td><td><span class="tag tag-sell">ขาย</span></td>
-        <td class="num in"></td>
-        <td class="num out"></td>
-        <td class="num bal" style="color:var(--gold-soft)"></td>
-        <td class="num in">฿17,000</td>
-        <td class="num out"></td>
-        <td class="num bal" style="color:#6fa8dc">-฿82,490</td>
-        <td class="num"><button class="btn btn-danger btn-sm" onclick="voidTxn(&#39;mqy63gbx3hhy&#39;)">ยกเลิก</button> <button class="btn btn-ghost btn-sm" onclick="deleteTxn(&#39;mqy63gbx3hhy&#39;)" title="ลบถาวร">🗑️</button></td>
-      </tr><tr class="row-sell">
-        <td style="color:var(--muted)">02:14</td>
-        <td>ขาย มือ 2 · iPhone 16 Plus 128GB ชมพู (Pink) 3965</td><td><span class="tag tag-sell">ขาย</span></td>
-        <td class="num in"></td>
-        <td class="num out"></td>
-        <td class="num bal" style="color:var(--gold-soft)"></td>
-        <td class="num in">฿22,500</td>
-        <td class="num out"></td>
-        <td class="num bal" style="color:#6fa8dc">-฿59,990</td>
-        <td class="num"><button class="btn btn-danger btn-sm" onclick="voidTxn(&#39;mqy64cf56dam&#39;)">ยกเลิก</button> <button class="btn btn-ghost btn-sm" onclick="deleteTxn(&#39;mqy64cf56dam&#39;)" title="ลบถาวร">🗑️</button></td>
-      </tr></tbody>
+              <tbody><tr><td colspan="10" class="empty"><div class="big">📒</div>ไม่มีรายการในช่วงนี้</td></tr></tbody>
             </table>
           </div>
         </div>
@@ -727,6 +779,9 @@
                 <button data-s="sold">ขายแล้ว</button>
                 <button data-s="all">ทั้งหมด</button>
               </div>
+              <select id="stockCatFilter" style="padding:7px 10px;border-radius:8px;background:var(--panel-2);border:1px solid var(--line);color:var(--text);font-size:13px">
+                <option value="">ทุกหมวดหมู่</option>
+              </select>
             </div>
             <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
               <input class="search" id="stockSearch" placeholder="ค้นหา รุ่น / IMEI…">
@@ -747,7 +802,7 @@
       </section>
 
       <!-- PAWN -->
-      <section id="view-pawn" class="">
+      <section id="view-pawn" class="hidden">
         <div class="kpi-row">
           <div class="kpi"><div class="label">เงินต้นรับฝากคงค้าง</div><div class="val gold" id="pwPrincipal">฿25,500</div></div>
           <div class="kpi"><div class="label">รายการที่ยังไม่ไถ่</div><div class="val blue" id="pwActive">10<span class="unit">รายการ</span></div></div>
@@ -764,6 +819,7 @@
               <div class="val gold" id="fundBal">฿74,500</div>
               <div style="font-size:11px;color:var(--muted);margin-top:4px">ทุนตั้งต้น <span id="fundCap">฿100,000</span> · ปล่อยอยู่ <span id="fundOut">฿25,500</span></div>
               <button class="btn btn-ghost btn-sm" style="margin-top:8px;width:100%" onclick="openWalletHistory(&#39;fund&#39;)">ดูประวัติกองทุน</button>
+              <button class="btn btn-ghost btn-sm" style="margin-top:6px;width:100%" onclick="adjustFund()" data-admin-only="">⚖️ ปรับยอดกองทุน</button>
             </div>
             <div class="kpi" style="border:1px solid rgba(59,167,118,.3)">
               <div class="label">💼 กระเป๋าร้าน (Owner)</div>
@@ -1060,18 +1116,41 @@
             <button class="btn btn-gold btn-sm" onclick="openWaitlistAdd()">+ เพิ่มรายการจอง</button>
           </div>
           <div class="seg" id="waitlistTabSeg" style="margin-bottom:14px">
-            <button class="on" data-tab="waiting" onclick="setWaitlistTab('waiting')" style="flex:1">⏳ รออยู่</button>
-            <button data-tab="done" onclick="setWaitlistTab('done')" style="flex:1">✓ เสร็จแล้ว</button>
+            <button class="on" data-tab="waiting" onclick="setWaitlistTab(&#39;waiting&#39;)" style="flex:1">⏳ รออยู่</button>
+            <button data-tab="done" onclick="setWaitlistTab(&#39;done&#39;)" style="flex:1">✓ เสร็จแล้ว</button>
           </div>
           <div id="waitlistList"></div>
         </div>
+      </section>
+
+      <!-- FINANCE (ไฟแนนซ์) -->
+      <section id="view-finance" class="hidden fin-easypay">
+        <div class="fin-toggle">
+          <button id="finBtnEasypay" class="on" onclick="setFinCompany('easypay')">🅴 EasyPay</button>
+          <button id="finBtnHiplus" onclick="setFinCompany('hiplus')">🅷 Hiplus</button>
+        </div>
+        <div class="fin-card" style="margin-bottom:14px">
+          <div class="field" style="margin-bottom:0">
+            <label>ราคาเครื่อง (บาท)</label>
+            <input type="number" id="fin_price" placeholder="เช่น 19900" oninput="renderFinance()">
+          </div>
+          <div id="finDownSel" style="display:none;margin-top:14px">
+            <label style="font-size:12.5px;color:var(--muted);display:block;margin-bottom:8px">% เงินดาวน์</label>
+            <div class="fin-chip-row" id="finDownChips"></div>
+          </div>
+          <div data-admin-only="" style="margin-top:14px">
+            <label style="font-size:12.5px;color:var(--muted);display:block;margin-bottom:8px">% ค่าคอมมิชชั่น (Admin เท่านั้น)</label>
+            <div class="fin-chip-row" id="finCommChips"></div>
+          </div>
+        </div>
+        <div class="fin-card" id="finResult"></div>
       </section>
 
       <!-- REPORT -->
       <section id="view-report" class="hidden">
         <div class="panel" style="margin-bottom:14px;border:1px solid rgba(212,175,55,.3)">
           <div class="panel-head"><h2>💾 สำรองข้อมูล (Backup)</h2></div>
-          <div id="backupInfo" style="font-size:13px;color:var(--muted);margin-bottom:12px">สำรองล่าสุด: <b>26/06/26 19:50 น.</b> · 41 รายการ</div>
+          <div id="backupInfo" style="font-size:13px;color:var(--muted);margin-bottom:12px">สำรองล่าสุด: <b>06/09/26 02:29 น.</b> · 715 รายการ</div>
           <div style="display:flex;gap:8px;flex-wrap:wrap">
             <button class="btn btn-gold btn-sm" onclick="manualBackup()">💾 สำรองทันที (ทับไฟล์เดิม)</button>
             <button class="btn btn-ghost btn-sm" onclick="downloadBackup()">📥 ดาวน์โหลดไฟล์ .json</button>
@@ -1102,38 +1181,47 @@
           <button class="btn btn-ghost btn-sm" onclick="printOfficialReport(&#39;cash&#39;)">💵 เงินสดส่งธนาคาร</button>
         </div>
         <div class="kpi-row">
-          <div class="kpi"><div class="label">ยอดขายรวม</div><div class="val gold" id="rpSales">฿161,110</div></div>
-          <div class="kpi"><div class="label">กำไรขั้นต้น</div><div class="val green" id="rpProfit">฿18,490</div></div>
-          <div class="kpi"><div class="label">ค่าใช้จ่ายร้าน</div><div class="val red" id="rpExpense">฿100</div></div>
-          <div class="kpi"><div class="label">กำไรสุทธิ</div><div class="val gold" id="rpNet">฿54,940</div></div>
+          <div class="kpi"><div class="label">ยอดขายรวม</div><div class="val gold" id="rpSales">฿84,900</div></div>
+          <div class="kpi"><div class="label">กำไรขั้นต้น</div><div class="val green" id="rpProfit">฿10,450</div></div>
+          <div class="kpi"><div class="label">ค่าใช้จ่ายร้าน</div><div class="val red" id="rpExpense">฿2,100</div></div>
+          <div class="kpi"><div class="label">กำไรสุทธิ</div><div class="val gold" id="rpNet">฿22,430</div></div>
         </div>
         <div class="kpi-row" style="grid-template-columns:repeat(3,1fr)">
-          <div class="kpi"><div class="label">ขายเครื่อง (จำนวน)</div><div class="val" id="rpSoldUnits">13<span class="unit">เครื่อง</span></div></div>
-          <div class="kpi"><div class="label">รายได้งานซ่อม</div><div class="val green" id="rpRepair">฿3,500</div></div>
-          <div class="kpi"><div class="label">เครื่องในสต็อก</div><div class="val blue" id="rpStockUnits">19<span class="unit">เครื่อง</span></div></div>
+          <div class="kpi"><div class="label">ขายเครื่อง (จำนวน)</div><div class="val" id="rpSoldUnits">4<span class="unit">เครื่อง</span></div></div>
+          <div class="kpi"><div class="label">รายได้งานซ่อม</div><div class="val green" id="rpRepair">฿21,400</div></div>
+          <div class="kpi"><div class="label">เครื่องในสต็อก</div><div class="val blue" id="rpStockUnits">32<span class="unit">เครื่อง</span></div></div>
         </div>
         <div class="panel">
           <div class="panel-head"><h2>แยกตามหมวด</h2></div>
           <div class="tablewrap" style="max-height:none">
             <table id="catTable"><thead><tr><th>หมวด</th><th class="num">รับ</th><th class="num">จ่าย</th><th class="num">สุทธิ</th></tr></thead><tbody><tr>
     <td>รับเครื่องเข้า</td><td class="num in">—</td>
-    <td class="num out">฿255,900</td>
-    <td class="num bal">-฿255,900</td></tr><tr>
-    <td>ขายสินค้า</td><td class="num in">฿161,110</td>
+    <td class="num out">฿132,350</td>
+    <td class="num bal">-฿132,350</td></tr><tr>
+    <td>ย้ายเงิน</td><td class="num in">฿60,200</td>
+    <td class="num out">฿60,200</td>
+    <td class="num bal">฿0</td></tr><tr>
+    <td>ขายสินค้า</td><td class="num in">฿84,900</td>
     <td class="num out">—</td>
-    <td class="num bal">฿161,110</td></tr><tr>
-    <td>อื่นๆ</td><td class="num in">฿59,440</td>
-    <td class="num out">฿27,060</td>
-    <td class="num bal">฿32,380</td></tr><tr>
-    <td>งานซ่อม</td><td class="num in">฿3,500</td>
+    <td class="num bal">฿84,900</td></tr><tr>
+    <td>รับฝาก/รับซาก</td><td class="num in">฿18,900</td>
+    <td class="num out">฿6,000</td>
+    <td class="num bal">฿12,900</td></tr><tr>
+    <td>งานซ่อม</td><td class="num in">฿21,400</td>
     <td class="num out">—</td>
-    <td class="num bal">฿3,500</td></tr><tr>
-    <td>อุปกรณ์เสริม</td><td class="num in">฿350</td>
+    <td class="num bal">฿21,400</td></tr><tr>
+    <td>ค่าใช้จ่ายส่วนตัว</td><td class="num in">—</td>
+    <td class="num out">฿8,500</td>
+    <td class="num bal">-฿8,500</td></tr><tr>
+    <td>ค่าใช้จ่ายร้าน</td><td class="num in">฿1,750</td>
+    <td class="num out">฿2,100</td>
+    <td class="num bal">-฿350</td></tr><tr>
+    <td>อุปกรณ์เสริม</td><td class="num in">฿400</td>
     <td class="num out">—</td>
-    <td class="num bal">฿350</td></tr><tr>
-    <td>ค่าใช้จ่ายร้าน</td><td class="num in">—</td>
-    <td class="num out">฿100</td>
-    <td class="num bal">-฿100</td></tr></tbody></table>
+    <td class="num bal">฿400</td></tr><tr>
+    <td>ดอกเบี้ยรับฝาก</td><td class="num in">฿220</td>
+    <td class="num out">—</td>
+    <td class="num bal">฿220</td></tr></tbody></table>
           </div>
         </div>
       </section>
@@ -1248,6 +1336,14 @@
   </div>
 </div>
 
+<!-- ===== PAWN INTEREST DETAIL MODAL (ดูที่มาของดอกเบี้ย + ประวัติตั๋ว) ===== -->
+<div class="overlay" id="pawnIntModal">
+  <div class="modal">
+    <div class="modal-head"><h3 id="pawnIntTitle">📊 รายละเอียดการคำนวณดอกเบี้ย</h3><button class="x" data-close="">×</button></div>
+    <div class="modal-body" id="pawnIntBody"></div>
+  </div>
+</div>
+
 <!-- ===== WITHDRAW MODAL ===== -->
 <div class="overlay" id="withdrawModal">
   <div class="modal">
@@ -1273,8 +1369,8 @@
     <div class="modal-head"><h3>💰 บันทึกรายการส่วนตัว</h3><button class="x" data-close="">×</button></div>
     <div class="modal-body">
       <div class="field-row" id="personalDirSeg" style="gap:8px;margin-bottom:14px">
-        <button type="button" class="btn btn-ghost" data-dir="out" style="flex:1" onclick="setPersonalDir('out')">🔴 รายจ่าย</button>
-        <button type="button" class="btn btn-ghost" data-dir="in" style="flex:1" onclick="setPersonalDir('in')">🟢 รายรับ</button>
+        <button type="button" class="btn btn-ghost" data-dir="out" style="flex:1" onclick="setPersonalDir(&#39;out&#39;)">🔴 รายจ่าย</button>
+        <button type="button" class="btn btn-ghost" data-dir="in" style="flex:1" onclick="setPersonalDir(&#39;in&#39;)">🟢 รายรับ</button>
       </div>
       <div class="field"><label>วันที่ *</label><input type="date" id="pt_date"></div>
       <div class="field"><label>รายการ *</label><input id="pt_desc" placeholder="เช่น ค่าแพมเพิสลูก"></div>
@@ -1360,6 +1456,7 @@
         <div class="field"><label>ประเมินราคา</label><input id="it_quote" placeholder="เช่น 1,500 - 2,000"></div>
         <div class="field"><label>วันที่นัดรับเครื่อง</label><input id="it_pickup" placeholder="เช่น 25 มิ.ย."></div>
       </div>
+      <div class="field"><label>หมายเหตุ (แสดงในใบรับซ่อม)</label><input id="it_note" placeholder="เช่น ลูกค้าขอเก็บข้อมูลไว้ก่อนซ่อม"></div>
     </div>
     <div class="modal-foot">
       <button class="btn btn-ghost" data-close="">ยกเลิก</button>
@@ -1391,6 +1488,7 @@
         <div class="field"><label>เงินมัดจำที่รับ (บาท) *</label><input type="number" id="dp_deposit" inputmode="numeric" placeholder="เช่น 5000"></div>
       </div>
       <div class="field"><label>วันที่กำหนดรับเครื่อง</label><input id="dp_pickup" placeholder="เช่น 29 มิ.ย. 2569"></div>
+      <div class="field"><label>หมายเหตุ (แสดงในใบมัดจำ)</label><input id="dp_note" placeholder="เช่น ต้องสั่งเครื่องจากสาขาอื่น"></div>
 
       <div style="background:var(--bg);border:1px solid var(--line);border-radius:11px;padding:13px;margin:4px 0 12px">
         <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-bottom:5px"><span>ยอดเต็มตัวเครื่อง</span><span id="dpSumFull" class="num">฿0</span></div>
@@ -1617,7 +1715,7 @@
   <div class="modal" style="max-width:640px">
     <div class="modal-head"><h3>🧾 ขายส่ง / หลายเครื่องในบิลเดียว</h3><button class="x" data-close="">×</button></div>
     <div class="modal-body">
-      <div class="field"><label>ชื่อลูกค้า / ร้าน *</label><div style="display:flex;gap:6px"><input id="ms_cust" placeholder="ชื่อร้าน/ลูกค้า" style="flex:1"><button type="button" class="btn btn-ghost btn-sm" style="white-space:nowrap" onclick="openCustLookup('ms_cust','ms_phone')">👥 เก่า</button></div></div>
+      <div class="field"><label>ชื่อลูกค้า / ร้าน *</label><div style="display:flex;gap:6px"><input id="ms_cust" placeholder="ชื่อร้าน/ลูกค้า" style="flex:1"><button type="button" class="btn btn-ghost btn-sm" style="white-space:nowrap" onclick="openCustLookup(&#39;ms_cust&#39;,&#39;ms_phone&#39;)">👥 เก่า</button></div></div>
       <div class="field"><label>เบอร์โทร *</label><input id="ms_phone" inputmode="tel" placeholder="08x-xxx-xxxx"></div>
       <div style="border-top:1px solid var(--line);margin:14px 0;padding-top:12px">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
@@ -1657,7 +1755,7 @@
   <div class="modal">
     <div class="modal-head"><h3>📋 จองเครื่อง — ลูกค้ารอเครื่อง</h3><button class="x" data-close="">×</button></div>
     <div class="modal-body">
-      <div class="field"><label>ชื่อลูกค้า *</label><div style="display:flex;gap:6px"><input id="wl_name" placeholder="ชื่อ-นามสกุล" style="flex:1"><button type="button" class="btn btn-ghost btn-sm" style="white-space:nowrap" onclick="openCustLookup('wl_name','wl_phone')">👥 เก่า</button></div></div>
+      <div class="field"><label>ชื่อลูกค้า *</label><div style="display:flex;gap:6px"><input id="wl_name" placeholder="ชื่อ-นามสกุล" style="flex:1"><button type="button" class="btn btn-ghost btn-sm" style="white-space:nowrap" onclick="openCustLookup(&#39;wl_name&#39;,&#39;wl_phone&#39;)">👥 เก่า</button></div></div>
       <div class="field"><label>เบอร์โทร *</label><input id="wl_phone" inputmode="tel" placeholder="08x-xxx-xxxx"></div>
       <div class="field"><label>รุ่นที่ตามหา *</label><input id="wl_model" placeholder="เช่น iPhone 13, iPad Gen 9"><div style="font-size:11.5px;color:var(--muted);margin-top:5px">💡 พิมพ์ชื่อรุ่นให้ตรง เช่น "iPhone 13" — พอรับเครื่องรุ่นนี้เข้า ระบบจะเด้งเตือนให้โทรหาลูกค้าทันที</div></div>
       <div class="field"><label>งบ / หมายเหตุ (ไม่บังคับ)</label><input id="wl_note" placeholder="เช่น งบ 12,000 · เอาสีดำ"></div>
@@ -1906,13 +2004,20 @@
             <div id="condOtherTags" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px"></div>
           </div>
           <div id="condPreview" style="font-size:12px;color:var(--gold-soft);margin-top:6px"></div>
+          <div class="field" style="margin-top:10px">
+            <label>ตำหนิเพิ่มเติม (หมายเหตุอิสระ แยกจากรายการตำหนิด้านบน)</label>
+            <input id="t_cond_note" placeholder="เช่น รอยขีดข่วนเล็กน้อยมุมจอ, สายชาร์จไม่แท้">
+          </div>
         </div>
 
         <!-- ที่ต้องซ่อม แบบเลือก (ไม่บังคับ) + ราคาอะไหล่ เฉพาะรับเครื่อง -->
         <div class="field hidden" id="fixChipsWrap">
           <label>ที่ต้องซ่อม / อะไหล่ที่ต้องเปลี่ยน (เลือกได้, ไม่บังคับ)</label>
           <div class="seg seg-wrap" id="fixChips"></div>
-          <div class="field hidden" id="fixOtherWrap" style="margin-top:8px"><input id="fix_other" placeholder="ระบุอาการอื่นๆ"></div>
+          <div class="field hidden" id="fixOtherWrap" style="margin-top:8px">
+            <div style="display:flex;gap:6px"><input id="fix_other" placeholder="พิมพ์รายการอะไหล่อื่นๆ แล้วกดเพิ่ม" style="flex:1"><button type="button" class="btn btn-green btn-sm" id="fixOtherAdd" style="white-space:nowrap">+ เพิ่ม</button></div>
+            <div id="fixOtherTagsBox" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px"></div>
+          </div>
           <div id="partsPriceWrap" style="margin-top:10px"></div>
         </div>
         <div id="sellerFields" class="hidden">
@@ -1964,6 +2069,7 @@
           </div>
         </div>
 
+        <div class="field"><label>หมายเหตุ (แสดงในใบเสร็จซ่อม)</label><input id="t_repair_note" placeholder="เช่น เปลี่ยนจอแท้ตามที่ลูกค้าขอ"></div>
         <div style="background:var(--bg);border:1px solid var(--line);border-radius:11px;padding:13px;margin:4px 0 12px">
           <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-bottom:5px"><span>ต้นทุนอะไหล่รวม</span><span id="rSumParts" class="num" style="color:var(--red)">฿0</span></div>
           <div style="display:flex;justify-content:space-between;font-size:15px;font-weight:800;border-top:1px solid var(--line);padding-top:8px;margin-bottom:5px"><span>ค่าซ่อมที่คิดลูกค้า</span><span id="rSumService" class="num gold" style="color:var(--gold-soft)">฿0</span></div>
@@ -2014,6 +2120,7 @@
             <div class="field" style="margin-bottom:0"><label id="custPhoneLabel">เบอร์โทร</label><input id="t_custphone" inputmode="tel" placeholder="08x-xxx-xxxx"></div>
           </div>
           <div class="field"><label>ตำหนิ / สภาพเครื่อง</label><input id="t_defect" placeholder="เช่น เลนส์กล้องลอก (เว้นว่าง = ไม่มีตำหนิ)"></div>
+          <div class="field"><label>หมายเหตุ (แสดงในใบเสร็จ)</label><input id="t_sale_note" placeholder="เช่น นัดมาเช็คเครื่องอีกครั้งใน 7 วัน"></div>
 
           <div class="acc-block">
             <div class="acc-title">📦 แพ็กเกจอุปกรณ์เสริม <span>(เลือกราคา · 0 = แถมฟรี/ไม่คิดเงิน)</span></div>
@@ -2088,9 +2195,9 @@
   </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.115.0/dist/umd/supabase.js"></script>
 <script>
 const $=id=>document.getElementById(id);
 /* ===================================================================
@@ -2233,7 +2340,7 @@ function initAuth(){
   }
 }
 
-function load(){try{const v=JSON.parse(localStorage.getItem(LS));if(v&&v.txns){if(!v.pawns)v.pawns=[];if(!v.sales)v.sales=[];if(!v.repairs)v.repairs=[];if(!v.intakes)v.intakes=[];if(!v.deposits)v.deposits=[];if(!v.loans)v.loans=[];if(!v.fund)v.fund={capital:100000,balance:100000,history:[]};if(!v.ownerWallet)v.ownerWallet={balance:0,history:[]};if(!v.partnerWallet)v.partnerWallet={balance:0,history:[]};if(!v.accSales)v.accSales=[];if(!v.claims)v.claims=[];if(!v.parts)v.parts=[];if(!v.notifRead)v.notifRead=[];if(!v.customers)v.customers=[];if(!v.settings)v.settings={};if(!v.waitlist)v.waitlist=[];ensurePersonalFields(v);return v}}catch(e){}return seed()}
+function load(){try{const v=JSON.parse(localStorage.getItem(LS));if(v&&v.txns){if(!v.pawns)v.pawns=[];if(!v.sales)v.sales=[];if(!v.repairs)v.repairs=[];if(!v.intakes)v.intakes=[];if(!v.deposits)v.deposits=[];if(!v.loans)v.loans=[];if(!v.fund)v.fund={capital:100000,balance:100000,history:[]};if(!v.ownerWallet)v.ownerWallet={balance:0,history:[]};if(!v.partnerWallet)v.partnerWallet={balance:0,history:[]};if(!v.accSales)v.accSales=[];if(!v.claims)v.claims=[];if(!v.parts)v.parts=[];if(!v.notifRead)v.notifRead=[];if(!v.customers)v.customers=[];if(!v.settings)v.settings={};if(!v.waitlist)v.waitlist=[];if(!v.deletionLog)v.deletionLog=[];ensurePersonalFields(v);return v}}catch(e){}return seed()}
 function persist(){localStorage.setItem(LS,JSON.stringify(DB));refreshTop();autoBackupCheck();cloudPushDebounced()}
 
 /* ===== CLOUD SYNC (Supabase) ===== */
@@ -2284,7 +2391,7 @@ function ensureFields(){
   if(!v.fund)v.fund={capital:100000,balance:100000,history:[]};
   if(!v.ownerWallet)v.ownerWallet={balance:0,history:[]};
   if(!v.partnerWallet)v.partnerWallet={balance:0,history:[]};
-  if(!v.accSales)v.accSales=[];if(!v.claims)v.claims=[];if(!v.parts)v.parts=[];if(!v.notifRead)v.notifRead=[];if(!v.customers)v.customers=[];if(!v.settings)v.settings={};if(!v.waitlist)v.waitlist=[];
+  if(!v.accSales)v.accSales=[];if(!v.claims)v.claims=[];if(!v.parts)v.parts=[];if(!v.notifRead)v.notifRead=[];if(!v.customers)v.customers=[];if(!v.settings)v.settings={};if(!v.waitlist)v.waitlist=[];if(!v.deletionLog)v.deletionLog=[];
   ensurePersonalFields(v);
 }
 
@@ -2512,13 +2619,13 @@ function refreshTop(){
 }
 
 /* ---------- NAV ---------- */
-const titles={dashboard:'แดชบอร์ด',ledger:'รายการล่าสุด',stock:'สต็อกสินค้า',pawn:'ระบบรับฝาก',customers:'ลูกค้า',report:'สรุปยอด',personal:'บัญชีส่วนตัว'};
+const titles={dashboard:'แดชบอร์ด',ledger:'รายการล่าสุด',stock:'สต็อกสินค้า',pawn:'ระบบรับฝาก',customers:'ลูกค้า',report:'สรุปยอด',personal:'บัญชีส่วนตัว',waitlist:'จองเครื่อง',finance:'ไฟแนนซ์'};
 let curView='dashboard';
 function go(v){
   curView=v;
   document.getElementById('view-search').classList.add('hidden');
   document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===v));
-  ['dashboard','ledger','stock','pawn','customers','waitlist','report','personal'].forEach(x=>document.getElementById('view-'+x).classList.toggle('hidden',x!==v));
+  ['dashboard','ledger','stock','pawn','customers','waitlist','report','personal','finance'].forEach(x=>document.getElementById('view-'+x).classList.toggle('hidden',x!==v));
   document.getElementById('viewTitle').textContent=titles[v];
   renderCurrentView();
 }
@@ -2532,6 +2639,7 @@ function renderCurrentView(){
   if(v==='waitlist')renderWaitlist();
   if(v==='report'){renderReport();renderBackupPanel();}
   if(v==='personal')renderPersonal();
+  if(v==='finance')renderFinance();
 }
 let waitlistTab='waiting';
 /* ===== MULTI-SELL / ขายส่งหลายเครื่องในบิลเดียว ===== */
@@ -2769,6 +2877,65 @@ function renderWaitlist(){
         </div>
       </div>
     </div>`).join('');
+}
+/* ===================================================================
+   เมนูไฟแนนซ์ — คำนวณเรทผ่อน EasyPay / Hiplus ในตัวระบบ (ไม่ต้องเปิดลิงก์นอก)
+   สูตรยืนยันแม่นยำจากทางร้าน:
+   - EasyPay: ดาวน์คงที่ 25% ทุกงวด ตัวคูณดอกเบี้ยผูกกับจำนวนงวดเท่านั้น
+   - Hiplus: %ดาวน์เลือกได้อิสระ (25-50%) ตัวคูณดอกเบี้ยผูกกับจำนวนงวดเท่านั้น (ไม่ขึ้นกับ%ดาวน์)
+   ค่าคอมมิชชั่น = ทุนเช่าซื้อ × %คอมมิชชั่นที่เลือก (Admin เท่านั้นที่เห็น, Staff ไม่เห็น)
+   =================================================================== */
+const FIN_PERIODS=[3,6,8,10,12,15];
+const FIN_MULT_EASYPAY={3:1.54,6:1.84,8:1.96,10:2.00,12:2.10,15:2.22};
+const FIN_MULT_HIPLUS={3:1.5292,6:1.9274,8:1.9988,10:2.0760,12:2.1526,15:2.2770};
+const FIN_DOWN_OPTS_HIPLUS=[25,30,35,40,45,50];
+const FIN_COMM_OPTS=[10,15,20,25,30];
+let finCompany='easypay', finDownPct=25, finCommPct=15;
+function finRoundUp10(x){return Math.ceil(x/10)*10}
+window.setFinCompany=(c)=>{
+  finCompany=c;
+  if(c==='easypay')finDownPct=25; else if(finDownPct===25)finDownPct=25; // hiplus เริ่มที่ 25% เป็นค่าเริ่มต้นได้เช่นกัน แต่เลือกเปลี่ยนได้
+  document.getElementById('view-finance').classList.toggle('fin-easypay',c==='easypay');
+  document.getElementById('view-finance').classList.toggle('fin-hiplus',c==='hiplus');
+  document.getElementById('finBtnEasypay').classList.toggle('on',c==='easypay');
+  document.getElementById('finBtnHiplus').classList.toggle('on',c==='hiplus');
+  document.getElementById('finDownSel').style.display=c==='hiplus'?'':'none';
+  renderFinance();
+};
+window.setFinDown=(p)=>{finDownPct=p;renderFinance();};
+window.setFinComm=(p)=>{finCommPct=p;renderFinance();};
+function renderFinance(){
+  const priceEl=$('fin_price');if(!priceEl)return;
+  // สร้างชิปเลือก % ดาวน์ (Hiplus) และ % คอมมิชชั่น (Admin) ถ้ายังไม่เคยสร้าง/ต้องอัปเดตสถานะ on
+  $('finDownChips').innerHTML=FIN_DOWN_OPTS_HIPLUS.map(p=>`<button class="fin-chip ${p===finDownPct?'on':''}" onclick="setFinDown(${p})">${p}%</button>`).join('');
+  $('finCommChips').innerHTML=FIN_COMM_OPTS.map(p=>`<button class="fin-chip ${p===finCommPct?'on':''}" onclick="setFinComm(${p})">${p}%</button>`).join('');
+  const price=+priceEl.value||0;
+  const box=$('finResult');
+  if(price<=0){
+    box.innerHTML='<div class="empty" style="padding:20px 0"><div class="big">💳</div>ใส่ราคาเครื่องเพื่อคำนวณยอดผ่อน</div>';
+    return;
+  }
+  const downPct=finCompany==='easypay'?25:finDownPct;
+  const mult=finCompany==='easypay'?FIN_MULT_EASYPAY:FIN_MULT_HIPLUS;
+  const down=Math.round(price*downPct/100);
+  const principal=price-down; // ทุนเช่าซื้อ (ยอดจัด)
+  const rows=FIN_PERIODS.map(p=>{
+    const monthly=finRoundUp10(principal*mult[p]/p);
+    return {p,monthly,total:down+monthly*p};
+  });
+  const commission=Math.round(principal*finCommPct/100);
+  box.innerHTML=`
+    <div class="fin-price-label">ราคาขายสด</div>
+    <div class="fin-price">${baht(price)}</div>
+    <div class="fin-row"><span style="color:var(--muted)">เงินดาวน์ (${downPct}%)</span><span style="font-weight:800;font-size:19px;color:var(--fin-c1)">${baht(down)}</span></div>
+    <div class="fin-row" style="border-bottom:none;padding-bottom:6px"><span style="color:var(--muted)">ทุนเช่าซื้อ (ยอดจัด)</span><span style="font-weight:700">${baht(principal)}</span></div>
+    <div style="margin-top:10px;margin-bottom:6px;font-size:12.5px;color:var(--muted)">ตารางผ่อนชำระ</div>
+    ${rows.map(r=>`<div class="fin-tbl-row"><span class="p">${r.p} เดือน</span><span class="m">${baht(r.monthly)}<span style="font-size:11px;font-weight:600;color:var(--muted)">/เดือน</span></span></div>`).join('')}
+    <div style="font-size:11px;color:var(--muted);margin-top:12px;line-height:1.6">ยอดผ่อนคำนวณจากอัตราอ้างอิงของไฟแนนซ์ กรุณายืนยันยอดสุดท้ายกับไฟแนนซ์ก่อนปิดการขาย</div>
+    <div data-admin-only="" style="margin-top:14px;padding-top:14px;border-top:1px dashed var(--line)">
+      <div class="fin-row" style="border-bottom:none"><span style="color:var(--muted)">ค่าคอมมิชชั่น (${finCommPct}% ของทุนเช่าซื้อ)</span><span style="font-weight:800;font-size:18px;color:var(--gold-soft)">${baht(commission)}</span></div>
+    </div>`;
+  document.querySelectorAll('[data-admin-only]').forEach(el=>{el.style.display=currentRole==='admin'?'':'none'});
 }
 async function cloudSync(showMsg){
   if(!sbReady||!sbUser)return;
@@ -3086,15 +3253,17 @@ window.exportCustomersPDF=()=>{
 /* ---------- DATE HELPERS ---------- */
 function sameDay(iso,d){return new Date(iso).toDateString()===d.toDateString()}
 let customRange={from:null,to:null};
-function inRange(iso,f){
+let ledgerCustomRange={from:null,to:null};
+function inRange(iso,f,customR){
   const x=new Date(iso),n=new Date();
   if(f==='today')return sameDay(iso,n);
   if(f==='week'){const w=new Date(n);w.setDate(n.getDate()-6);w.setHours(0,0,0,0);return x>=w}
   if(f==='month')return x.getMonth()===n.getMonth()&&x.getFullYear()===n.getFullYear();
   if(f==='custom'){
-    if(!customRange.from||!customRange.to)return true;
-    const a=new Date(customRange.from);a.setHours(0,0,0,0);
-    const b=new Date(customRange.to);b.setHours(23,59,59,999);
+    const cr=customR||customRange;
+    if(!cr.from||!cr.to)return true;
+    const a=new Date(cr.from);a.setHours(0,0,0,0);
+    const b=new Date(cr.to);b.setHours(23,59,59,999);
     return x>=a&&x<=b;
   }
   return true;
@@ -3114,10 +3283,10 @@ function rowClass(t){return t==='sell'?'row-sell':t==='buy'?'row-buy':'row-etc'}
 /* ---------- DASHBOARD ---------- */
 function renderDash(){
   const n=new Date();
-  const today=DB.txns.filter(e=>!e.void&&sameDay(e.ts,n));
-  const inSum=today.reduce((s,e)=>s+e.in,0);
-  const outSum=today.reduce((s,e)=>s+e.out,0);
-  const profit=today.reduce((s,e)=>{
+  const rangeTx=DB.txns.filter(e=>!e.void&&inRange(e.ts,ledgerF,ledgerCustomRange));
+  const inSum=rangeTx.reduce((s,e)=>s+e.in,0);
+  const outSum=rangeTx.reduce((s,e)=>s+e.out,0);
+  const profit=rangeTx.reduce((s,e)=>{
     if(e.type==='sell')return s+(e.in-(e.cost||0));
     if(e.type==='repair'||e.type==='etc')return s+(e.in-e.out);
     return s;
@@ -3153,7 +3322,7 @@ function renderLedger(){
   for(const e of all){
     const dCash=e.void?0:txCash(e), dBank=e.void?0:txBank(e);
     cash+=dCash; bank+=dBank;
-    if(!inRange(e.ts,ledgerF))continue;
+    if(!inRange(e.ts,ledgerF,ledgerCustomRange))continue;
     const dk=new Date(e.ts).toDateString();
     if(dk!==lastDay){
       lastDay=dk;
@@ -3174,7 +3343,7 @@ function renderLedger(){
         <td class="num" style="text-decoration:line-through;color:var(--muted)">${bIn>0?baht(bIn):''}</td>
         <td class="num" style="text-decoration:line-through;color:var(--muted)">${bOut>0?baht(bOut):''}</td>
         <td class="num" style="color:#6fa8dc">${(bIn||bOut)?baht(bank):''}</td>
-        <td class="num">${currentRole==='admin'?`<button class="btn btn-danger btn-sm" onclick="deleteTxn('${e.id}')">🗑️ ลบถาวร</button>`:'<span style="font-size:11px;color:var(--muted)">—</span>'}</td>
+        <td class="num">${currentRole==='admin'?`<button class="btn btn-danger btn-sm" onclick="deleteTxn('${e.id}')">🗑️ ลบถาวร</button>`:'<span style="font-size:11px;color:var(--muted)">—</span>'} <button class="btn btn-ghost btn-sm" onclick="reprintDoc('${e.id}')" title="พิมพ์ซ้ำ">🖨️</button></td>
       </tr>`);
     } else {
       rows.push(`<tr class="${rowClass(e.type)}">
@@ -3186,7 +3355,11 @@ function renderLedger(){
         <td class="num in">${bIn>0?baht(bIn):''}</td>
         <td class="num out">${bOut>0?baht(bOut):''}</td>
         <td class="num bal" style="color:#6fa8dc">${(bIn||bOut)?baht(bank):''}</td>
-        <td class="num"><button class="btn btn-danger btn-sm" onclick="voidTxn('${e.id}')">ยกเลิก</button>${currentRole==='admin'?` <button class="btn btn-ghost btn-sm" onclick="deleteTxn('${e.id}')" title="ลบถาวร">🗑️</button>`:''}</td>
+        <td class="num" style="white-space:nowrap">
+          <button class="btn btn-danger btn-sm" onclick="voidTxn('${e.id}')">ยกเลิก</button>
+          ${currentRole==='admin'?` <button class="btn btn-ghost btn-sm" onclick="deleteTxn('${e.id}')" title="ลบถาวร">🗑️</button> <button class="btn btn-ghost btn-sm" onclick="editTxn('${e.id}')" title="แก้ไข (Admin)">✏️</button>`:''}
+          <button class="btn btn-ghost btn-sm" onclick="reprintDoc('${e.id}')" title="พิมพ์ซ้ำ">🖨️</button>
+        </td>
       </tr>`);
     }
   }
@@ -3194,38 +3367,159 @@ function renderLedger(){
 }
 document.querySelectorAll('#ledgerFilter button').forEach(b=>b.onclick=()=>{
   document.querySelectorAll('#ledgerFilter button').forEach(x=>x.classList.remove('on'));
-  b.classList.add('on');ledgerF=b.dataset.f;renderLedger();
+  b.classList.add('on');ledgerF=b.dataset.f;
+  show('ledgerRangeBox',ledgerF==='custom');
+  if(ledgerF!=='custom')renderDash();
 });
+window.applyLedgerRange=()=>{
+  const f=$('ledgerRangeFrom').value,t=$('ledgerRangeTo').value;
+  if(!f||!t){alert('เลือกวันที่เริ่มและสิ้นสุด');return}
+  if(f>t){alert('วันที่เริ่มต้องไม่เกินวันที่สิ้นสุด');return}
+  ledgerCustomRange={from:f,to:t};ledgerF='custom';renderDash();
+};
 window.voidTxn=id=>{
   const t=DB.txns.find(x=>x.id===id);
   if(!t)return;
-  if(!confirm('ยกเลิกรายการนี้?\nรายการจะถูกขีดฆ่าและไม่นับยอด แต่ยังเก็บไว้ในประวัติ (ลบถาวรไม่ได้)\n\nถ้าเป็นการรับ/ขายเครื่อง สต็อกจะถูกย้อนกลับ'))return;
+  const hasWalletMoves = t.walletMoves && t.walletMoves.length && !t.walletMoveReversed;
+  const isPawnCreate = t.pawnAction==='create' && t.pawnId && !t.pawnMoveReversed;
+  let pawnRef=null;
+  let msg='ยกเลิกรายการนี้?\nรายการจะถูกขีดฆ่าและไม่นับยอด แต่ยังเก็บไว้ในประวัติ (ลบถาวรไม่ได้)\n\nถ้าเป็นการรับ/ขายเครื่อง สต็อกจะถูกย้อนกลับ';
+  if(hasWalletMoves){
+    const lines=t.walletMoves.map(m=>(m.which==='owner'?'กระเป๋าร้าน':'กระเป๋าหุ้นส่วน')+' -'+baht(m.amount)).join('\n');
+    msg+='\n\n⚠️ รายการนี้เคยจ่ายเงินเข้ากระเป๋าไปแล้ว จะหักคืนอัตโนมัติ:\n'+lines+'\n\n(กองทุนและสถานะตั๋วจำนำจะไม่เปลี่ยนแปลง)';
+  }
+  if(isPawnCreate){
+    pawnRef=DB.pawns.find(x=>x.id===t.pawnId);
+    if(pawnRef){
+      msg+='\n\n⚠️ รายการนี้คือการปล่อยรับฝากตั๋ว '+pawnRef.no+' — ยกเลิกแล้วเงินต้น '+baht(pawnRef.principal)+' จะกลับเข้ากองทุนอัตโนมัติ และตั๋วจะถูกปิดเป็น "ยกเลิก"';
+      if(pawnRef.status!=='active'){
+        msg+='\n\n🔴 ตั๋วนี้ไม่ได้อยู่ในสถานะ "จำนำอยู่" แล้ว (สถานะปัจจุบัน: '+pawnRef.status+') — โปรดเช็คให้แน่ใจก่อนว่าต้องการยกเลิกจริง อาจมีการไถ่ถอน/หลุดจำนำไปแล้ว';
+      }
+    }
+  }
+  if(!confirm(msg))return;
+  const reason=prompt('เหตุผลที่ยกเลิกรายการนี้ (บังคับกรอกเพื่อความโปร่งใสกับหุ้นส่วน)\nเช่น "ลูกค้าขอยกเลิก", "กดผิดรายการ"','');
+  if(!reason||!reason.trim()){alert('ต้องกรอกเหตุผลก่อนยกเลิกรายการ');return}
   // ย้อนสต็อก
   if(t.stockId){
     const st=DB.stock.find(s=>s.id===t.stockId);
     if(st){
-      if(t.type==='buy'){st.status='voided';st.note=(st.note||'')+' [รายการรับถูกยกเลิก]';}
+      if(t.type==='buy'){st.status='voided';st.note=(st.note||'')+' [รายการรับถูกยกเลิก: '+reason.trim()+']';}
       else if(t.type==='sell'){st.status='instock';st.dateSold=null;st.priceSold=null;}
     }
   }
-  t.void=true;t.voidTs=nowISO();
-  persist();renderLedger();
+  // หักคืนเงินกระเป๋า owner/partner ถ้ารายการนี้เคยจ่ายเข้ากระเป๋าไปแล้ว (เช่น ต่อดอกเบี้ย/ไถ่ถอน/หลุดจำนำ)
+  if(hasWalletMoves){
+    const ref=t.pawnNo?('['+t.pawnNo+']'):('['+(t.desc||t.id)+']');
+    t.walletMoves.forEach(m=>{
+      walletAdd(m.which,-m.amount,'หักคืนจากการยกเลิก','หักคืนจากการยกเลิกรายการ '+ref+' — เหตุผล: '+reason.trim());
+    });
+    t.walletMoveReversed=true;
+  }
+  // ยกเลิกรับฝาก/จำนำ → คืนเงินต้นเข้ากองทุนอัตโนมัติ + ปิดตั๋ว
+  if(isPawnCreate && pawnRef){
+    fundMove(pawnRef.principal,'ยกเลิกรับฝาก-คืนเงินต้น','['+pawnRef.no+'] '+pawnRef.item+' — เหตุผล: '+reason.trim());
+    pawnRef.status='voided';
+    pawnRef.history=pawnRef.history||[];pawnRef.history.push({ts:nowISO(),type:'ยกเลิกรับฝาก (จากบัญชีรายวัน)',reason:reason.trim()});
+    t.pawnMoveReversed=true;
+  }
+  t.void=true;t.voidTs=nowISO();t.voidReason=reason.trim();
+  persist();renderLedger();renderWalletCards();renderPawn();
 };
 /* ลบรายการถาวร (เฉพาะ Admin) — ย้อนสต็อกถ้ายังไม่เคยย้อน แล้วลบทิ้งจริง */
 window.deleteTxn=id=>{
   if(currentRole!=='admin'){alert('เฉพาะผู้ดูแลระบบ (Admin)');return}
   const t=DB.txns.find(x=>x.id===id);if(!t)return;
   if(!confirm('⚠️ ลบรายการนี้ถาวร?\n\n"'+(t.desc||'')+'"\n\n• ลบออกจากระบบจริง กู้คืนไม่ได้\n• ถ้าเป็นรายการที่ยังไม่ถูกยกเลิก ระบบจะย้อนสต็อกให้\n\nแนะนำ: ใช้ "ยกเลิก" แทนถ้าต้องการเก็บประวัติไว้'))return;
+  const reason=prompt('เหตุผลที่ลบรายการนี้ถาวร (บังคับกรอกเพื่อความโปร่งใสกับหุ้นส่วน)','');
+  if(!reason||!reason.trim()){alert('ต้องกรอกเหตุผลก่อนลบรายการ');return}
   if(!t.void&&t.stockId){
     const st=DB.stock.find(s=>s.id===t.stockId);
     if(st){
-      if(t.type==='buy'){st.status='voided';st.note=(st.note||'')+' [รายการรับถูกลบ]';}
+      if(t.type==='buy'){st.status='voided';st.note=(st.note||'')+' [รายการรับถูกลบ: '+reason.trim()+']';}
       else if(t.type==='sell'){st.status='instock';st.dateSold=null;st.priceSold=null;}
     }
   }
+  // หักคืนเงินกระเป๋า owner/partner ถ้ารายการนี้เคยจ่ายเข้ากระเป๋าไปแล้วและยังไม่เคยถูกหักคืนตอนยกเลิก
+  if(!t.void && t.walletMoves && t.walletMoves.length && !t.walletMoveReversed){
+    const ref=t.pawnNo?('['+t.pawnNo+']'):('['+(t.desc||t.id)+']');
+    t.walletMoves.forEach(m=>{
+      walletAdd(m.which,-m.amount,'หักคืนจากการลบรายการ','หักคืนจากการลบรายการ '+ref+' — เหตุผล: '+reason.trim());
+    });
+  }
+  // ยกเลิกรับฝาก/จำนำ (ลบถาวร) → คืนเงินต้นเข้ากองทุนอัตโนมัติ + ปิดตั๋ว ถ้ายังไม่เคยคืนตอนยกเลิก
+  if(!t.void && t.pawnAction==='create' && t.pawnId && !t.pawnMoveReversed){
+    const p=DB.pawns.find(x=>x.id===t.pawnId);
+    if(p){
+      fundMove(p.principal,'ยกเลิกรับฝาก-คืนเงินต้น (ลบรายการ)','['+p.no+'] '+p.item+' — เหตุผล: '+reason.trim());
+      p.status='voided';
+      p.history=p.history||[];p.history.push({ts:nowISO(),type:'ยกเลิกรับฝาก (ลบรายการถาวร)',reason:reason.trim()});
+    }
+  }
+  DB.deletionLog=DB.deletionLog||[];
+  DB.deletionLog.push({ts:nowISO(),desc:t.desc||'',amount:t.in||t.out||0,reason:reason.trim(),by:currentRole});
   DB.txns=DB.txns.filter(x=>x.id!==id);
-  persist();renderLedger();refreshTop();
+  persist();renderLedger();refreshTop();renderWalletCards();renderPawn();
   alert('ลบรายการเรียบร้อย ✓');
+};
+
+/* แก้ไขรายการบัญชีรายวัน (สลับสด↔โอน / แก้คำอธิบาย) — Admin เท่านั้น
+   บังคับเหตุผล + ลิงก์ไปหน้าสต็อกให้ตรวจสอบทันทีถ้ารายการนี้ผูกกับสต็อก */
+window.editTxn=(id)=>{
+  if(currentRole!=='admin'){alert('เฉพาะผู้ดูแลระบบ (Admin)');return}
+  const t=DB.txns.find(x=>x.id===id);if(!t)return;
+  if(t.void){alert('รายการนี้ถูกยกเลิกแล้ว แก้ไขไม่ได้');return}
+  if(t.method==='split'){alert('รายการแบบผสม (สด+โอน) สลับช่องทางตรงๆ ไม่ได้ — ถ้ากรอกผิดให้ยกเลิกรายการนี้แล้วสร้างใหม่แทน');return}
+  const methodLabel={cash:'เงินสด',bank:'เงินโอน'};
+  const otherMethod=t.method==='cash'?'bank':'cash';
+  const wantSwitch=confirm('แก้ไขรายการนี้:\n"'+t.desc+'"\n\nสลับช่องทางจาก "'+(methodLabel[t.method]||t.method)+'" เป็น "'+methodLabel[otherMethod]+'"?\n\n(กด "ตกลง" เพื่อสลับ หรือ "ยกเลิก" ถ้าจะแก้แค่คำอธิบายอย่างเดียวโดยไม่สลับช่องทาง)');
+  const newDesc=prompt('แก้ไขคำอธิบายรายการ (เว้นว่างไว้ถ้าไม่แก้)',t.desc||'');
+  if(newDesc===null)return;
+  const reason=prompt('เหตุผลที่แก้ไขรายการนี้ (บังคับกรอกเพื่อความโปร่งใสกับหุ้นส่วน)','');
+  if(!reason||!reason.trim()){alert('ต้องกรอกเหตุผลก่อนบันทึกการแก้ไข');return}
+  const oldMethod=t.method,oldDesc=t.desc;
+  if(wantSwitch)t.method=otherMethod;
+  if(newDesc.trim())t.desc=newDesc.trim();
+  t.editHistory=t.editHistory||[];
+  t.editHistory.push({ts:nowISO(),oldMethod,newMethod:t.method,oldDesc,newDesc:t.desc,reason:reason.trim()});
+  persist();renderLedger();refreshTop();
+  alert('แก้ไขรายการเรียบร้อย ✓');
+  if(t.stockId){
+    if(confirm('รายการนี้ผูกกับสต็อกสินค้า — ไปที่หน้าสต็อกเพื่อตรวจสอบข้อมูลให้ตรงกันตอนนี้เลยไหม?')){
+      go('stock');
+      setTimeout(()=>openStockDetail(t.stockId),100);
+    }
+  }
+};
+
+/* พิมพ์ซ้ำเอกสารจากรายการในบัญชีรายวัน — ใช้ได้ทุกระดับ (Admin+Staff) เพราะแค่พิมพ์ไม่กระทบข้อมูล
+   หาเอกสารต้นทางที่ถูกต้องจากลิงก์ในรายการ (saleId/pawnId/stockId/repairId/depositId) */
+window.reprintDoc=(id)=>{
+  const t=DB.txns.find(x=>x.id===id);if(!t)return;
+  if(t.saleId){printReceipt(t.saleId,false);return}
+  if(t.type==='sell'&&t.stockId){
+    const tx2=DB.txns.find(x=>x.stockId===t.stockId&&x.type==='sell'&&x.saleId);
+    if(tx2){printReceipt(tx2.saleId,false);return}
+  }
+  if(t.repairId){
+    const r=(DB.repairs||[]).find(x=>x.id===t.repairId);
+    if(r){printRepairReceipt(r,false);return}
+  }
+  if(t.depositId){printDeposit(t.depositId,false);return}
+  if(t.pawnAction==='create'&&t.pawnId){printPawn(t.pawnId);return}
+  if(t.pawnId&&/ไถ่ถอน/.test(t.desc||'')){printRedeemReceipt(t.pawnId);return}
+  if(t.pawnId){printPawn(t.pawnId);return}
+  if(t.type==='buy'&&t.stockId){
+    const st=DB.stock.find(x=>x.id===t.stockId);
+    if(st){
+      alert('⚠️ นี่คือรายการรับซื้อเก่า ระบบไม่ได้เก็บสัญญาต้นฉบับแบบเต็มไว้ (เช่น ชื่อ/เลขบัตรผู้ขาย) จะพิมพ์ซ้ำโดยใช้ข้อมูลเท่าที่มีในสต็อกแทน กรุณาเติมข้อมูลผู้ขายเองก่อนให้ลูกค้าเซ็น');
+      printBuyContract({ts:t.ts,name:st.name,imei:st.imei,batt:st.batt,fix:st.fix,grade:st.grade,
+        condition:st.condition,condNoteExtra:st.condNoteExtra,warrCenter:st.warrCenter,
+        costBuy:st.costBuy,costExtra:st.costExtra,method:t.method,split:null,seller:'',sellerphone:''},false);
+      return;
+    }
+  }
+  alert('ไม่พบเอกสารต้นทางสำหรับรายการนี้ (อาจเป็นรายการที่ไม่มีเอกสารพิมพ์ เช่น ค่าใช้จ่ายทั่วไป)');
 };
 
 /* ---------- บัญชีส่วนตัว (Personal Ledger) ---------- */
@@ -3304,7 +3598,17 @@ let stockF='instock';
 function renderStock(q=''){
   const tb=document.querySelector('#stockTable tbody');
   q=q.toLowerCase();
+  // เติมตัวเลือกหมวดหมู่จากข้อมูลจริงในสต็อก (เฉพาะที่มีค่า category)
+  const catSel=$('stockCatFilter');
+  if(catSel){
+    const cats=[...new Set(DB.stock.map(i=>i.category).filter(Boolean))].sort();
+    const curVal=catSel.value;
+    catSel.innerHTML='<option value="">ทุกหมวดหมู่</option>'+cats.map(c=>`<option value="${c}">${c}</option>`).join('');
+    catSel.value=cats.includes(curVal)?curVal:'';
+  }
+  const catF=catSel?catSel.value:'';
   let rows=DB.stock.filter(i=>stockF==='all'||i.status===stockF)
+    .filter(i=>!catF||i.category===catF)
     .filter(i=>!q||i.name.toLowerCase().includes(q)||(i.imei||'').toLowerCase().includes(q))
     .sort((a,b)=>(b.dateIn||'').localeCompare(a.dateIn||''));
   tb.innerHTML=rows.length?rows.map(i=>{
@@ -3336,6 +3640,7 @@ function renderStock(q=''){
   }).join(''):`<tr><td colspan="13" class="empty"><div class="big">📦</div>ไม่มีสินค้า</td></tr>`;
 }
 document.getElementById('stockSearch').oninput=e=>renderStock(e.target.value);
+if($('stockCatFilter'))$('stockCatFilter').onchange=()=>renderStock(document.getElementById('stockSearch').value);
 document.querySelectorAll('#stockFilter button').forEach(b=>b.onclick=()=>{
   document.querySelectorAll('#stockFilter button').forEach(x=>x.classList.remove('on'));
   b.classList.add('on');stockF=b.dataset.s;renderStock(document.getElementById('stockSearch').value);
@@ -3365,6 +3670,15 @@ window.openStockDetail=(id)=>{
     $('stockDetailFoot').innerHTML='<button class="btn btn-ghost" data-close>ปิด</button>';
   } else {
     $('sdTitle').textContent='✏️ แก้ไขข้อมูลเครื่อง';
+    // แปลง partPrices (object) เป็นรายการ [ชื่อ,ราคา] ที่แก้ทีละบรรทัดได้ — ถ้าเป็นเครื่องเก่าที่ไม่มี partPrices
+    // แต่มี costExtra ค้างอยู่ ให้ตั้งเป็นแถวเดียว "ทุนเพิ่ม (เดิม)" ก่อน กันข้อมูลหาย
+    if(i.partPrices&&Object.keys(i.partPrices).length){
+      sdParts=Object.entries(i.partPrices).map(([name,price])=>({name,price:+price||0}));
+    } else if(i.costExtra>0){
+      sdParts=[{name:'ทุนเพิ่ม (เดิม)',price:i.costExtra}];
+    } else {
+      sdParts=[];
+    }
     $('stockDetailBody').innerHTML=`
       <div style="font-size:11.5px;color:var(--muted);margin-bottom:12px">📅 รับเข้า ${fmtDate(i.dateIn)} ${fmtTime(i.dateIn)} น. · สถานะ ${statusTxt}</div>
       <div class="field"><label>รุ่น / รายละเอียด</label><input id="sd_name" value="${(i.name||'').replace(/"/g,'&quot;')}"></div>
@@ -3373,18 +3687,41 @@ window.openStockDetail=(id)=>{
         <div class="field"><label>% แบต</label><input id="sd_batt" value="${i.batt||''}"></div>
         <div class="field"><label>ที่ต้องซ่อม</label><input id="sd_fix" value="${(i.fix||'').replace(/"/g,'&quot;')}"></div>
       </div>
-      <div class="field-row">
-        <div class="field"><label>ทุนรับ (บาท)</label><input type="number" id="sd_costbuy" value="${i.costBuy||0}"></div>
-        <div class="field"><label>ทุนเพิ่ม (บาท)</label><input type="number" id="sd_costextra" value="${i.costExtra||0}"></div>
+      <div class="field"><label>ทุนรับ (บาท)</label><input type="number" id="sd_costbuy" value="${i.costBuy||0}"></div>
+      <div class="field">
+        <label>รายการอะไหล่/ค่าซ่อมเพิ่มเติม (แก้ทีละรายการ หรือเพิ่มรายการใหม่ได้ภายหลัง เช่น เครื่องอยู่ในสต็อกแล้วเกิดจอแตกทีหลัง)</label>
+        <div id="sdPartsList"></div>
+        <button type="button" class="btn btn-ghost btn-sm" onclick="addSdPart()" style="margin-top:6px;width:100%;justify-content:center">+ เพิ่มรายการอะไหล่/ค่าซ่อม</button>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:13.5px;font-weight:700;padding:8px 0;border-top:1px solid var(--line);margin-top:6px">
+        <span>ทุนเพิ่มรวม</span><span id="sdCostExtraTotal" class="num">฿0</span>
       </div>
       <div class="field"><label>🛡️ ประกันศูนย์ (ถ้ามี)</label><input id="sd_warrcenter" value="${(i.warrCenter||'').replace(/"/g,'&quot;')}" placeholder="เช่น 06/06/26"></div>
       <div class="field"><label>หมายเหตุ</label><input id="sd_note" value="${(i.note||'').replace(/"/g,'&quot;')}"></div>
       ${i.status==='sold'?`<div class="field"><label>ราคาขาย (บาท)</label><input type="number" id="sd_pricesold" value="${i.priceSold||0}"></div>`:''}`;
     $('stockDetailFoot').innerHTML=`<button class="btn btn-ghost" data-close>ยกเลิก</button><button class="btn btn-gold" onclick="saveStockEdit('${i.id}')">✓ บันทึกการแก้ไข</button>`;
+    renderSdParts();
     const im=$('sd_imei');
   }
   $('stockDetailModal').classList.add('show');
 };
+let sdParts=[];
+function renderSdParts(){
+  const box=$('sdPartsList');if(!box)return;
+  box.innerHTML=sdParts.map((p,idx)=>`
+    <div class="field-row" style="margin-bottom:7px;align-items:center;gap:6px">
+      <input value="${(p.name||'').replace(/"/g,'&quot;')}" placeholder="ชื่อรายการ เช่น หน้าจอแตก" oninput="sdParts[${idx}].name=this.value" style="flex:1.4">
+      <input type="number" inputmode="numeric" value="${p.price||''}" placeholder="ราคา (บาท)" oninput="sdParts[${idx}].price=+this.value||0;updateSdCostExtraTotal()" style="flex:1">
+      <button type="button" onclick="rmSdPart(${idx})" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:16px">×</button>
+    </div>`).join('')||'<div style="font-size:12px;color:var(--muted);padding:6px 0">ไม่มีรายการ — กด "+ เพิ่มรายการ" ถ้ามีค่าซ่อม/อะไหล่ที่ต้องบวกเข้าไป</div>';
+  updateSdCostExtraTotal();
+}
+window.addSdPart=()=>{sdParts.push({name:'',price:0});renderSdParts();};
+window.rmSdPart=(idx)=>{sdParts.splice(idx,1);renderSdParts();};
+function updateSdCostExtraTotal(){
+  const total=sdParts.reduce((s,p)=>s+(+p.price||0),0);
+  if($('sdCostExtraTotal'))$('sdCostExtraTotal').textContent=baht(total);
+}
 window.saveStockEdit=(id)=>{
   const i=DB.stock.find(x=>x.id===id);if(!i)return;
   i.name=$('sd_name').value.trim()||i.name;
@@ -3392,7 +3729,11 @@ window.saveStockEdit=(id)=>{
   i.batt=$('sd_batt').value.trim();
   i.fix=$('sd_fix').value.trim();
   i.costBuy=+$('sd_costbuy').value||0;
-  i.costExtra=+$('sd_costextra').value||0;
+  // เก็บรายการอะไหล่/ค่าซ่อมแบบแยกชิ้น (กรองรายการที่ไม่ได้ตั้งชื่อทิ้ง) แล้วรวมยอดเป็นทุนเพิ่ม
+  const validParts=sdParts.filter(p=>p.name&&p.name.trim());
+  i.partPrices={};
+  validParts.forEach(p=>{i.partPrices[p.name.trim()]=+p.price||0});
+  i.costExtra=validParts.reduce((s,p)=>s+(+p.price||0),0);
   i.costTotal=i.costBuy+i.costExtra;
   i.note=$('sd_note').value.trim();
   if($('sd_warrcenter'))i.warrCenter=$('sd_warrcenter').value.trim();
@@ -3686,9 +4027,9 @@ function resetPicker(){
 let buyGrade='มือ 2';
 const COND_OPTS=['สวยไม่มีรอย','เคสกัดเล็กน้อย','บุบเล็กน้อย','เคสกัดมาก','บุบมาก','จอมีรอย','อื่นๆ'];
 const FIX_OPTS=['แบตเตอรี่','หน้าจอ','ก้นชาร์จ','กล้อง','ลำโพง','ปุ่มเปิด-ปิด','อื่นๆ'];
-let condSel=new Set(), fixSel=new Set(), partPrices={}, condOtherTags=[];
+let condSel=new Set(), fixSel=new Set(), partPrices={}, condOtherTags=[], fixOtherTags=[];
 function resetBuyExtras(){
-  buyGrade='มือ 2';condSel=new Set();fixSel=new Set();partPrices={};condOtherTags=[];
+  buyGrade='มือ 2';condSel=new Set();fixSel=new Set();partPrices={};condOtherTags=[];fixOtherTags=[];
   $('gradeSeg').querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.g==='มือ 2'));
   $('condChips').innerHTML=COND_OPTS.map(c=>`<button type="button" data-c="${c}">${c}</button>`).join('');
   $('condChips').querySelectorAll('button').forEach(b=>b.onclick=()=>{
@@ -3707,6 +4048,7 @@ function resetBuyExtras(){
     renderPartsPrice();
   });
   if($('fix_other'))$('fix_other').value='';
+  if($('fixOtherTagsBox'))$('fixOtherTagsBox').innerHTML='';
   show('condOtherWrap',false);show('fixOtherWrap',false);
   $('condPreview').textContent='';$('partsPriceWrap').innerHTML='';
 }
@@ -3727,11 +4069,27 @@ function updateCondPreview(){
   if(condSel.has('อื่นๆ'))arr.push(...condOtherTags);
   $('condPreview').textContent=arr.length?'✓ '+arr.join(', '):'';
 }
+function addFixOtherTag(){
+  const v=$('fix_other').value.trim();
+  if(!v)return;
+  if(!fixOtherTags.includes(v))fixOtherTags.push(v);
+  $('fix_other').value='';
+  renderFixOtherTags();renderPartsPrice();
+}
+function renderFixOtherTags(){
+  const box=$('fixOtherTagsBox');if(!box)return;
+  box.innerHTML=fixOtherTags.map((t,i)=>`<span style="display:inline-flex;align-items:center;gap:5px;background:rgba(212,175,55,.15);color:var(--gold-soft);border-radius:7px;padding:4px 9px;font-size:12.5px">${t}<button type="button" onclick="rmFixTag(${i})" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:14px;line-height:1">×</button></span>`).join('');
+}
+window.rmFixTag=(i)=>{
+  const removed=fixOtherTags[i];
+  fixOtherTags.splice(i,1);
+  if(removed)delete partPrices[removed];
+  renderFixOtherTags();renderPartsPrice();
+};
 function renderPartsPrice(){
-  // แสดงช่องราคาสำหรับอะไหล่ที่เลือก (ยกเว้น "อื่นๆ")
+  // แสดงช่องราคาสำหรับอะไหล่ที่เลือก (ยกเว้น "อื่นๆ") + รายการอื่นๆ ที่เพิ่มไว้ทั้งหมด (เพิ่มได้ไม่จำกัด)
   const parts=[...fixSel].filter(x=>x!=='อื่นๆ');
-  const other=fixSel.has('อื่นๆ')&&$('fix_other').value.trim()?$('fix_other').value.trim():'';
-  if(other)parts.push(other);
+  if(fixSel.has('อื่นๆ'))parts.push(...fixOtherTags);
   if(!parts.length){$('partsPriceWrap').innerHTML='';return;}
   $('partsPriceWrap').innerHTML='<div style="font-size:12px;color:var(--gold-soft);font-weight:700;margin-bottom:7px">💰 ราคาอะไหล่ (บังคับกรอกทุกช่อง)</div>'+
     parts.map(p=>`<div class="field-row" style="margin-bottom:7px;align-items:center"><div style="flex:1;font-size:13px">${p}</div><div class="field" style="margin-bottom:0;width:130px"><input type="number" inputmode="numeric" class="part-price-in" data-part="${p.replace(/"/g,'&quot;')}" value="${partPrices[p]||''}" placeholder="ราคา (บาท)"></div></div>`).join('');
@@ -3742,7 +4100,7 @@ function renderPartsPrice(){
 function openTxn(mode,stockId){
   txnMode=mode;sellStockId=stockId||null;txnMethod='';repairDir='service';etcDir='in';
   // reset
-  ['t_name','t_imei','t_batt','t_fix','t_desc','t_amount','t_costextra','t_down','t_cust','t_custphone','t_defect','t_discount','t_buyname','t_buyphone','t_splitcash','t_splitbank','t_warrcenter'].forEach(i=>{if($(i))$(i).value=''});
+  ['t_name','t_imei','t_batt','t_fix','t_desc','t_amount','t_costextra','t_down','t_cust','t_custphone','t_defect','t_discount','t_buyname','t_buyphone','t_splitcash','t_splitbank','t_warrcenter','t_cond_note','t_sale_note'].forEach(i=>{if($(i))$(i).value=''});
   $('t_installment').checked=false;
   // reset accessory dropdowns to "0"
   document.querySelectorAll('.acc-row').forEach(row=>{
@@ -3869,12 +4227,16 @@ $('methodSeg').querySelectorAll('button').forEach(b=>b.onclick=()=>{
 if($('gradeSeg'))$('gradeSeg').querySelectorAll('button').forEach(b=>b.onclick=()=>{
   $('gradeSeg').querySelectorAll('button').forEach(x=>x.classList.remove('on'));
   b.classList.add('on');buyGrade=b.dataset.g;
+  // มือ 1 (ใหม่) → ตั้งแบต 100% ให้อัตโนมัติ (แก้ไขเพิ่มเองได้ถ้าไม่ตรง)
+  if(buyGrade==='มือ 1'&&$('t_batt'))$('t_batt').value='100%';
 });
 if($('cond_other'))$('cond_other').oninput=updateCondPreview;
 if($('condOtherAdd'))$('condOtherAdd').onclick=addCondOtherTag;
 if($('cond_other'))$('cond_other').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();addCondOtherTag();}};
 if($('cond_other'))$('cond_other').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();addCondOtherTag();}});
 if($('fix_other'))$('fix_other').oninput=renderPartsPrice;
+if($('fixOtherAdd'))$('fixOtherAdd').onclick=addFixOtherTag;
+if($('fix_other'))$('fix_other').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();addFixOtherTag();}});
 if($('pkModel'))$('pkModel').onchange=onModel;
 if($('pkStorage'))$('pkStorage').onchange=()=>{pk.storage=$('pkStorage').value;updatePkPreview()};
 if($('pkColor'))$('pkColor').onchange=()=>{pk.color=$('pkColor').value;show('pkColorTextWrap',$('pkColor').value==='__other');updatePkPreview()};
@@ -3953,8 +4315,12 @@ $('saveTxn').onclick=()=>{
     }
     // ที่ซ่อม + ราคาอะไหล่
     const fixArr=[...fixSel].filter(x=>x!=='อื่นๆ');
-    const fixOther=fixSel.has('อื่นๆ')&&$('fix_other').value.trim()?$('fix_other').value.trim():'';
-    if(fixOther)fixArr.push(fixOther);
+    if(fixSel.has('อื่นๆ')){
+      // เผื่อพิมพ์ค้างในช่องแล้วยังไม่กดเพิ่ม
+      const pendingFix=$('fix_other').value.trim();
+      if(pendingFix&&!fixOtherTags.includes(pendingFix))fixOtherTags.push(pendingFix);
+      fixArr.push(...fixOtherTags);
+    }
     const miss=[];
     if(!pk.brand)miss.push('• ยี่ห้อ');
     else if(pk.brand==='Apple'&&!pk.device)miss.push('• ประเภทอุปกรณ์');
@@ -3976,10 +4342,12 @@ $('saveTxn').onclick=()=>{
     const costExtra=fixArr.reduce((s,p)=>s+(partPrices[p]||0),0);
     const fixText=fixArr.map(p=>p+' ('+baht(partPrices[p])+')').join(', ');
     const condText=condArr.join(', ');
+    const condNoteExtra=($('t_cond_note').value||'').trim();
+    const category=pk.brand==='Apple'?(pk.device||'อื่นๆ'):(pk.brand||'อื่นๆ');
     let buySplit=null;
     if(txnMethod==='split'){buySplit=getSplit(costBuy,'out');if(!buySplit)return;}
     pendingBuy={id:uid(),ts:nowISO(),name,imei:$('t_imei').value.trim(),batt:$('t_batt').value.trim(),
-      fix:fixText,fixList:fixArr,partPrices:{...partPrices},grade:buyGrade,condition:condText,
+      fix:fixText,fixList:fixArr,partPrices:{...partPrices},grade:buyGrade,condition:condText,condNoteExtra,category,
       warrCenter:$('t_warrcenter')?$('t_warrcenter').value.trim():'',
       costBuy,costExtra,method:txnMethod,split:buySplit,
       seller:sellerName,sellerphone:sellerPhone};
@@ -4015,9 +4383,9 @@ $('saveTxn').onclick=()=>{
     // สร้าง "ใบเสร็จชั่วคราว" ยังไม่บันทึก — แสดงให้ดูก่อน
     pendingSale={id:uid(),ts:nowISO(),no:peekNextInvNo(),
       cust:custVal,custphone:phoneVal,
-      defect:$('t_defect').value.trim(),
+      defect:$('t_defect').value.trim(),note:($('t_sale_note')?$('t_sale_note').value.trim():''),
       name:s.name,imei:imeiVal,batt:battVal,device,acc,accSum,disc,net,
-      installment,down,method:txnMethod,split:sellSplit,stockId:s.id,cost:s.costTotal};
+      installment,down,method:txnMethod,split:sellSplit,stockId:s.id,cost:s.costTotal,warrMonths:s.warrMonths||3};
     closeModals();
     printReceipt(pendingSale,true); // true = preview mode (ยังไม่บันทึก)
     return;
@@ -4035,7 +4403,8 @@ $('saveTxn').onclick=()=>{
     pendingRepair={id:uid(),ts:nowISO(),no:peekRepairReceiptNo(),
       cust:$('t_rcust').value.trim(),phone:$('t_rphone').value.trim(),
       model:$('t_rmodel').value.trim(),imei:$('t_rimei').value.trim(),
-      jobs,parts,service,warr,method:txnMethod,split:repairSplit};
+      jobs,parts,service,warr,method:txnMethod,split:repairSplit,
+      note:($('t_repair_note')?$('t_repair_note').value.trim():'')};
     closeModals();
     printRepairReceipt(pendingRepair,true);
     return;
@@ -4120,7 +4489,7 @@ window.printReceipt=(arg,preview)=>{
   if(typeof arg==='string'){sale=(DB.sales||[]).find(x=>x.id===arg);}
   else {sale=arg;}
   if(!sale){alert('ไม่พบข้อมูลการขาย');return}
-  const warrEnd=addMonths(sale.ts,3);
+  const warrEnd=addMonths(sale.ts,sale.warrMonths||3);
   const accLines=[];
   if(sale.acc.film)accLines.push(['ฟิล์มกระจก',sale.acc.film]);
   if(sale.acc.case)accLines.push(['เคส',sale.acc.case]);
@@ -4164,26 +4533,29 @@ window.printReceipt=(arg,preview)=>{
       </div>
 
       <div class="r-warr">
-        <div class="r-wtit">🛡️ การรับประกันจากทางร้าน 3 เดือน</div>
+        <div class="r-wtit">🛡️ การรับประกันจากทางร้าน ${sale.warrMonths>=12?'1 ปี':(sale.warrMonths||3)+' เดือน'}</div>
         <div class="r-wdates">
           <div class="r-wdate"><div class="l">วันที่เริ่มประกัน</div><div class="d">${thaiDateShort(sale.ts)}</div></div>
           <div class="r-wdate hi"><div class="l">ประกันหมดอายุ</div><div class="d">${thaiDateShort(warrEnd)}</div></div>
         </div>
         <div class="r-wcond">เงื่อนไข: การรับประกันครอบคลุมความเสียหายจากการใช้งานปกติเท่านั้น และจะ<b>สิ้นสุดทันที</b>หากตรวจพบว่าเครื่อง: <b>โดนน้ำหรือความชื้น · ตกกระแทก · หน้าจอแตก/ร้าว · ถูกแกะเครื่องหรือซ่อมจากที่อื่น</b> · กรุณานำใบนี้มาแสดงทุกครั้งที่ใช้บริการรับประกัน</div>
       </div>
+      ${sale.note?`<div style="font-size:11.5px;background:rgba(212,175,55,.08);border:1px solid rgba(212,175,55,.3);border-radius:8px;padding:8px 12px;margin:10px 0"><b>หมายเหตุ:</b> ${sale.note}</div>`:''}
 
       <div class="r-sign">
         <div class="r-box"><div class="r-line"></div><div class="r-role">ลายมือชื่อผู้ขาย (ทางร้าน)</div></div>
         <div class="r-box"><div class="r-line"></div><div class="r-role">ลายมือชื่อผู้ซื้อ (ลูกค้า)</div><div class="r-small">ได้รับสินค้าและรับทราบเงื่อนไขแล้ว</div></div>
       </div>
       <div class="r-foot">ขอบคุณที่ใช้บริการ · ${SHOP.name} · กรุณาเก็บเอกสารนี้ไว้เป็นหลักฐาน</div>
-    </div>
+    </div>`;
+  const bodyHtml=area.innerHTML;
+  area.innerHTML=bodyHtml+'<div style="page-break-before:always;break-before:page;height:0"></div>'+bodyHtml+`
     <div class="print-actions">
       ${preview
         ? `<button class="btn btn-ghost" onclick="cancelPreview()">← กลับไปแก้ไข</button>
-           <button class="btn btn-gold" onclick="commitAndPrint()">🖨️ ปริ้น + บันทึกการขาย</button>`
+           <button class="btn btn-gold" onclick="commitAndPrint()">🖨️ ปริ้น + บันทึกการขาย (2 ใบ)</button>`
         : `<button class="btn btn-ghost" onclick="document.getElementById('printArea').classList.add('hidden')">ปิด</button>
-           <button class="btn btn-gold" onclick="window.print()">🖨️ พิมพ์ใบเสร็จ</button>`}
+           <button class="btn btn-gold" onclick="window.print()">🖨️ พิมพ์ใบเสร็จ 2 ใบ</button>`}
     </div>`;
   area.classList.remove('hidden');
   area.scrollIntoView({behavior:'smooth'});
@@ -4198,6 +4570,7 @@ window.cancelPreview=()=>{
       $('t_amount').value=pendingSale.device;
       $('t_cust').value=pendingSale.cust;$('t_custphone').value=pendingSale.custphone;
       $('t_defect').value=pendingSale.defect;$('t_discount').value=pendingSale.disc||'';
+      if($('t_sale_note'))$('t_sale_note').value=pendingSale.note||'';
       document.querySelectorAll('.acc-row').forEach(row=>{
         const sel=row.querySelector('.acc-sel');const v=pendingSale.acc[row.dataset.acc]||0;
         sel.value=String(v);sel.classList.toggle('has',v>0);
@@ -4260,6 +4633,8 @@ window.printBuyContract=(arg,preview)=>{
           <div class="bc-frow"><span>IMEI</span><span class="bc-fill">${b.imei||''}</span><span>ให้กับร้านแอปเปิ้ลอาร์ม</span></div>
           <div class="bc-frow"><span>เมื่อวันที่</span><span class="bc-fill">${thaiDate(b.ts)}</span><span>ในราคา</span><span class="bc-fill">${(b.costBuy).toLocaleString('th-TH')}</span><span>บาท</span></div>
           <div class="bc-frow"><span>(ตัวอักษร)</span><span class="bc-fill">${bahtText(b.costBuy)}</span></div>
+          ${b.condition?`<div class="bc-frow"><span>สภาพ/ตำหนิ</span><span class="bc-fill" style="max-width:none">${b.condition}</span></div>`:''}
+          ${b.condNoteExtra?`<div class="bc-frow"><span>ตำหนิเพิ่มเติม</span><span class="bc-fill" style="max-width:none">${b.condNoteExtra}</span></div>`:''}
         </div>
         <div class="bc-idbox">วางบัตรประชาชนตรงนี้</div>
         <div class="bc-idcap">บัตรประชาชนผู้ขาย</div>
@@ -4275,13 +4650,15 @@ window.printBuyContract=(arg,preview)=>{
           <div class="bc-box"><div class="bc-line"></div><div class="bc-role">ผู้ขาย</div></div>
         </div>
       </div>
-    </div>
+    </div>`;
+  const bodyHtml=area.innerHTML;
+  area.innerHTML=bodyHtml+'<div style="page-break-before:always;break-before:page;height:0"></div>'+bodyHtml+`
     <div class="print-actions">
       ${preview
         ? `<button class="btn btn-ghost" onclick="cancelBuyPreview()">← กลับไปแก้ไข</button>
-           <button class="btn btn-gold" onclick="commitBuy()">🖨️ ปริ้น + บันทึกรับเครื่อง</button>`
+           <button class="btn btn-gold" onclick="commitBuy()">🖨️ ปริ้น + บันทึกรับเครื่อง (2 ใบ)</button>`
         : `<button class="btn btn-ghost" onclick="document.getElementById('printArea').classList.add('hidden')">ปิด</button>
-           <button class="btn btn-gold" onclick="window.print()">🖨️ พิมพ์สัญญา</button>`}
+           <button class="btn btn-gold" onclick="window.print()">🖨️ พิมพ์สัญญา 2 ใบ</button>`}
     </div>`;
   area.classList.remove('hidden');
   area.scrollIntoView({behavior:'smooth'});
@@ -4299,6 +4676,7 @@ window.cancelBuyPreview=()=>{
       updatePkPreview();
       $('t_imei').value=pendingBuy.imei;
       $('t_batt').value=pendingBuy.batt;$('t_fix').value=pendingBuy.fix;
+      if($('t_cond_note'))$('t_cond_note').value=pendingBuy.condNoteExtra||'';
       $('t_amount').value=pendingBuy.costBuy;$('t_costextra').value=pendingBuy.costExtra||'';
       $('t_buyname').value=pendingBuy.seller||'';$('t_buyphone').value=pendingBuy.sellerphone||'';
       if(pendingBuy.method==='split'&&pendingBuy.split){
@@ -4315,8 +4693,12 @@ window.commitBuy=()=>{
   const b=pendingBuy;
   const st=mkStock(b.name,b.imei,b.batt,b.fix,b.costBuy,b.costExtra,b.ts);
   if(b.seller)st.note='ผู้ขาย: '+b.seller+(b.sellerphone?' '+b.sellerphone:'');
-  st.grade=b.grade;st.condition=b.condition;st.warrCenter=b.warrCenter||'';
+  st.grade=b.grade;st.condition=b.condition;st.warrCenter=b.warrCenter||'';st.condNoteExtra=b.condNoteExtra||'';
+  st.warrMonths=b.grade==='มือ 1'?12:3;
+  st.category=b.category||'อื่นๆ';
+  st.partPrices={...(b.partPrices||{})};
   if(b.condition)st.note=(st.note?st.note+' · ':'')+'สภาพ: '+b.condition;
+  if(b.condNoteExtra)st.note=(st.note?st.note+' · ':'')+'ตำหนิเพิ่มเติม: '+b.condNoteExtra;
   if(b.warrCenter)st.note=(st.note?st.note+' · ':'')+'ประกันศูนย์ถึง '+b.warrCenter;
   DB.stock.push(st);
   const buyRec={id:uid(),ts:b.ts,type:'buy',name:b.name,imei:b.imei,
@@ -4387,10 +4769,49 @@ function fundMove(amount,type,note){ // amount: + เข้ากองทุน
   DB.fund.balance+=amount;
   DB.fund.history.push({ts:nowISO(),type,amount,note:note||'',bal:DB.fund.balance});
 }
+/* ปรับยอดกองทุนด้วยมือ (Admin only) — ใช้แก้กรณีตัวเลขไม่ตรง เช่น หลังแก้เงินต้นตั๋วตรงๆ
+   ผ่านหน้า "แก้ไขข้อมูลรับฝาก" ซึ่งไม่ปรับกองทุนให้อัตโนมัติ */
+window.adjustFund=()=>{
+  if(currentRole!=='admin'){alert('เฉพาะผู้ดูแลระบบ (Admin)');return}
+  const amtStr=prompt('ปรับยอดกองทุนหมุนเวียนเท่าไร? (บาท)\nใส่ค่าบวกถ้าต้องการเพิ่มเข้ากองทุน\nใส่ค่าลบถ้าต้องการหักออกจากกองทุน (เช่น -3)\n\nกองทุนคงเหลือปัจจุบัน: '+baht(DB.fund.balance),'');
+  if(amtStr===null)return;
+  const amt=+amtStr;
+  if(!amt){alert('กรุณาใส่จำนวนเงินที่ไม่ใช่ศูนย์');return}
+  const reason=prompt('เหตุผลในการปรับยอด (บังคับกรอก)','');
+  if(!reason||!reason.trim()){alert('ต้องกรอกเหตุผลก่อนบันทึก');return}
+  if(!confirm('ยืนยันปรับยอดกองทุน '+(amt>0?'+':'')+baht(amt)+'\nเหตุผล: '+reason.trim()+'\nกองทุนใหม่จะเป็น: '+baht(DB.fund.balance+amt)+'\n\nดำเนินการต่อ?'))return;
+  fundMove(amt,'ปรับยอดด้วยมือ (Admin)',reason.trim());
+  persist();renderWalletCards();
+  alert('ปรับยอดกองทุนเรียบร้อย ✓\nกองทุนคงเหลือ: '+baht(DB.fund.balance));
+};
 function walletAdd(which,amount,type,note){ // which: 'owner'|'partner'
   const w=which==='owner'?DB.ownerWallet:DB.partnerWallet;
   w.balance+=amount;
   w.history.push({ts:nowISO(),type,amount,note:note||'',bal:w.balance});
+}
+/* ปิดยอดกระเป๋าร้าน/หุ้นส่วนอัตโนมัติทุกสิ้นเดือน — แค่บันทึกปิดยอดในระบบ (เงินจริงไม่เคลื่อนไหว)
+   กันงงข้ามเดือนว่าเดือนไหนได้เท่าไหร่ — เช็คทุกครั้งที่เปิดแอป ถ้าเดือนเปลี่ยนไปจากที่ปิดยอดล่าสุด จะเคลียร์ยอดเดือนก่อนหน้าให้เป็น 0 */
+function checkMonthEndWalletClose(){
+  DB.settings=DB.settings||{};
+  const now=new Date();
+  const curMonth=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
+  const lastClosed=DB.settings.walletCloseMonth;
+  if(!lastClosed){
+    // ครั้งแรกที่รันโค้ดนี้ — แค่บันทึก baseline ไว้ ไม่เคลียร์ยอดที่มีอยู่ตอนนี้ทันที
+    DB.settings.walletCloseMonth=curMonth;
+    persist();
+    return;
+  }
+  if(lastClosed===curMonth)return; // เดือนเดียวกัน ยังไม่ต้องปิดยอด
+  // ข้ามเดือนแล้ว — ปิดยอดกระเป๋าที่มีเงินค้างจากเดือนก่อนหน้า
+  ['owner','partner'].forEach(which=>{
+    const w=which==='owner'?DB.ownerWallet:DB.partnerWallet;
+    if(w.balance!==0){
+      walletAdd(which,-w.balance,'ถอนสิ้นเดือน (อัตโนมัติ)','ปิดยอดอัตโนมัติสิ้นเดือน '+lastClosed);
+    }
+  });
+  DB.settings.walletCloseMonth=curMonth;
+  persist();renderWalletCards();
 }
 function pawnInterest(principal,fromISO,toISO){
   const d=daysBetween(fromISO,toISO);
@@ -4450,6 +4871,7 @@ function renderPawn(q=''){
       <td class="num" style="color:var(--gold-soft);font-weight:700">${p.status==='active'?baht(redeem):'—'}</td>
       <td class="num" style="white-space:nowrap">
         <button class="btn btn-ghost btn-sm" onclick="printPawn('${p.id}')">🖨️</button>
+        <button class="btn btn-ghost btn-sm" onclick="openPawnIntDetail('${p.id}')" title="ดูรายละเอียดการคำนวณดอกเบี้ย">📊</button>
         <button class="btn btn-ghost btn-sm" onclick="openPawnEdit('${p.id}')" data-admin-only>✏️</button>
         ${p.status==='active'?`<button class="btn btn-green btn-sm" onclick="openRedeem('${p.id}')" data-no-partner>จัดการ</button>`:`<button class="btn btn-danger btn-sm" onclick="delPawn('${p.id}')" data-no-partner>ลบ</button>`}
       </td>
@@ -4463,6 +4885,61 @@ document.querySelectorAll('#pawnFilter button').forEach(b=>b.onclick=()=>{
 });
 document.getElementById('pawnSearch').oninput=e=>renderPawn(e.target.value);
 window.delPawn=id=>{if(confirm('ลบรายการรับฝากนี้?')){DB.pawns=DB.pawns.filter(p=>p.id!==id);persist();renderPawn();}};
+
+/* ปุ่ม "ดูรายละเอียดการคำนวณดอกเบี้ย" — โชว์สูตรคำนวณดอกเบี้ยที่มาที่ไปชัดเจน + ประวัติการแก้ไขทั้งหมดของตั๋ว
+   ให้หุ้นส่วน/พนักงานเห็นที่มาของตัวเลข ลดการเถียงกัน (ดูได้ทุก role ที่เข้าหน้ารับฝากได้ ไม่จำกัดแค่ admin) */
+window.openPawnIntDetail=(id)=>{
+  const p=DB.pawns.find(x=>x.id===id);if(!p)return;
+  const now=nowISO();
+  const days=daysBetween(p.ts,p.status==='active'?now:(p.redeemTs||p.forfeitTs||now));
+  const daily=p.principal*0.005*days;
+  const min=p.principal*0.05;
+  const usedMin=min>daily;
+  const rawInt=Math.max(daily,min);
+  const finalInt=Math.round(rawInt/10)*10;
+  const actualInt=p.status==='active'?finalInt:(p.paidInterest!=null?p.paidInterest:finalInt);
+  $('pawnIntTitle').textContent='📊 รายละเอียดดอกเบี้ย — ตั๋ว '+p.no;
+  $('pawnIntBody').innerHTML=`
+    <div style="background:var(--bg);border:1px solid var(--line);border-radius:11px;padding:14px;margin-bottom:16px">
+      <div style="font-weight:700;font-size:15px;margin-bottom:2px">${p.item}</div>
+      <div style="font-size:12.5px;color:var(--muted);margin-bottom:12px">${p.name}${p.phone?' · '+p.phone:''} · เริ่มนับดอกล่าสุด ${fmtDate(p.ts)} ${fmtTime(p.ts)} น.</div>
+      <div style="display:flex;justify-content:space-between;padding:5px 0;font-size:13.5px"><span style="color:var(--muted)">เงินต้นปัจจุบัน</span><span class="num" style="font-weight:700">${baht(p.principal)}</span></div>
+      <div style="display:flex;justify-content:space-between;padding:5px 0;font-size:13.5px"><span style="color:var(--muted)">จำนวนวันที่นับ${p.status==='active'?'ถึงวันนี้':'(ถึงวันปิดรายการ)'}</span><span class="num">${days} วัน</span></div>
+      <div style="border-top:1px dashed var(--line);margin:10px 0;padding-top:10px;font-size:12.5px;color:var(--muted)">สูตรคำนวณ</div>
+      <div style="font-family:monospace;font-size:12.5px;background:var(--panel-2);border-radius:8px;padding:10px 12px;line-height:1.9">
+        เงินต้น × 0.5%/วัน × จำนวนวัน = ${baht(p.principal)} × 0.5% × ${days} = <b>${baht(Math.round(daily))}</b><br>
+        ขั้นต่ำ 5% ของเงินต้น = <b>${baht(Math.round(min))}</b><br>
+        ใช้ค่าที่${usedMin?'มากกว่า → ':' '}<b style="color:var(--gold-soft)">${usedMin?'ขั้นต่ำ 5%':'คำนวณจากจำนวนวัน'}</b> แล้วปัดเศษหลักสิบบาท → <b style="color:var(--gold-soft);font-size:15px">${baht(finalInt)}</b>
+      </div>
+      ${p.status!=='active'?`<div style="display:flex;justify-content:space-between;padding:8px 0 0;font-size:13.5px"><span style="color:var(--muted)">ดอกเบี้ยที่เก็บจริงตอนปิดรายการ</span><span class="num" style="font-weight:700;color:var(--green)">${baht(actualInt)}</span></div>`:''}
+    </div>
+    ${p.status==='forfeit'?`
+    <div style="background:${p.history&&p.history.find(h=>h.type==='หลุดรับฝาก'&&h.early)?'rgba(210,86,75,.1)':'var(--green-bg)'};border:1px solid ${p.history&&p.history.find(h=>h.type==='หลุดรับฝาก'&&h.early)?'rgba(210,86,75,.3)':'var(--green-line)'};border-radius:11px;padding:14px;margin-bottom:16px">
+      <div style="font-size:12.5px;color:var(--muted);margin-bottom:8px">⚖️ เปรียบเทียบวันครบกำหนด vs วันที่กดหลุดจำนำ</div>
+      <div style="display:flex;justify-content:space-between;padding:4px 0;font-size:13.5px"><span style="color:var(--muted)">ครบกำหนดไถ่ถอนจริง</span><span class="num" style="font-weight:700">${fmtDate(p.dueAtForfeit||pawnDue(p))}</span></div>
+      <div style="display:flex;justify-content:space-between;padding:4px 0;font-size:13.5px"><span style="color:var(--muted)">วันที่กดหลุดจำนำ</span><span class="num" style="font-weight:700">${fmtDate(p.forfeitTs)}</span></div>
+      <div style="margin-top:8px;font-weight:700;font-size:13px;color:${p.history&&p.history.find(h=>h.type==='หลุดรับฝาก'&&h.early)?'var(--red)':'var(--green)'}">
+        ${p.history&&p.history.find(h=>h.type==='หลุดรับฝาก'&&h.early)?'🔴 กดหลุดก่อนครบกำหนด':'✓ กดหลุดหลังครบกำหนดแล้ว ถูกต้องตามกำหนด'}
+      </div>
+    </div>`:''}
+    <div style="font-size:12.5px;color:var(--muted);margin-bottom:8px">📋 ประวัติการเปลี่ยนแปลงตั๋วนี้</div>
+    ${(p.history&&p.history.length)?p.history.slice().reverse().map(h=>{
+      let detail='';
+      if(h.type==='แก้ไขเงินต้น')detail='เดิม '+baht(h.oldPrincipal)+' → ใหม่ '+baht(h.newPrincipal)+(h.reason?' · เหตุผล: '+h.reason:'');
+      else if(h.type==='เพิ่มต้น')detail='เพิ่มเงินต้น '+baht(h.amount)+(h.intCollected?' · เก็บดอกรอบเดิม '+baht(h.intCollected):'');
+      else if(h.type==='จ่ายต้นบางส่วน')detail='รับคืนต้น '+baht(Math.abs(h.amount))+(h.intCollected?' · เก็บดอกรอบเดิม '+baht(h.intCollected):'');
+      else if(h.type==='ต่อดอกเบี้ย')detail='เก็บดอก '+baht(h.intCollected||0)+' เริ่มนับรอบใหม่';
+      else if(h.type==='หลุดรับฝาก')detail='ครบกำหนด '+fmtDate(h.dueDate)+' · กดหลุด '+fmtDate(h.forfeitTs)+(h.early?' (ก่อนครบกำหนด ⚠️)':' (หลังครบกำหนด ✓)');
+      else if(h.reason)detail='เหตุผล: '+h.reason;
+      return `<div style="border-left:2px solid var(--line);padding:6px 0 6px 12px;margin-bottom:6px">
+        <div style="font-size:12px;color:var(--muted)">${fmtDate(h.ts)} ${fmtTime(h.ts)} น.</div>
+        <div style="font-size:13px;font-weight:600">${h.type}</div>
+        ${detail?`<div style="font-size:12px;color:var(--muted);margin-top:1px">${detail}</div>`:''}
+      </div>`;
+    }).join(''):'<div style="font-size:12.5px;color:var(--muted);padding:10px 0">ยังไม่มีการแก้ไขตั๋วนี้นับตั้งแต่รับฝาก</div>'}
+  `;
+  $('pawnIntModal').classList.add('show');
+};
 
 /* ---- NEW PAWN MODAL ---- */
 let pawnMethod='cash';
@@ -4669,7 +5146,7 @@ document.getElementById('savePawn').onclick=()=>{
     phone:document.getElementById('p_phone').value.trim(),
     idcard:document.getElementById('p_idcard').value.trim(),
     item,imei:document.getElementById('p_imei').value.trim(),
-    grade:ppGrade,condition:condText,
+    grade:ppGrade,condition:condText,category:ppk.brand==='Apple'?(ppk.device||'อื่นๆ'):(ppk.brand||'อื่นๆ'),
     note:'สภาพ: '+condText+(noteExtra?' · '+noteExtra:''),
     principal,method:pawnMethod,split:pSplit,status:'active',dueDays:20,redeemTs:null};
   DB.pawns.push(p);
@@ -4677,7 +5154,7 @@ document.getElementById('savePawn').onclick=()=>{
   fundMove(-principal,'ปล่อยรับฝาก','['+p.no+'] '+item+' ('+name+')');
   // บันทึกเงินสด/โอนที่จ่ายออกจริงให้ลูกค้า เข้าบัญชีหลักของร้าน (ให้ยอดเงินสด/บัญชีตรงกับความเป็นจริง)
   {
-    const txRec={id:uid(),ts:pawnTs,type:'pawn',desc:'ปล่อยรับฝาก ['+p.no+'] '+item+' ('+name+')',method:pawnMethod,in:0,out:principal,cat:'รับฝาก/รับซาก',pawnId:p.id};
+    const txRec={id:uid(),ts:pawnTs,type:'pawn',desc:'ปล่อยรับฝาก ['+p.no+'] '+item+' ('+name+')',method:pawnMethod,in:0,out:principal,cat:'รับฝาก/รับซาก',pawnId:p.id,pawnNo:p.no,pawnAction:'create'};
     if(pawnMethod==='split'&&pSplit){txRec.splitCashOut=pSplit.splitCash;txRec.splitBankOut=pSplit.splitBank;txRec.splitCashIn=0;txRec.splitBankIn=0;}
     DB.txns.push(txRec);
   }
@@ -4702,8 +5179,9 @@ window.openPawnEdit=(id)=>{
     <div class="field"><label>รายการที่รับฝาก (ข้อมูลเครื่อง)</label><input id="pe_item" value="${(p.item||'').replace(/"/g,'&quot;')}"></div>
     <div class="field-row">
       <div class="field"><label>IMEI / Serial</label><input id="pe_imei" value="${(p.imei||'').replace(/"/g,'&quot;')}"></div>
-      <div class="field"><label>เงินต้น (บาท)</label><input type="number" id="pe_principal" value="${p.principal||0}"></div>
+      <div class="field"><label>เงินต้น (บาท)</label><input type="number" id="pe_principal" value="${p.principal||0}" disabled style="opacity:.55;cursor:not-allowed"></div>
     </div>
+    <div style="font-size:11.5px;color:var(--muted);margin-top:-8px;margin-bottom:12px">💡 แก้เงินต้นได้ที่ปุ่ม "✏️ แก้ไขเงินต้น (แก้ผิด)" ในหน้าต่าง "จัดการ" แทน — จะปรับกองทุนให้สอดคล้องอัตโนมัติ</div>
     <div class="field"><label>สภาพ/หมายเหตุ</label><input id="pe_note" value="${(p.note||'').replace(/"/g,'&quot;')}"></div>
     <div class="field"><label>📅 วันที่รับฝาก (แก้ได้ — มีผลต่อการคิดดอกเบี้ย)</label><input type="date" id="pe_date" value="${(p.ts||'').slice(0,10)}"></div>
     <div style="font-size:11.5px;color:var(--muted);background:rgba(255,255,255,.03);border-radius:8px;padding:8px 11px">⚠️ การแก้เงินต้นจะไม่ปรับยอดกองทุนย้อนหลังอัตโนมัติ — แก้เฉพาะกรณีลงข้อมูลผิด</div>`;
@@ -4715,7 +5193,11 @@ window.adminDeletePawn=(id)=>{
   const p=DB.pawns.find(x=>x.id===id);if(!p)return;
   const activeWarn=p.status==='active'?'\n\n⚠️ ตั๋วนี้ยังไม่ไถ่ถอน — ระบบจะคืนเงินต้น '+baht(p.principal)+' เข้ากองทุนให้':'';
   if(!confirm('ลบตั๋วรับฝาก '+p.no+' ถาวร?'+activeWarn+'\n\nกู้คืนไม่ได้'))return;
-  if(p.status==='active'){fundMove(p.principal,'ลบตั๋วรับฝาก-คืนเงินต้น','['+p.no+'] '+p.item);}
+  const reason=prompt('เหตุผลที่ลบตั๋วนี้ถาวร (บังคับกรอกเพื่อความโปร่งใสกับหุ้นส่วน)','');
+  if(!reason||!reason.trim()){alert('ต้องกรอกเหตุผลก่อนลบตั๋ว');return}
+  if(p.status==='active'){fundMove(p.principal,'ลบตั๋วรับฝาก-คืนเงินต้น','['+p.no+'] '+p.item+' — เหตุผล: '+reason.trim());}
+  DB.deletionLog=DB.deletionLog||[];
+  DB.deletionLog.push({ts:nowISO(),desc:'ลบตั๋วรับฝาก ['+p.no+'] '+p.item,amount:p.principal,reason:reason.trim(),by:currentRole});
   DB.pawns=DB.pawns.filter(x=>x.id!==id);
   persist();closeModals();renderPawn();refreshTop();
   alert('ลบตั๋วเรียบร้อย ✓');
@@ -4769,6 +5251,7 @@ window.openRedeem=id=>{
       <button class="btn btn-gold btn-sm" onclick="renewInterest()" style="flex:1;min-width:130px;background:linear-gradient(135deg,#e6c75a,#9a7b13)">🔄 ต่อดอกเบี้ย</button>
       <button class="btn btn-ghost btn-sm" onclick="addPrincipal()" style="flex:1;min-width:110px">➕ เพิ่มยอดต้น</button>
       <button class="btn btn-ghost btn-sm" onclick="payPrincipal()" style="flex:1;min-width:120px">➖ จ่ายต้นบางส่วน</button>
+      <button class="btn btn-ghost btn-sm" onclick="editPrincipal()" style="flex:1;min-width:130px">✏️ แก้ไขเงินต้น (แก้ผิด)</button>
       <button class="btn btn-danger btn-sm" onclick="forfeitPawn()" style="flex:1;min-width:130px">⚠️ หลุดรับฝาก →สต็อก</button>
     </div>
     <div style="display:flex;gap:8px;width:100%">
@@ -4795,7 +5278,8 @@ window.renewInterest=()=>{
   walletAdd('owner',half,'ต่อดอกเบี้ย','['+p.no+'] '+p.item);
   walletAdd('partner',int-half,'ต่อดอกเบี้ย','['+p.no+'] '+p.item);
   const m=redeemMethod==='bank'?'bank':'cash';
-  DB.txns.push({id:uid(),ts:nowISO(),type:'etc',desc:'ต่อดอกเบี้ยรับฝาก ['+p.no+'] '+p.name,method:m,in:int,out:0,cat:'ดอกเบี้ยรับฝาก'});
+  DB.txns.push({id:uid(),ts:nowISO(),type:'etc',desc:'ต่อดอกเบี้ยรับฝาก ['+p.no+'] '+p.name,method:m,in:int,out:0,cat:'ดอกเบี้ยรับฝาก',pawnId:p.id,pawnNo:p.no,
+    walletMoves:[{which:'owner',amount:half},{which:'partner',amount:int-half}]});
   p.ts=nowISO();
   p.history=p.history||[];p.history.push({ts:nowISO(),type:'ต่อดอกเบี้ย',amount:0,intCollected:int});
   persist();closeModals();renderPawn();refreshTop();
@@ -4835,6 +5319,29 @@ window.payPrincipal=()=>{
   persist();closeModals();renderPawn();
   alert('รับคืนต้นบางส่วนเรียบร้อย ✓\nเงินต้นคงเหลือ '+baht(p.principal)+'\nเริ่มนับดอกรอบใหม่จากวันนี้');
 };
+/* แก้ไขเงินต้น (แก้ผิด) — สำหรับแก้ไขข้อมูลที่กรอกผิด ไม่ใช่ธุรกรรมจริงของลูกค้า
+   ต่างจาก เพิ่มยอดต้น/จ่ายต้นบางส่วน ตรงที่: ไม่เก็บดอกเบี้ย ไม่รีเซ็ตวันเริ่มนับดอก
+   แต่ปรับกองทุนหมุนเวียนให้สอดคล้องอัตโนมัติ + บังคับกรอกเหตุผล + บันทึกยอดเก่า/ใหม่ในประวัติตั๋ว
+   ใช้ได้ทั้ง Admin และ Staff */
+window.editPrincipal=()=>{
+  const p=DB.pawns.find(x=>x.id===redeemId);if(!p)return;
+  const oldVal=p.principal;
+  const newStr=prompt('แก้ไขเงินต้นตั๋ว '+p.no+' (แก้ข้อมูลที่กรอกผิด)\n\nเงินต้นปัจจุบัน: '+baht(oldVal)+'\nใส่ยอดที่ถูกต้อง:',oldVal);
+  if(newStr===null)return;
+  const newVal=+newStr;
+  if(!newVal||newVal<=0){alert('กรุณาใส่จำนวนเงินที่ถูกต้อง (มากกว่า 0)');return}
+  if(newVal===oldVal){alert('ยอดเท่าเดิม ไม่มีอะไรต้องแก้');return}
+  const diff=newVal-oldVal; // + คือเงินต้นเพิ่มขึ้น (ต้องดึงจากกองทุนเพิ่ม), - คือเงินต้นลดลง (คืนเข้ากองทุน)
+  if(diff>0&&diff>DB.fund.balance){alert('กองทุนไม่พอสำหรับส่วนต่างนี้ (ต้องการ '+baht(diff)+' แต่กองทุนเหลือ '+baht(DB.fund.balance)+')');return}
+  const reason=prompt('เหตุผลที่แก้ไข (บังคับกรอก)\nเช่น "แก้ไขจากกดผิด", "ลูกค้าขอเพิ่มยอด"','');
+  if(!reason||!reason.trim()){alert('ต้องกรอกเหตุผลก่อนบันทึก');return}
+  if(!confirm('แก้ไขเงินต้นตั๋ว '+p.no+'\n\nเดิม: '+baht(oldVal)+'\nใหม่: '+baht(newVal)+'\nส่วนต่าง: '+(diff>0?'+':'')+baht(diff)+'\nเหตุผล: '+reason.trim()+'\n\nกองทุนจะถูกปรับ '+(diff>0?'-':'+')+baht(Math.abs(diff))+' ให้สอดคล้อง (ไม่กระทบดอกเบี้ย/วันเริ่มนับ)\nดำเนินการต่อ?'))return;
+  fundMove(-diff,'ปรับกองทุนจากแก้ไขเงินต้น','['+p.no+'] '+p.item+' — เหตุผล: '+reason.trim());
+  p.principal=newVal;
+  p.history=p.history||[];p.history.push({ts:nowISO(),type:'แก้ไขเงินต้น',oldPrincipal:oldVal,newPrincipal:newVal,reason:reason.trim()});
+  persist();closeModals();renderPawn();renderWalletCards();
+  alert('แก้ไขเงินต้นเรียบร้อย ✓\nเงินต้นใหม่: '+baht(p.principal)+'\nกองทุนปรับให้สอดคล้องแล้ว');
+};
 window.redeemPawn=(int)=>{
   const p=DB.pawns.find(x=>x.id===redeemId);
   p.status='redeemed';p.redeemTs=nowISO();p.paidInterest=int;
@@ -4847,7 +5354,8 @@ window.redeemPawn=(int)=>{
   // บันทึกเงินสด/โอนที่รับจริงจากลูกค้า (ต้น+ดอก) เข้าบัญชีหลักของร้าน (ให้ยอดเงินสด/บัญชีตรงกับความเป็นจริง)
   {
     const m=redeemMethod==='bank'?'bank':'cash';
-    DB.txns.push({id:uid(),ts:nowISO(),type:'pawn',desc:'ไถ่ถอนรับฝาก ['+p.no+'] '+p.name,method:m,in:p.principal+int,out:0,cat:'รับฝาก/รับซาก',pawnId:p.id});
+    DB.txns.push({id:uid(),ts:nowISO(),type:'pawn',desc:'ไถ่ถอนรับฝาก ['+p.no+'] '+p.name,method:m,in:p.principal+int,out:0,cat:'รับฝาก/รับซาก',pawnId:p.id,pawnNo:p.no,
+      walletMoves:[{which:'owner',amount:half},{which:'partner',amount:int-half}]});
   }
   persist();closeModals();renderPawn();
   const pid=p.id;
@@ -4889,11 +5397,13 @@ window.printRedeemReceipt=(id)=>{
         <div style="flex:1;text-align:center"><div class="r-line" style="border-top:1px solid #333;height:32px"></div>ลายมือชื่อผู้ส่งมอบ (ทางร้าน)</div>
       </div>
       <div class="r-foot" style="text-align:center;font-size:10px;color:#888;margin-top:14px;border-top:1px solid #eee;padding-top:8px">${SHOP.name} · เอกสารนี้เป็นหลักฐานการรับเครื่องคืน</div>
-    </div>
+    </div>`;
+  const bodyHtml=area.innerHTML;
+  area.innerHTML=bodyHtml+'<div style="page-break-before:always;break-before:page;height:0"></div>'+bodyHtml+`
     <div class="print-actions">
       <button class="btn btn-ghost" onclick="document.getElementById('printArea').classList.add('hidden')">ปิด</button>
       <button class="btn btn-ghost" onclick="savePDFfromPrintArea('ใบรับเครื่องคืน-${p.no}')">📄 บันทึก PDF</button>
-      <button class="btn btn-gold" onclick="window.print()">🖨️ พิมพ์</button>
+      <button class="btn btn-gold" onclick="window.print()">🖨️ พิมพ์ 2 ใบ</button>
     </div>`;
   area.classList.remove('hidden');
   area.scrollIntoView({behavior:'smooth'});
@@ -4903,15 +5413,25 @@ window.forfeitPawn=()=>{
   const now=nowISO();
   const int=pawnInterest(p.principal,p.ts,now);
   const total=p.principal+int;
-  if(!confirm('ยืนยันให้ตั๋วนี้หลุดรับฝาก?\n\n• เครื่องจะเข้าสต็อกขาย (ต้นทุน = เงินต้น '+baht(p.principal)+')\n• ดึงเงิน '+baht(total)+' จากยอดโอนบัญชีหลัก → กองทุน\n• เงินต้น '+baht(p.principal)+' กลับเข้ากองทุน\n• ดอกเบี้ย '+baht(int)+' เข้ากระเป๋าหุ้นส่วน 100%'))return;
-  p.status='forfeit';p.forfeitTs=now;p.paidInterest=int;
+  const due=pawnDue(p);
+  const early=new Date(now)<new Date(due);
+  const fm=redeemMethod==='cash'?'cash':'bank';
+  let msg='ยืนยันให้ตั๋วนี้หลุดรับฝาก?\n\n• เครื่องจะเข้าสต็อกขาย (ต้นทุน = เงินต้น '+baht(p.principal)+')\n• ดึงเงิน '+baht(total)+' จากยอด'+(fm==='cash'?'เงินสด':'โอน')+'บัญชีหลัก → กองทุน\n• เงินต้น '+baht(p.principal)+' กลับเข้ากองทุน\n• ดอกเบี้ย '+baht(int)+' เข้ากระเป๋าหุ้นส่วน 100%';
+  if(early){
+    msg='🔴 ตั๋วนี้ยังไม่ครบกำหนดไถ่ถอน!\nครบกำหนดจริง: '+fmtDate(due)+'\nวันนี้: '+fmtDate(now)+'\n\nการหลุดจำนำก่อนครบกำหนดอาจถูกครหาว่าหลุดเร็วเกินไปได้ ระบบจะบันทึกวันครบกำหนดจริงเทียบกับวันที่กดหลุดไว้ในประวัติตั๋วเสมอ\n\n'+msg;
+  }
+  if(!confirm(msg))return;
+  p.status='forfeit';p.forfeitTs=now;p.paidInterest=int;p.dueAtForfeit=due;
+  p.history=p.history||[];p.history.push({ts:now,type:'หลุดรับฝาก',dueDate:due,forfeitTs:now,early});
   // 1) เครื่องเข้าสต็อกขาย
   const st=mkStock(p.item,p.imei||'','','หลุดรับฝาก',p.principal,0,now);
   st.note='จากตั๋วรับฝาก '+p.no;
+  st.grade=p.grade;st.warrMonths=p.grade==='มือ 1'?12:3;st.category=p.category||'อื่นๆ';
   DB.stock.push(st);
-  // 2) ดึงเงิน (ต้น+ดอก) จากบัญชีหลัก เฉพาะยอดโอน → โอนเข้ากองทุน
+  // 2) ดึงเงิน (ต้น+ดอก) จากบัญชีหลัก (เลือกได้สด/โอน ตามช่องทางที่เลือกไว้) → โอนเข้ากองทุน
   DB.txns.push({id:uid(),ts:now,type:'etc',desc:'หลุดรับฝาก '+p.item+' ['+p.no+'] โอนเข้ากองทุน',
-    method:'bank',in:0,out:total,cat:'รับฝาก/รับซาก',pawnId:p.id});
+    method:fm,in:0,out:total,cat:'รับฝาก/รับซาก',pawnId:p.id,pawnNo:p.no,
+    walletMoves:[{which:'partner',amount:int}]});
   // 3) เงินต้นกลับเข้ากองทุน
   fundMove(p.principal,'หลุดรับฝาก-เงินต้นคืน','['+p.no+'] '+p.item);
   // 4) ดอกเบี้ยเข้ากระเป๋าหุ้นส่วน 100% (รอบนี้ไม่แบ่งร้าน)
@@ -4930,13 +5450,33 @@ function renderWalletCards(){
   if($('ownerBal'))$('ownerBal').textContent=baht(DB.ownerWallet.balance);
   if($('partnerBal'))$('partnerBal').textContent=baht(DB.partnerWallet.balance);
 }
+let whTarget='fund', whF='all', whRange={from:null,to:null};
 window.openWalletHistory=(which)=>{
+  whTarget=which;whF='all';whRange={from:null,to:null};
+  renderWalletHistory();
+  $('walletModal').classList.add('show');
+};
+window.setWhFilter=(f)=>{
+  whF=f;
+  document.querySelectorAll('#whFilter button').forEach(x=>x.classList.toggle('on',x.dataset.f===f));
+  show('whRangeBox',f==='custom');
+  if(f!=='custom')renderWalletHistory();
+};
+window.applyWhRange=()=>{
+  const f=$('whRangeFrom').value,t=$('whRangeTo').value;
+  if(!f||!t){alert('เลือกวันที่เริ่มและสิ้นสุด');return}
+  if(f>t){alert('วันที่เริ่มต้องไม่เกินวันที่สิ้นสุด');return}
+  whRange={from:f,to:t};renderWalletHistory();
+};
+function renderWalletHistory(){
+  const which=whTarget;
   let w,title;
   if(which==='fund'){w=DB.fund;title='💰 ประวัติกองทุนรับฝาก';}
   else if(which==='owner'){w=DB.ownerWallet;title='💼 ประวัติกระเป๋าร้าน';}
   else {w=DB.partnerWallet;title='🤝 ประวัติกระเป๋าหุ้นส่วน (พี่เนส)';}
   $('walletTitle').textContent=title;
-  const hist=[...(w.history||[])].reverse();
+  const hist=[...(w.history||[])].filter(h=>inRange(h.ts,whF,whRange)).reverse();
+  const periodSum=hist.reduce((s,h)=>s+(h.amount||0),0);
   const rows=hist.map(h=>`<tr>
     <td style="white-space:nowrap;color:var(--muted)">${dtCell(h.ts)}</td>
     <td>${h.type}${h.note?'<div style="font-size:10.5px;color:var(--muted)">'+h.note+'</div>':''}</td>
@@ -4948,9 +5488,23 @@ window.openWalletHistory=(which)=>{
       <div style="font-size:12px;color:var(--muted)">ยอดคงเหลือปัจจุบัน</div>
       <div class="val gold" style="font-size:24px">${baht(w.balance)}</div>
     </div>
-    <div class="tablewrap" style="max-height:50vh"><table><thead><tr><th>วันที่</th><th>รายการ</th><th class="num">จำนวน</th><th class="num">คงเหลือ</th></tr></thead><tbody>${rows||'<tr><td colspan="4" class="empty">ยังไม่มีประวัติ</td></tr>'}</tbody></table></div>`;
-  $('walletModal').classList.add('show');
-};
+    <div class="seg" id="whFilter" style="margin-bottom:10px;flex-wrap:wrap">
+      <button class="${whF==='today'?'on':''}" data-f="today" onclick="setWhFilter('today')">วันนี้</button>
+      <button class="${whF==='week'?'on':''}" data-f="week" onclick="setWhFilter('week')">7 วัน</button>
+      <button class="${whF==='month'?'on':''}" data-f="month" onclick="setWhFilter('month')">เดือนนี้</button>
+      <button class="${whF==='all'?'on':''}" data-f="all" onclick="setWhFilter('all')">ทั้งหมด</button>
+      <button class="${whF==='custom'?'on':''}" data-f="custom" onclick="setWhFilter('custom')">เลือกช่วง</button>
+    </div>
+    <div class="panel ${whF==='custom'?'':'hidden'}" id="whRangeBox" style="margin-bottom:10px">
+      <div class="field-row" style="align-items:end">
+        <div class="field" style="margin-bottom:0"><label>ตั้งแต่วันที่</label><input type="date" id="whRangeFrom" class="acc-sel" style="width:100%" value="${whRange.from||''}"></div>
+        <div class="field" style="margin-bottom:0"><label>ถึงวันที่</label><input type="date" id="whRangeTo" class="acc-sel" style="width:100%" value="${whRange.to||''}"></div>
+        <button class="btn btn-gold btn-sm" onclick="applyWhRange()" style="white-space:nowrap">ดูยอด</button>
+      </div>
+    </div>
+    ${whF!=='all'?`<div style="font-size:12.5px;color:var(--muted);margin-bottom:8px">รวมช่วงที่เลือก: <b style="color:${periodSum>=0?'var(--green)':'var(--red)'}">${periodSum>=0?'+':''}${baht(periodSum)}</b> (${hist.length} รายการ)</div>`:''}
+    <div class="tablewrap" style="max-height:45vh"><table><thead><tr><th>วันที่</th><th>รายการ</th><th class="num">จำนวน</th><th class="num">คงเหลือ</th></tr></thead><tbody>${rows||'<tr><td colspan="4" class="empty">ไม่มีประวัติในช่วงที่เลือก</td></tr>'}</tbody></table></div>`;
+}
 let wdTarget='owner';
 window.openWithdraw=(which)=>{
   wdTarget=which;
@@ -5058,6 +5612,9 @@ window.printPawn=id=>{
         เงื่อนไข: ดอกเบี้ยคิดร้อยละ 10 ต่อ 20 วัน (คิดตามจริงรายวัน ขั้นต่ำร้อยละ 5 ของเงินต้น) · 
         ผู้ฝากต้องมาไถ่ถอนภายในกำหนด หากเกินกำหนดและไม่มาต่อดอก ทางร้านขอสงวนสิทธิ์ให้ทรัพย์หลุดรับฝาก · 
         กรุณานำตั๋วนี้มาแสดงทุกครั้งที่ติดต่อ
+      </div>
+      <div style="color:#c0392b;font-weight:800;font-size:11px;text-align:center;border:1.5px solid #c0392b;border-radius:6px;padding:6px 10px;margin-top:8px">
+        ⚠️ ทางร้านจะไม่มีการติดต่อหรือแจ้งเตือนใดๆ ก่อนครบกำหนด กรุณาจดจำวันครบกำหนดด้วยตนเอง
       </div>
       <div class="tsign"><div>ลายมือชื่อผู้ฝาก</div><div>ลายมือชื่อผู้รับฝาก</div></div>
       <div class="tfoot">ขอบคุณที่ใช้บริการ · ${SHOP.name}</div>
@@ -5241,7 +5798,7 @@ function nextRepairReceiptNo(){const yr=(new Date().getFullYear())%100;DB.svSeq=
 let repairJobRows=[];
 function initRepairJobs(){
   repairJobRows=[];
-  ['t_rcust','t_rphone','t_rmodel','t_rimei'].forEach(i=>{if($(i))$(i).value=''});
+  ['t_rcust','t_rphone','t_rmodel','t_rimei','t_repair_note'].forEach(i=>{if($(i))$(i).value=''});
   document.querySelectorAll('#warrantySeg button').forEach(b=>b.classList.toggle('on',b.dataset.w==='1'));
   $('repairJobList').innerHTML='';
   addRepairJobRow();
@@ -5359,18 +5916,21 @@ window.printRepairReceipt=(arg,preview)=>{
         </div>`:''}
         <div class="r-wcond">รับประกันเฉพาะอะไหล่ที่เปลี่ยนและงานที่ซ่อมในใบนี้เท่านั้น · การรับประกันจะ<b>สิ้นสุดทันที</b>หากตรวจพบว่าเครื่อง: <b>โดนน้ำหรือความชื้น · ตกกระแทก · หน้าจอแตก/ร้าว · ถูกแกะเครื่องหรือซ่อมจากที่อื่น</b> · กรุณานำใบนี้มาแสดงทุกครั้งที่ใช้บริการรับประกัน</div>
       </div>
+      ${r.note?`<div style="font-size:11.5px;background:rgba(212,175,55,.08);border:1px solid rgba(212,175,55,.3);border-radius:8px;padding:8px 12px;margin:10px 0"><b>หมายเหตุ:</b> ${r.note}</div>`:''}
       <div class="r-sign">
         <div class="r-box"><div class="r-line"></div><div class="r-role">ผู้รับซ่อม (ทางร้าน)</div></div>
         <div class="r-box"><div class="r-line"></div><div class="r-role">ลูกค้า</div><div class="r-small">รับเครื่องและรับทราบเงื่อนไขแล้ว</div></div>
       </div>
       <div class="r-foot">ขอบคุณที่ใช้บริการ · ${SHOP.name}</div>
-    </div>
+    </div>`;
+  const bodyHtml=area.innerHTML;
+  area.innerHTML=bodyHtml+'<div style="page-break-before:always;break-before:page;height:0"></div>'+bodyHtml+`
     <div class="print-actions">
       ${preview
         ? `<button class="btn btn-ghost" onclick="cancelRepairPreview()">← กลับไปแก้ไข</button>
-           <button class="btn btn-gold" onclick="commitRepair()">🖨️ ปริ้น + บันทึกงานซ่อม</button>`
+           <button class="btn btn-gold" onclick="commitRepair()">🖨️ ปริ้น + บันทึกงานซ่อม (2 ใบ)</button>`
         : `<button class="btn btn-ghost" onclick="document.getElementById('printArea').classList.add('hidden')">ปิด</button>
-           <button class="btn btn-gold" onclick="window.print()">🖨️ พิมพ์ใบเสร็จ</button>`}
+           <button class="btn btn-gold" onclick="window.print()">🖨️ พิมพ์ใบเสร็จ 2 ใบ</button>`}
     </div>`;
   area.classList.remove('hidden');
   area.scrollIntoView({behavior:'smooth'});
@@ -5381,6 +5941,7 @@ window.cancelRepairPreview=()=>{
     setTimeout(()=>{
       $('t_rcust').value=pendingRepair.cust;$('t_rphone').value=pendingRepair.phone;
       $('t_rmodel').value=pendingRepair.model;$('t_rimei').value=pendingRepair.imei;
+      if($('t_repair_note'))$('t_repair_note').value=pendingRepair.note||'';
       $('repairJobList').innerHTML='';repairJobRows=[];
       pendingRepair.jobs.forEach((j,i)=>{
         addRepairJobRow();
@@ -5424,7 +5985,7 @@ window.commitRepair=()=>{
 /* ---- REPAIR INTAKE ใบรับซ่อม ---- */
 window.openRepairIntake=()=>{
   document.getElementById('intakeModal').classList.add('show');
-  ['it_cust','it_phone','it_brand','it_model','it_color','it_imei','it_lock','it_symptom','it_quote','it_pickup'].forEach(i=>{if($(i))$(i).value=''});
+  ['it_cust','it_phone','it_brand','it_model','it_color','it_imei','it_lock','it_symptom','it_quote','it_pickup','it_note'].forEach(i=>{if($(i))$(i).value=''});
 };
 $('saveIntake').onclick=()=>{
   const cust=$('it_cust').value.trim();
@@ -5434,7 +5995,7 @@ $('saveIntake').onclick=()=>{
     model:$('it_model').value.trim(),color:$('it_color').value.trim(),
     imei:$('it_imei').value.trim(),lock:$('it_lock').value.trim(),
     symptom:$('it_symptom').value.trim(),quote:$('it_quote').value.trim(),
-    pickup:$('it_pickup').value.trim()};
+    pickup:$('it_pickup').value.trim(),note:($('it_note')?$('it_note').value.trim():'')};
   document.getElementById('intakeModal').classList.remove('show');
   printIntake(pendingIntake,true);
 };
@@ -5464,23 +6025,26 @@ window.printIntake=(arg,preview)=>{
           <div class="ri-pbox"><div class="ri-plbl">ประเมินราคา</div><div class="ri-pval">${it.quote||''}</div></div>
           <div class="ri-pbox"><div class="ri-plbl">วันที่นัดรับเครื่อง</div><div class="ri-pval">${it.pickup||''}</div></div>
         </div>
+        ${it.note?`<div style="font-size:11px;background:rgba(212,175,55,.08);border:1px solid rgba(212,175,55,.3);border-radius:6px;padding:6px 10px;margin:8px 0"><b>หมายเหตุ:</b> ${it.note}</div>`:''}
         <div class="ri-cond-title">เงื่อนไขเพิ่มเติม</div>
         <div class="ri-cond"><span class="n">1.</span><span>กรุณาตรวจสอบความเรียบร้อยของสินค้าและอุปกรณ์ที่ติดมากับเครื่องก่อนเข้ารับและหลังรับบริการ (รอยขีดข่วน การแตกหรือหักของสินค้า)</span></div>
         <div class="ri-cond"><span class="n">2.</span><span>กรณีข้อมูลในเครื่องโทรศัพท์ลูกค้าเกิดการสูญหายระหว่างการซ่อม เนื่องจากเหตุสุดวิสัยที่ไม่สามารถกู้คืนได้ ลูกค้าจะไม่เรียกร้องความเสียหายจากข้อมูลที่หายในการซ่อมครั้งนี้</span></div>
-        <div class="ri-cond"><span class="n">3.</span><span>หากไม่มารับเครื่องภายใน 60 วัน ถือว่าลูกค้าสละสิทธิ์</span></div>
+        <div class="ri-cond"><span class="n">3.</span><span>เกิน 45 วันนับจากวันนัดรับเครื่องคืน ทางร้านจะไม่รับผิดชอบในทรัพย์สินใดๆ ทั้งสิ้น</span></div>
         <div class="ri-sign">
           <div class="ri-box"><div class="ri-line"></div><div class="ri-role">ลงชื่อลูกค้า</div></div>
           <div class="ri-box"><div class="ri-line"></div><div class="ri-role">ผู้รับซ่อม</div></div>
         </div>
         <div class="ri-keep">กรุณาเก็บไว้เป็นหลักฐาน และนำมาแสดงเมื่อมารับเครื่องคืน</div>
       </div>
-    </div>
+    </div>`;
+  const bodyHtml=area.innerHTML;
+  area.innerHTML=bodyHtml+'<div style="page-break-before:always;break-before:page;height:0"></div>'+bodyHtml+`
     <div class="print-actions">
       ${preview
         ? `<button class="btn btn-ghost" onclick="cancelIntakePreview()">← กลับไปแก้ไข</button>
-           <button class="btn btn-gold" onclick="commitIntake()">🖨️ ปริ้น + บันทึกใบรับซ่อม</button>`
+           <button class="btn btn-gold" onclick="commitIntake()">🖨️ ปริ้น + บันทึกใบรับซ่อม (2 ใบ)</button>`
         : `<button class="btn btn-ghost" onclick="document.getElementById('printArea').classList.add('hidden')">ปิด</button>
-           <button class="btn btn-gold" onclick="window.print()">🖨️ พิมพ์ใบรับซ่อม</button>`}
+           <button class="btn btn-gold" onclick="window.print()">🖨️ พิมพ์ใบรับซ่อม 2 ใบ (ลูกค้า+ร้าน)</button>`}
     </div>`;
   area.classList.remove('hidden');
   area.scrollIntoView({behavior:'smooth'});
@@ -5494,12 +6058,14 @@ window.cancelIntakePreview=()=>{
       $('it_color').value=pendingIntake.color;$('it_imei').value=pendingIntake.imei;
       $('it_lock').value=pendingIntake.lock;$('it_symptom').value=pendingIntake.symptom;
       $('it_quote').value=pendingIntake.quote;$('it_pickup').value=pendingIntake.pickup;
+      if($('it_note'))$('it_note').value=pendingIntake.note||'';
     },60);
   }
 };
 window.commitIntake=()=>{
   if(!pendingIntake)return;
   pendingIntake.no=nextIntakeNo();
+  pendingIntake.printLog=[{ts:nowISO(),by:currentRole,note:'ออกใบครั้งแรก (2 ใบ)'}];
   DB.intakes=DB.intakes||[];DB.intakes.push(pendingIntake);
   persist();window.print();pendingIntake=null;
   setTimeout(()=>{document.getElementById('printArea').classList.add('hidden')},300);
@@ -5514,7 +6080,7 @@ function nextDepositNo(){const yr=(new Date().getFullYear())%100;DB.dpSeq=(DB.dp
 
 window.openDeposit=()=>{
   dpMethod='';
-  ['dp_cust','dp_phone','dp_brand','dp_model','dp_storage','dp_color','dp_imei','dp_full','dp_deposit','dp_pickup','dp_splitcash','dp_splitbank'].forEach(i=>{if($(i))$(i).value=''});
+  ['dp_cust','dp_phone','dp_brand','dp_model','dp_storage','dp_color','dp_imei','dp_full','dp_deposit','dp_pickup','dp_note','dp_splitcash','dp_splitbank'].forEach(i=>{if($(i))$(i).value=''});
   $('dp_brand').value='Apple';
   $('dpMethodSeg').querySelectorAll('button').forEach(b=>b.classList.remove('on'));
   show('dpSplitWrap',false);
@@ -5565,6 +6131,7 @@ $('saveDeposit').onclick=()=>{
     brand:$('dp_brand').value.trim()||'Apple',model,storage:$('dp_storage').value.trim(),
     color:$('dp_color').value.trim(),imei:$('dp_imei').value.trim(),
     full,deposit:dep,remain:full-dep,pickup:$('dp_pickup').value.trim(),
+    note:($('dp_note')?$('dp_note').value.trim():''),
     method:dpMethod,split:dpSplit};
   closeModals();
   printDeposit(pendingDeposit,true);
@@ -5624,19 +6191,22 @@ window.printDeposit=(arg,preview)=>{
           <div class="r-wdate hi"><div class="l">วันที่กำหนดรับเครื่อง</div><div class="d">${pickup}</div></div>
         </div>
       </div>
+      ${d.note?`<div style="font-size:11.5px;background:rgba(212,175,55,.08);border:1px solid rgba(212,175,55,.3);border-radius:8px;padding:8px 12px;margin:10px 0"><b>หมายเหตุ:</b> ${d.note}</div>`:''}
 
       <div class="r-sign">
         <div class="r-box"><div class="r-line"></div><div class="r-role">ผู้รับเงิน (ทางร้าน)</div></div>
         <div class="r-box"><div class="r-line"></div><div class="r-role">ผู้วางมัดจำ (ลูกค้า)</div></div>
       </div>
       <div class="r-foot">ขอบคุณที่ใช้บริการ · ${SHOP.name} · กรุณาเก็บใบนี้ไว้แสดงวันรับเครื่อง</div>
-    </div>
+    </div>`;
+  const bodyHtml=area.innerHTML;
+  area.innerHTML=bodyHtml+'<div style="page-break-before:always;break-before:page;height:0"></div>'+bodyHtml+`
     <div class="print-actions">
       ${preview
         ? `<button class="btn btn-ghost" onclick="cancelDepositPreview()">← กลับไปแก้ไข</button>
-           <button class="btn btn-gold" onclick="commitDeposit()">🖨️ ปริ้น + บันทึกมัดจำ</button>`
+           <button class="btn btn-gold" onclick="commitDeposit()">🖨️ ปริ้น + บันทึกมัดจำ (2 ใบ)</button>`
         : `<button class="btn btn-ghost" onclick="document.getElementById('printArea').classList.add('hidden')">ปิด</button>
-           <button class="btn btn-gold" onclick="window.print()">🖨️ พิมพ์ใบมัดจำ</button>`}
+           <button class="btn btn-gold" onclick="window.print()">🖨️ พิมพ์ใบมัดจำ 2 ใบ</button>`}
     </div>`;
   area.classList.remove('hidden');
   area.scrollIntoView({behavior:'smooth'});
@@ -5652,6 +6222,7 @@ window.cancelDepositPreview=()=>{
       $('dp_brand').value=d.brand;$('dp_model').value=d.model;$('dp_storage').value=d.storage;
       $('dp_color').value=d.color;$('dp_imei').value=d.imei;
       $('dp_full').value=d.full;$('dp_deposit').value=d.deposit;$('dp_pickup').value=d.pickup;
+      if($('dp_note'))$('dp_note').value=d.note||'';
       if(d.method==='split'&&d.split){
         $('dpMethodSeg').querySelectorAll('button').forEach(x=>x.classList.toggle('on',x.dataset.m==='split'));
         dpMethod='split';show('dpSplitWrap',true);
@@ -5811,6 +6382,7 @@ window.returnLoan=(stockId)=>{
 };
 
 refreshTop();renderDash();
+checkMonthEndWalletClose();
 initAuth();
 
 
@@ -6241,6 +6813,45 @@ window.addEventListener('load',()=>{
       if(viewModeToggle){viewModeToggle.textContent='🖥️';}
     }
   }catch(e){}
+});
+
+/* ปิด scroll wheel + ปุ่มลูกศรขึ้น/ลง (คีย์บอร์ด) เปลี่ยนค่าโดยไม่ตั้งใจในช่อง input type=number ทั้งระบบ
+   ครอบคลุมทุกช่อง รวมถึงช่องที่สร้างทีหลังใน modal เพราะดักที่ document ไม่ใช่ทีละ element
+   ยังพิมพ์ตัวเลขด้วยคีย์บอร์ดได้ปกติ แค่ปิดการเปลี่ยนค่าจากลูกศร/สกอลล์เมาส์เท่านั้น */
+document.addEventListener('wheel',function(e){
+  const el=document.activeElement;
+  if(el&&el.tagName==='INPUT'&&el.type==='number'){el.blur();}
+},{passive:true});
+document.addEventListener('keydown',function(e){
+  if((e.key==='ArrowUp'||e.key==='ArrowDown')&&e.target&&e.target.tagName==='INPUT'&&e.target.type==='number'){
+    e.preventDefault();
+  }
+});
+
+/* แก้ปัญหาคีย์บอร์ดมือถือ (โดยเฉพาะ iPhone/Safari) บังปุ่มบันทึกใน modal —
+   ตัว overlay เป็น position:fixed;inset:0 ซึ่งอิงตาม layout viewport ไม่ใช่พื้นที่ที่มองเห็นจริง
+   พอคีย์บอร์ดเด้งขึ้นมา พื้นที่มองเห็นจริง (visualViewport) จะเล็กลงแต่ overlay ไม่ยอมหด
+   ทำให้ modal ล้นออกไปใต้คีย์บอร์ดจนกดปุ่มด้านล่างไม่ถึง — แก้โดยปรับ overlay ให้หดตาม
+   visualViewport ทุกครั้งที่คีย์บอร์ดเปิด/ปิด modal ที่เปิดอยู่จะพอดีกับพื้นที่ที่เห็นจริงเสมอ
+   (ปุ่มบันทึกใน modal-foot ตรึงล่างสุดของ modal อยู่แล้วจาก CSS ด้านบน จึงกดถึงเสมอ) */
+function fitOverlayToVisibleViewport(){
+  const vv=window.visualViewport;
+  document.querySelectorAll('.overlay.show').forEach(ov=>{
+    if(vv){
+      ov.style.height=vv.height+'px';
+      ov.style.top=vv.offsetTop+'px';
+    }else{
+      ov.style.height='';ov.style.top='';
+    }
+  });
+}
+if(window.visualViewport){
+  window.visualViewport.addEventListener('resize',fitOverlayToVisibleViewport);
+  window.visualViewport.addEventListener('scroll',fitOverlayToVisibleViewport);
+}
+// ตรวจจับตอน modal เปิด/ปิด (คลาส "show" ถูกเพิ่ม/ลบ) เพื่อปรับขนาดใหม่ทันที
+document.querySelectorAll('.overlay').forEach(ov=>{
+  new MutationObserver(fitOverlayToVisibleViewport).observe(ov,{attributes:true,attributeFilter:['class']});
 });
 </script>
 
