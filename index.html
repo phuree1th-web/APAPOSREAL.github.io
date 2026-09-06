@@ -31,7 +31,7 @@
   [data-theme="light"] ::-webkit-scrollbar-thumb{background:#d0ccbe}
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%}
-  body{font-family:"Segoe UI","Sukhumvit Set","Helvetica Neue",sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;font-size:15px;transition:background .25s,color .25s}
+  body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Sukhumvit Set","Segoe UI","Helvetica Neue",sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;font-size:15px;transition:background .25s,color .25s}
   ::-webkit-scrollbar{width:10px;height:10px}
   ::-webkit-scrollbar-thumb{background:#2c2c33;border-radius:8px}
   ::-webkit-scrollbar-track{background:transparent}
@@ -442,9 +442,9 @@
       <button data-view="personal" data-roles="admin" class=""><span class="ic">💰</span><span>บัญชีส่วนตัว</span></button>
       <button data-view="stock" data-roles="admin,staff" class=""><span class="ic">📦</span><span>สต็อกสินค้า</span></button>
       <button data-view="pawn" data-roles="admin,staff,partner,viewer" class=""><span class="ic">🏷️</span><span>ระบบรับฝาก</span></button>
+      <button data-view="livestock" data-roles="admin,staff" class=""><span class="ic">📸</span><span>สินค้าพร้อมขาย</span></button>
       <button data-view="customers" data-roles="admin,staff" class=""><span class="ic">👥</span><span>ลูกค้า</span></button>
       <button data-view="waitlist" data-roles="admin,staff" class=""><span class="ic">📋</span><span>จองเครื่อง</span></button>
-      <button data-view="finance" data-roles="admin,staff" class=""><span class="ic">💳</span><span>ไฟแนนซ์</span></button>
       <button data-view="report" data-roles="admin" class=""><span class="ic">📊</span><span>สรุปยอด</span></button>
       <button data-view="ledger" data-roles="admin,staff" class=""><span class="ic">🕐</span><span>รายการล่าสุด</span></button>
     </nav>
@@ -510,7 +510,7 @@
         <span style="width:8px;height:8px;border-radius:50%;background:#e5484d;flex-shrink:0;margin-top:5px"></span>
       </div><div style="padding:12px 16px;border-bottom:1px solid var(--line);display:flex;gap:11px;opacity:.5">
         <span style="font-size:18px">📦</span>
-        <div style="flex:1"><div style="font-weight:700;font-size:13.5px;color:var(--gold-soft)">อะไหล่ค้างจ่ายสะสมสูง</div><div style="font-size:12px;color:var(--muted);margin-top:2px">ยอดค้าง ฿14,786 ควรเคลียร์</div></div>
+        <div style="flex:1"><div style="font-weight:700;font-size:13.5px;color:var(--gold-soft)">อะไหล่สะสมสูง</div><div style="font-size:12px;color:var(--muted);margin-top:2px">ยอดค้าง ฿14,786 ควรเคลียร์</div></div>
         
       </div><div style="padding:12px 16px;border-bottom:1px solid var(--line);display:flex;gap:11px;opacity:.5">
         <span style="font-size:18px">🏷️</span>
@@ -617,15 +617,13 @@
           <button onclick="openTxn(&#39;sell&#39;)"><span class="qi">🟢</span><div class="qt">ขายเครื่อง</div><div class="qs">ตัดสต็อก + ลงรายรับ</div></button>
           <button onclick="openTxn(&#39;buy&#39;)"><span class="qi">🟡</span><div class="qt">รับเครื่องเข้า</div><div class="qs">ลงสต็อก + ตัดเงิน</div></button>
           <button onclick="openPawn()"><span class="qi">🏷️</span><div class="qt">รับฝาก</div><div class="qs">ออกตั๋ว + ตัดเงิน</div></button>
-          <button onclick="openTxn(&#39;repair&#39;)"><span class="qi">🔧</span><div class="qt">ใบเสร็จงานซ่อม</div><div class="qs">ซ่อมเสร็จ + รับประกัน</div></button>
+          <button onclick="openTxn(&#39;repair&#39;)"><span class="qi">🔧</span><div class="qt">งานซ่อม</div><div class="qs">ซ่อมเสร็จ + รับประกัน</div></button>
           <button onclick="openAccessory()"><span class="qi">🎧</span><div class="qt">ขายอุปกรณ์เสริม</div><div class="qs">ฟิล์ม/เคส/สายชาร์จ</div></button>
           <button onclick="openTxn(&#39;etc&#39;)"><span class="qi">💸</span><div class="qt">รับ-จ่ายอื่นๆ</div><div class="qs">อุปกรณ์ / ค่าใช้จ่าย</div></button>
           <button onclick="openRepairIntake()"><span class="qi">📋</span><div class="qt">ใบรับซ่อม</div><div class="qs">รับเครื่องเข้าซ่อม</div></button>
           <button onclick="openDeposit()"><span class="qi">📝</span><div class="qt">ใบมัดจำ</div><div class="qs">รับมัดจำ + นัดรับเครื่อง</div></button>
-          <button onclick="openParts()"><span class="qi">📦</span><div class="qt">อะไหล่ค้างจ่าย</div><div class="qs">รับอะไหล่ก่อน เคลียร์ทีหลัง</div></button>
+          <button onclick="openParts()"><span class="qi">📦</span><div class="qt">อะไหล่</div><div class="qs">รับอะไหล่ก่อน เคลียร์ทีหลัง</div></button>
           <button onclick="openLoan()"><span class="qi">📲</span><div class="qt">ยืมเครื่องสำรอง</div><div class="qs">ให้ลูกค้ายืมเครื่องสต็อก</div></button>
-          <button onclick="openClaim()"><span class="qi">🛠️</span><div class="qt">ระบบเคลม</div><div class="qs">เคลมซ่อม/เคลมขาย</div></button>
-          <button onclick="openMultiSell()"><span class="qi">🧾</span><div class="qt">ขายส่ง / หลายเครื่อง</div><div class="qs">หลายเครื่องในบิลเดียว</div></button>
         </div>
         <div class="kpi-row">
           <div class="kpi"><div class="label">รายรับวันนี้</div><div class="val green" id="kpiIn">฿0</div></div>
@@ -1144,6 +1142,74 @@
           </div>
         </div>
         <div class="fin-card" id="finResult"></div>
+      </section>
+
+      <!-- REALTIME STOCK — หน้าจัดการรายการที่ลงขายบนหน้าเว็บลูกค้า -->
+      <section id="view-livestock" class="hidden">
+        <div class="panel" style="margin-bottom:16px">
+          <div style="display:flex;justify-content:space-between;align-items:center;cursor:pointer" onclick="toggleLsSettings()">
+            <div style="font-weight:700;font-size:14px">⚙️ ตั้งค่าหน้าเว็บลูกค้า (แก้ได้เอง ไม่ต้องแก้โค้ด)</div>
+            <span id="lsSettingsChevron">▾</span>
+          </div>
+          <div id="lsSettingsBody" class="hidden" style="margin-top:14px">
+            <div class="field"><label>ข้อความต้อนรับ (แสดงบนสุดของหน้าเว็บ)</label><input id="lsSetBanner" placeholder="เช่น ยินดีต้อนรับสู่ร้านแอปเปิ้ลอาร์ม เพชรบุรี"></div>
+            <div class="field">
+              <label>ปุ่มติดต่อลูกค้า — เลือกรูปแบบ</label>
+              <div class="fin-chip-row" id="lsContactTypeChips">
+                <button type="button" class="fin-chip" data-t="qr" onclick="setLsContactType('qr')">รูป QR</button>
+                <button type="button" class="fin-chip" data-t="line" onclick="setLsContactType('line')">ลิงก์ LINE</button>
+                <button type="button" class="fin-chip" data-t="phone" onclick="setLsContactType('phone')">เบอร์โทร</button>
+                <button type="button" class="fin-chip" data-t="none" onclick="setLsContactType('none')">ไม่แสดงปุ่ม</button>
+              </div>
+            </div>
+            <div class="field hidden" id="lsQrWrap">
+              <label>รูป QR (อัปโหลดรูปใหม่เพื่อเปลี่ยน)</label>
+              <input type="file" id="lsQrFile" accept="image/*">
+              <div id="lsQrPreview" style="margin-top:8px"></div>
+            </div>
+            <div class="field hidden" id="lsLineWrap">
+              <label>ลิงก์ LINE (เช่น https://line.me/ti/p/xxxx)</label>
+              <input id="lsSetContactVal" placeholder="https://line.me/ti/p/xxxx">
+            </div>
+            <div class="field hidden" id="lsPhoneWrap">
+              <label>เบอร์โทรศัพท์</label>
+              <input id="lsSetContactValPhone" placeholder="0965572230">
+            </div>
+            <button class="btn btn-gold" onclick="saveLsSettings()">✓ บันทึกการตั้งค่า</button>
+            <span id="lsSettingsMsg" style="font-size:12.5px;color:var(--gold-soft);margin-left:10px"></span>
+          </div>
+        </div>
+
+        <div class="panel" style="margin-bottom:16px">
+          <div style="display:flex;justify-content:space-between;align-items:center;cursor:pointer" onclick="toggleLsReviews()">
+            <div style="font-weight:700;font-size:14px">⭐ รีวิวลูกค้า (โชว์บนหน้าเว็บ แบบเดียวกับร้านอื่นๆ)</div>
+            <span id="lsReviewsChevron">▾</span>
+          </div>
+          <div id="lsReviewsBody" class="hidden" style="margin-top:14px">
+            <div style="background:var(--bg);border:1px solid var(--line);border-radius:11px;padding:13px;margin-bottom:16px">
+              <div style="font-weight:700;font-size:13px;margin-bottom:10px">+ เพิ่มรีวิวใหม่</div>
+              <div class="field"><label>รูปลูกค้า (ถ่ายตอนปิดการขาย)</label><input type="file" id="lsRevFile" accept="image/*"><div id="lsRevPreview" style="margin-top:8px"></div></div>
+              <div class="field"><label>คำโปรย/รีวิว</label><input id="lsRevText" placeholder="เช่น บริการดีมาก ราคาโอเค แนะนำเลยค่ะ"></div>
+              <div class="field-row">
+                <div class="field"><label>คะแนน (1-5 ดาว)</label><input type="number" id="lsRevRating" min="1" max="5" value="5"></div>
+                <div class="field"><label>รายการที่ซื้อ</label><input id="lsRevItem" placeholder="เช่น ซื้อ iPhone 13 Pro"></div>
+              </div>
+              <button class="btn btn-gold btn-sm" onclick="addLsReview()">✓ เพิ่มรีวิว</button>
+              <span id="lsRevMsg" style="font-size:12px;color:var(--gold-soft);margin-left:8px"></span>
+            </div>
+            <div id="lsReviewsList"></div>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;margin-bottom:14px;flex-wrap:wrap">
+          <div class="seg" id="lsFilter">
+            <button class="on" data-f="all">ทั้งหมด</button>
+            <button data-f="published">เผยแพร่อยู่</button>
+            <button data-f="unpublished">ซ่อนอยู่</button>
+            <button data-f="sold">ขายแล้ว</button>
+          </div>
+          <button class="btn btn-ghost btn-sm" onclick="loadLivestockPage()">🔄 รีเฟรช</button>
+        </div>
+        <div id="lsListWrap"><div class="empty" style="padding:40px 0"><div class="big">📸</div>กำลังโหลด...</div></div>
       </section>
 
       <!-- REPORT -->
@@ -1666,7 +1732,7 @@
 <!-- ===== PARTS CONSIGNMENT MODAL (อะไหล่ค้างจ่าย) ===== -->
 <div class="overlay" id="partsModal">
   <div class="modal">
-    <div class="modal-head"><h3>📦 อะไหล่ค้างจ่าย</h3><button class="x" data-close="">×</button></div>
+    <div class="modal-head"><h3>📦 อะไหล่</h3><button class="x" data-close="">×</button></div>
     <div class="modal-body">
       <div style="background:var(--bg);border:1px solid var(--line);border-radius:11px;padding:14px;margin-bottom:14px;text-align:center">
         <div style="font-size:12px;color:var(--muted)">ยอดค้างจ่ายปัจจุบัน</div>
@@ -1707,6 +1773,38 @@
     <div class="modal-head"><h3 id="sdTitle">รายละเอียดเครื่อง</h3><button class="x" data-close="">×</button></div>
     <div class="modal-body" id="stockDetailBody"></div>
     <div class="modal-foot" id="stockDetailFoot"></div>
+  </div>
+</div>
+
+<!-- ===== REALTIME STOCK — ลงขายหน้าเว็บลูกค้า (สินค้าพร้อมขายร้าน แอปเปิ้ลอาร์มเพชรบุรี) ===== -->
+<div class="overlay" id="livestockModal">
+  <div class="modal">
+    <div class="modal-head"><h3 id="lsTitle">📸 ลงขาย Realtime Stock</h3><button class="x" data-close="">×</button></div>
+    <div class="modal-body">
+      <div class="field"><label>ชื่อรุ่นที่โชว์ลูกค้า</label><input id="ls_name"></div>
+      <div class="field-row">
+        <div class="field"><label>หมวดหมู่</label><input id="ls_category" placeholder="เช่น iPhone"></div>
+        <div class="field"><label>สภาพ (มือ1/มือ2)</label><input id="ls_grade"></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>% แบต</label><input id="ls_battery"></div>
+        <div class="field"><label>ราคาที่โชว์ (บาท)</label><input type="number" id="ls_price" placeholder="เช่น 9900"></div>
+      </div>
+      <div class="field"><label>ตำหนิ/สภาพเครื่อง (โชว์ให้ลูกค้าเห็น)</label><input id="ls_condition"></div>
+      <div class="field">
+        <label>รูปภาพ (เลือกได้ 1-6 รูป)</label>
+        <input type="file" id="ls_photos" accept="image/*" multiple>
+        <div id="lsPhotoPreview" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px"></div>
+      </div>
+      <label style="display:flex;align-items:center;gap:8px;font-size:13px;margin-top:4px">
+        <input type="checkbox" id="ls_published" checked style="width:auto"> เผยแพร่ให้ลูกค้าเห็นทันที
+      </label>
+      <div id="lsProgress" style="font-size:12.5px;color:var(--gold-soft);margin-top:8px"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" data-close>ยกเลิก</button>
+      <button class="btn btn-gold" id="lsSubmitBtn" onclick="submitLivestock()">✓ บันทึกลงขาย</button>
+    </div>
   </div>
 </div>
 
@@ -2341,14 +2439,64 @@ function initAuth(){
 }
 
 function load(){try{const v=JSON.parse(localStorage.getItem(LS));if(v&&v.txns){if(!v.pawns)v.pawns=[];if(!v.sales)v.sales=[];if(!v.repairs)v.repairs=[];if(!v.intakes)v.intakes=[];if(!v.deposits)v.deposits=[];if(!v.loans)v.loans=[];if(!v.fund)v.fund={capital:100000,balance:100000,history:[]};if(!v.ownerWallet)v.ownerWallet={balance:0,history:[]};if(!v.partnerWallet)v.partnerWallet={balance:0,history:[]};if(!v.accSales)v.accSales=[];if(!v.claims)v.claims=[];if(!v.parts)v.parts=[];if(!v.notifRead)v.notifRead=[];if(!v.customers)v.customers=[];if(!v.settings)v.settings={};if(!v.waitlist)v.waitlist=[];if(!v.deletionLog)v.deletionLog=[];ensurePersonalFields(v);return v}}catch(e){}return seed()}
-function persist(){localStorage.setItem(LS,JSON.stringify(DB));refreshTop();autoBackupCheck();cloudPushDebounced()}
+function persist(){localStorage.setItem(LS,JSON.stringify(DB));pendingPush=true;refreshTop();autoBackupCheck();cloudPushDebounced()}
 
 /* ===== CLOUD SYNC (Supabase) ===== */
 let cloudTimer=null, cloudStatus='';
+let pendingPush=false; // true = มีข้อมูลในเครื่องที่ยังไม่ได้ส่งขึ้นคลาวด์สำเร็จ ห้ามดึงข้อมูลมาทับเด็ดขาดจนกว่าจะ push สำเร็จ
+let lastSyncUpdatedAt=null; // updated_at ของแถวบนคลาวด์ ณ ครั้งล่าสุดที่เรารู้ว่าตรงกับเครื่องนี้ ใช้เช็คว่ามีเครื่องอื่น push ทับระหว่างที่เราไม่รู้ตัวหรือไม่
 function setCloudStatus(s){
   cloudStatus=s;
   const el=document.getElementById('cloudStatus');
-  if(el)el.textContent=s;
+  if(el){
+    el.textContent=s;
+    const warn=s.indexOf('⚠️')===0;
+    el.style.color=warn?'var(--red)':'var(--muted)';
+    el.style.fontWeight=warn?'800':'normal';
+  }
+}
+/* รวมข้อมูลจากอีกเครื่อง (remote) เข้ากับเครื่องนี้ (DB) แทนการเขียนทับ — ใช้เมื่อพบว่ามีเครื่องอื่น
+   ส่งข้อมูลขึ้นคลาวด์ไปแล้วระหว่างที่เครื่องนี้ยังไม่ได้ sync (เช่น ใช้มือถือ+คอมพร้อมกัน) */
+function mergeArraysById(localArr,remoteArr){
+  localArr=localArr||[];remoteArr=remoteArr||[];
+  const map=new Map();
+  remoteArr.forEach(r=>{if(r&&r.id)map.set(r.id,r)});
+  localArr.forEach(l=>{if(l&&l.id)map.set(l.id,l)}); // ถ้า id ซ้ำ ให้เวอร์ชันของเครื่องนี้ (ที่เพิ่งแก้) ชนะ
+  return [...map.values()];
+}
+function mergeMoneyLog(localW,remoteW,baseAmount){
+  // รวมประวัติทั้ง 2 ฝั่ง (ตัด entry ที่ซ้ำกันเป๊ะทิ้ง) แล้วคำนวณยอดคงเหลือใหม่จากผลรวมจริง กันยอดผิดจากการรวมแบบตรงๆ
+  const seen=new Set();const merged=[];
+  [...(remoteW.history||[]),...(localW.history||[])].forEach(h=>{
+    const key=h.ts+'|'+h.type+'|'+h.amount+'|'+(h.note||'');
+    if(!seen.has(key)){seen.add(key);merged.push({ts:h.ts,type:h.type,amount:h.amount,note:h.note||''});}
+  });
+  merged.sort((a,b)=>new Date(a.ts)-new Date(b.ts));
+  let bal=baseAmount||0;
+  merged.forEach(h=>{bal+=h.amount;h.bal=bal;});
+  return {balance:bal,history:merged};
+}
+function fixDuplicatePawnNos(){
+  // เลขที่ตั๋วจำนำอิงจากจำนวนตั๋ว ไม่ใช่ตัวนับกลาง อาจชนกันได้หลัง merge — เจอซ้ำให้ต่อท้าย B ให้เห็นชัด
+  const seen=new Set();
+  [...(DB.pawns||[])].sort((a,b)=>new Date(a.ts)-new Date(b.ts)).forEach(p=>{
+    if(seen.has(p.no))p.no=p.no+'B';
+    seen.add(p.no);
+  });
+}
+function mergeRemoteData(remote){
+  if(!remote)return;
+  ['txns','pawns','stock','sales','repairs','intakes','deposits','loans','customers','accSales','claims','parts','waitlist','deletionLog','personalTxns'].forEach(k=>{
+    DB[k]=mergeArraysById(DB[k],remote[k]);
+  });
+  const fundCapital=(DB.fund&&DB.fund.capital)||(remote.fund&&remote.fund.capital)||100000;
+  DB.fund=mergeMoneyLog(DB.fund||{history:[]},remote.fund||{history:[]},fundCapital);
+  DB.fund.capital=fundCapital;
+  DB.ownerWallet=mergeMoneyLog(DB.ownerWallet||{history:[]},remote.ownerWallet||{history:[]},0);
+  DB.partnerWallet=mergeMoneyLog(DB.partnerWallet||{history:[]},remote.partnerWallet||{history:[]},0);
+  ['invSeq','svSeq','rpSeq','dpSeq','acSeq'].forEach(k=>{DB[k]=Math.max(DB[k]||0,remote[k]||0);});
+  DB.notifRead=[...new Set([...(DB.notifRead||[]),...(remote.notifRead||[])])];
+  fixDuplicatePawnNos();
 }
 function cloudPushDebounced(){
   if(!sbReady||!sbUser)return;
@@ -2358,22 +2506,53 @@ function cloudPushDebounced(){
 }
 async function cloudPush(){
   if(!sbReady||!sbUser)return;
+  pendingPush=true;
+  let didMerge=false;
   try{
-    const {error}=await sb.from('shop_data').upsert({id:SB_ROW,data:DB,updated_at:new Date().toISOString()});
+    // เช็คก่อนว่ามีเครื่องอื่น (เช่น มือถือ) push ทับไปแล้วตั้งแต่ครั้งล่าสุดที่เครื่องนี้รู้จักหรือไม่
+    if(lastSyncUpdatedAt){
+      const {data:cur,error:checkErr}=await sb.from('shop_data').select('updated_at').eq('id',SB_ROW).maybeSingle();
+      if(!checkErr&&cur&&cur.updated_at&&cur.updated_at!==lastSyncUpdatedAt){
+        const {data:remoteRow,error:pullErr}=await sb.from('shop_data').select('data').eq('id',SB_ROW).maybeSingle();
+        if(!pullErr&&remoteRow&&remoteRow.data){
+          mergeRemoteData(remoteRow.data);
+          localStorage.setItem(LS,JSON.stringify(DB));
+          renderCurrentView();refreshTop();
+          didMerge=true;
+        }
+      }
+    }
+    const stamp=new Date().toISOString();
+    const {error}=await sb.from('shop_data').upsert({id:SB_ROW,data:DB,updated_at:stamp});
     if(error)throw error;
-    setCloudStatus('☁️ บันทึกขึ้นคลาวด์แล้ว '+fmtTime(nowISO()));
+    lastSyncUpdatedAt=stamp;
+    pendingPush=false;
+    if(didMerge){
+      setCloudStatus('🔀 พบการแก้ไขจากอีกเครื่อง รวมข้อมูลให้อัตโนมัติแล้ว '+fmtTime(nowISO()));
+      alert('🔀 ตรวจพบว่ามีการบันทึกข้อมูลจากอีกเครื่อง (เช่น มือถือ) ระหว่างที่เครื่องนี้ยังไม่ได้ซิงค์\n\nระบบรวมข้อมูลทั้งสองฝั่งให้อัตโนมัติแล้ว (ไม่มีรายการไหนหายไป) แนะนำให้เช็คยอดกองทุน/บัญชีอีกครั้งเพื่อความชัวร์');
+    } else {
+      setCloudStatus('☁️ บันทึกขึ้นคลาวด์แล้ว '+fmtTime(nowISO()));
+    }
   }catch(e){
     console.warn('cloudPush',e);
-    setCloudStatus('⚠️ ออฟไลน์ (เก็บในเครื่อง)');
+    // pendingPush ยังคงเป็น true — ยังไม่สำเร็จ ห้ามให้ cloudPull ทับข้อมูลนี้จนกว่าจะ push สำเร็จ
+    setCloudStatus('⚠️ ออฟไลน์ — มีข้อมูลค้างส่ง จะลองใหม่อัตโนมัติ');
   }
 }
 async function cloudPull(){
   if(!sbReady||!sbUser)return false;
+  if(pendingPush){
+    // มีข้อมูลในเครื่องที่ยังไม่ได้ส่งขึ้นคลาวด์สำเร็จ — ห้ามดึงมาทับเด็ดขาด (นี่คือจุดที่เคยทำข้อมูล 3 วันหายไป)
+    // ให้ลองส่งข้อมูลในเครื่องขึ้นก่อนแทน (ซึ่งจะรวมข้อมูลจากอีกเครื่องให้อัตโนมัติถ้าจำเป็น) แล้วค่อยดึงได้ตามปกติในรอบถัดไป
+    await cloudPush();
+    return false;
+  }
   try{
-    const {data,error}=await sb.from('shop_data').select('data').eq('id',SB_ROW).maybeSingle();
+    const {data,error}=await sb.from('shop_data').select('data,updated_at').eq('id',SB_ROW).maybeSingle();
     if(error)throw error;
     if(data&&data.data){
       DB=data.data;
+      lastSyncUpdatedAt=data.updated_at||null;
       // เติม field ที่อาจขาด (กันข้อมูลเก่า)
       ensureFields();
       localStorage.setItem(LS,JSON.stringify(DB));
@@ -2620,13 +2799,13 @@ function refreshTop(){
 }
 
 /* ---------- NAV ---------- */
-const titles={dashboard:'แดชบอร์ด',ledger:'รายการล่าสุด',stock:'สต็อกสินค้า',pawn:'ระบบรับฝาก',customers:'ลูกค้า',report:'สรุปยอด',personal:'บัญชีส่วนตัว',waitlist:'จองเครื่อง',finance:'ไฟแนนซ์'};
+const titles={dashboard:'แดชบอร์ด',ledger:'รายการล่าสุด',stock:'สต็อกสินค้า',pawn:'ระบบรับฝาก',customers:'ลูกค้า',report:'สรุปยอด',personal:'บัญชีส่วนตัว',waitlist:'จองเครื่อง',livestock:'สินค้าพร้อมขาย'};
 let curView='dashboard';
 function go(v){
   curView=v;
   document.getElementById('view-search').classList.add('hidden');
   document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===v));
-  ['dashboard','ledger','stock','pawn','customers','waitlist','report','personal','finance'].forEach(x=>document.getElementById('view-'+x).classList.toggle('hidden',x!==v));
+  ['dashboard','ledger','stock','pawn','customers','waitlist','report','personal','livestock'].forEach(x=>document.getElementById('view-'+x).classList.toggle('hidden',x!==v));
   document.getElementById('viewTitle').textContent=titles[v];
   renderCurrentView();
 }
@@ -2640,7 +2819,7 @@ function renderCurrentView(){
   if(v==='waitlist')renderWaitlist();
   if(v==='report'){renderReport();renderBackupPanel();}
   if(v==='personal')renderPersonal();
-  if(v==='finance')renderFinance();
+  if(v==='livestock')loadLivestockPage();
 }
 let waitlistTab='waiting';
 /* ===== MULTI-SELL / ขายส่งหลายเครื่องในบิลเดียว ===== */
@@ -2796,6 +2975,7 @@ window.confirmMultiSale=()=>{
     const s=DB.stock.find(x=>x.id===it.stockId);
     if(!s||s.status!=='instock')return;
     s.status='sold';s.dateSold=ms.ts;s.priceSold=it.price;s.imei=it.imei;
+    if(s.livestockId)syncLivestockSold(s);
     const rec={id:uid(),ts:ms.ts,type:'sell',name:s.name,imei:it.imei,
       desc:'ขายส่ง ['+no+'] '+s.name+(it.imei?' '+it.imei:''),
       method:ms.method,in:it.price,out:0,cost:it.cost,cat:'ขายสินค้า',stockId:s.id,
@@ -2953,6 +3133,14 @@ window.cloudSyncNow=async()=>{
 function modalOpen(){return !!document.querySelector('.overlay.show, #txnModal.show, #pawnModal.show, #stockDetailModal.show, #pawnEditModal.show, #custEditModal.show, #redeemModal.show, #settingsModal.show')}
 setInterval(()=>{if(sbUser&&document.visibilityState==='visible'&&!modalOpen())cloudSync(false)},30000);
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&sbUser&&!modalOpen())cloudSync(false)});
+// เตือนก่อนปิดแท็บ/รีเฟรช ถ้ายังมีข้อมูลที่ส่งขึ้นคลาวด์ไม่สำเร็จ (กันปิดเครื่องทั้งที่ข้อมูลยังค้างอยู่ในเครื่องเดียว)
+window.addEventListener('beforeunload',(e)=>{
+  if(pendingPush){
+    e.preventDefault();
+    e.returnValue='มีข้อมูลที่ยังไม่ได้ส่งขึ้นคลาวด์สำเร็จ (อาจเพราะเน็ตหลุด) ถ้าปิดตอนนี้ข้อมูลจะอยู่ในเครื่องนี้เท่านั้น จนกว่าจะเปิดแอปนี้อีกครั้งตอนเน็ตกลับมา';
+    return e.returnValue;
+  }
+});
 document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>go(b.dataset.view));
 const _custSearchEl=document.getElementById('custSearch');
 if(_custSearchEl)_custSearchEl.oninput=e=>renderCustomers(e.target.value);
@@ -3365,6 +3553,9 @@ function renderLedger(){
     }
   }
   tb.innerHTML=rows.length?rows.join(''):`<tr><td colspan="10" class="empty"><div class="big">📒</div>ไม่มีรายการในช่วงนี้</td></tr>`;
+  // เลื่อนไปแสดงวันล่าสุดก่อนเสมอ (แถวเรียงเก่า→ใหม่จากบนลงล่าง เพื่อให้ยอดยกมาถูกต้อง แต่ผู้ใช้อยากเห็นวันล่าสุดทันทีโดยไม่ต้องเลื่อนเอง)
+  const wrap=tb.closest('.tablewrap');
+  if(wrap)requestAnimationFrame(()=>{wrap.scrollTop=wrap.scrollHeight;});
 }
 document.querySelectorAll('#ledgerFilter button').forEach(b=>b.onclick=()=>{
   document.querySelectorAll('#ledgerFilter button').forEach(x=>x.classList.remove('on'));
@@ -3406,7 +3597,7 @@ window.voidTxn=id=>{
     const st=DB.stock.find(s=>s.id===t.stockId);
     if(st){
       if(t.type==='buy'){st.status='voided';st.note=(st.note||'')+' [รายการรับถูกยกเลิก: '+reason.trim()+']';}
-      else if(t.type==='sell'){st.status='instock';st.dateSold=null;st.priceSold=null;}
+      else if(t.type==='sell'){st.status='instock';st.dateSold=null;st.priceSold=null;if(st.livestockId)syncLivestockUnsold(st);}
     }
   }
   // หักคืนเงินกระเป๋า owner/partner ถ้ารายการนี้เคยจ่ายเข้ากระเป๋าไปแล้ว (เช่น ต่อดอกเบี้ย/ไถ่ถอน/หลุดจำนำ)
@@ -3438,7 +3629,7 @@ window.deleteTxn=id=>{
     const st=DB.stock.find(s=>s.id===t.stockId);
     if(st){
       if(t.type==='buy'){st.status='voided';st.note=(st.note||'')+' [รายการรับถูกลบ: '+reason.trim()+']';}
-      else if(t.type==='sell'){st.status='instock';st.dateSold=null;st.priceSold=null;}
+      else if(t.type==='sell'){st.status='instock';st.dateSold=null;st.priceSold=null;if(st.livestockId)syncLivestockUnsold(st);}
     }
   }
   // หักคืนเงินกระเป๋า owner/partner ถ้ารายการนี้เคยจ่ายเข้ากระเป๋าไปแล้วและยังไม่เคยถูกหักคืนตอนยกเลิก
@@ -3624,10 +3815,12 @@ function renderStock(q=''){
     const statusCell = sold ? fmtDate(i.dateSold)
       : lent ? '<span class="tag tag-etc" style="background:rgba(212,175,55,.18);color:var(--gold-soft)">📲 กำลังยืม</span>'
       : '<span class="tag tag-buy">ในสต็อก</span>';
+    const lsBadge = i.livestockId ? `<span class="tag" style="background:rgba(212,175,55,.18);color:var(--gold-soft);font-size:10.5px" title="ลงขายใน Realtime Stock แล้ว">📸 ลงแล้ว</span>` : '';
     const actionCell = (sold ? `<button class="btn btn-ghost btn-sm" onclick="reprintFromStock('${i.id}')">🖨️ ใบเสร็จ</button>`
       : lent ? `<button class="btn btn-green btn-sm" onclick="returnLoan('${i.id}')">↩️ รับคืน</button>`
       : `<button class="btn btn-green btn-sm" onclick="quickSell('${i.id}')">ขาย</button>`)
-      + ` <button class="btn btn-ghost btn-sm" onclick="openStockDetail('${i.id}')">👁️ ดู</button>`;
+      + ` <button class="btn btn-ghost btn-sm" onclick="openStockDetail('${i.id}')">👁️ ดู</button>`
+      + ` <button class="btn btn-ghost btn-sm" onclick="openLivestockUpload('${i.id}')">📸 ${i.livestockId?'แก้':'ลงขาย'} Realtime Stock</button> ${lsBadge}`;
     return `<tr class="${sold?'row-sell':'row-buy'}">
       <td style="color:var(--muted);white-space:nowrap">${dtCell(i.dateIn)}</td>
       <td><strong>${i.name}</strong></td>
@@ -3751,6 +3944,340 @@ window.reprintFromStock=stockId=>{
   const tx=(DB.txns||[]).find(t=>t.stockId===stockId&&t.type==='sell'&&t.saleId);
   if(tx&&tx.saleId){printReceipt(tx.saleId);return}
   alert('ไม่พบใบเสร็จของเครื่องนี้ (อาจเป็นรายการเก่าก่อนมีระบบใบเสร็จ)');
+};
+
+/* ===================================================================
+   REALTIME STOCK — ลงขายเครื่องบนหน้าเว็บลูกค้า "สินค้าพร้อมขายร้าน แอปเปิ้ลอาร์มเพชรบุรี"
+   ใช้ตาราง livestock_items + bucket livestock-photos บน Supabase เดียวกับ POS
+   แต่แยก RLS ไว้เด็ดขาด — ไม่แตะ shop_data/shop_backups เลย ปลอดภัยสำหรับหน้าสาธารณะ
+   =================================================================== */
+let lsStockId=null, lsPhotoFiles=[], lsExistingPhotos=[];
+window.openLivestockUpload=async(stockId)=>{
+  if(!sbReady||!sbUser){alert('ต้องล็อกอินก่อนถึงจะลงขาย Realtime Stock ได้');return}
+  const st=DB.stock.find(x=>x.id===stockId);if(!st)return;
+  lsStockId=stockId;lsPhotoFiles=[];lsExistingPhotos=[];
+  $('ls_name').value=st.name||'';
+  $('ls_category').value=st.category||'';
+  $('ls_grade').value=st.grade||'';
+  $('ls_battery').value=st.batt||'';
+  $('ls_condition').value=st.condition||st.note||'';
+  $('ls_price').value='';
+  $('ls_published').checked=true;
+  $('ls_photos').value='';
+  $('lsPhotoPreview').innerHTML='';
+  $('lsProgress').textContent='';
+  $('lsTitle').textContent=st.livestockId?'📸 แก้ไขรายการ Realtime Stock':'📸 ลงขาย Realtime Stock';
+  $('livestockModal').classList.add('show');
+  if(st.livestockId){
+    $('lsProgress').textContent='⏳ กำลังโหลดข้อมูลเดิม...';
+    try{
+      const {data,error}=await sb.from('livestock_items').select('*').eq('id',st.livestockId).maybeSingle();
+      if(!error&&data){
+        $('ls_price').value=data.price||'';
+        $('ls_published').checked=!!data.published;
+        lsExistingPhotos=data.photos||[];
+        renderLsPhotoPreview();
+      }
+      $('lsProgress').textContent='';
+    }catch(e){$('lsProgress').textContent='';}
+  }
+};
+if($('ls_photos'))$('ls_photos').onchange=(e)=>{
+  const files=[...e.target.files].slice(0,6);
+  if(e.target.files.length>6)alert('เลือกได้สูงสุด 6 รูป — ใช้ 6 รูปแรกที่เลือกไว้');
+  lsPhotoFiles=files;
+  lsExistingPhotos=[]; // เลือกรูปใหม่ = แทนที่รูปเดิมทั้งหมด
+  renderLsPhotoPreview();
+};
+function renderLsPhotoPreview(){
+  const box=$('lsPhotoPreview');if(!box)return;
+  const thumbs=[];
+  lsExistingPhotos.forEach(url=>thumbs.push(`<img src="${url}" style="width:64px;height:64px;object-fit:cover;border-radius:8px;border:1px solid var(--line)">`));
+  lsPhotoFiles.forEach(f=>thumbs.push(`<img src="${URL.createObjectURL(f)}" style="width:64px;height:64px;object-fit:cover;border-radius:8px;border:1px solid var(--gold-soft)">`));
+  box.innerHTML=thumbs.join('')||'<div style="font-size:12px;color:var(--muted)">ยังไม่มีรูป</div>';
+}
+window.submitLivestock=async()=>{
+  const st=DB.stock.find(x=>x.id===lsStockId);if(!st)return;
+  const name=$('ls_name').value.trim();
+  const price=+$('ls_price').value||0;
+  if(!name){alert('กรอกชื่อรุ่นก่อน');return}
+  if(price<=0){alert('กรอกราคาที่จะโชว์ลูกค้าก่อน');return}
+  if(!lsExistingPhotos.length&&!lsPhotoFiles.length){alert('เลือกรูปภาพอย่างน้อย 1 รูป');return}
+  const btn=$('lsSubmitBtn');btn.disabled=true;
+  let photoUrls=[...lsExistingPhotos];
+  try{
+    if(lsPhotoFiles.length){
+      photoUrls=[];
+      for(let i=0;i<lsPhotoFiles.length;i++){
+        $('lsProgress').textContent='⏳ กำลังอัปโหลดรูป '+(i+1)+'/'+lsPhotoFiles.length+'...';
+        const f=lsPhotoFiles[i];
+        const ext=(f.name.split('.').pop()||'jpg').toLowerCase();
+        const path=lsStockId+'/'+Date.now()+'-'+i+'.'+ext;
+        const {error:upErr}=await sb.storage.from('livestock-photos').upload(path,f,{upsert:true});
+        if(upErr)throw upErr;
+        const {data:pub}=sb.storage.from('livestock-photos').getPublicUrl(path);
+        photoUrls.push(pub.publicUrl);
+      }
+    }
+    $('lsProgress').textContent='⏳ กำลังบันทึกข้อมูล...';
+    const payload={
+      stock_id:lsStockId,name,category:$('ls_category').value.trim(),grade:$('ls_grade').value.trim(),
+      battery:$('ls_battery').value.trim(),condition:$('ls_condition').value.trim(),
+      price,photos:photoUrls,published:$('ls_published').checked,
+      sold:st.status==='sold',updated_at:new Date().toISOString()
+    };
+    if(st.livestockId){
+      const {error}=await sb.from('livestock_items').update(payload).eq('id',st.livestockId);
+      if(error)throw error;
+    } else {
+      const {data,error}=await sb.from('livestock_items').insert(payload).select('id').single();
+      if(error)throw error;
+      st.livestockId=data.id;
+      persist();
+    }
+    $('lsProgress').textContent='';
+    btn.disabled=false;
+    closeModals();renderStock(document.getElementById('stockSearch')?document.getElementById('stockSearch').value:'');
+    alert('บันทึกลงขาย Realtime Stock เรียบร้อย ✓');
+  }catch(e){
+    console.warn('submitLivestock',e);
+    btn.disabled=false;
+    $('lsProgress').textContent='';
+    alert('บันทึกไม่สำเร็จ: '+(e.message||'เช็คอินเทอร์เน็ตแล้วลองใหม่'));
+  }
+};
+/* sync สถานะ "ขายแล้ว" ไปที่ Realtime Stock อัตโนมัติ (ไม่ลบข้อมูล เก็บไว้เป็นป้าย "ขายแล้ว" ดูย้อนหลังได้) */
+async function syncLivestockSold(stockItem){
+  if(!stockItem||!stockItem.livestockId||!sbReady||!sbUser)return;
+  try{
+    await sb.from('livestock_items').update({sold:true,updated_at:new Date().toISOString()}).eq('id',stockItem.livestockId);
+  }catch(e){console.warn('syncLivestockSold',e);}
+}
+async function syncLivestockUnsold(stockItem){
+  if(!stockItem||!stockItem.livestockId||!sbReady||!sbUser)return;
+  try{
+    await sb.from('livestock_items').update({sold:false,updated_at:new Date().toISOString()}).eq('id',stockItem.livestockId);
+  }catch(e){console.warn('syncLivestockUnsold',e);}
+}
+
+/* ---------- หน้าจัดการ Realtime Stock (ดูรายการที่ลงขายทั้งหมด) ---------- */
+let lsPageF='all', lsPageCache=[];
+document.querySelectorAll('#lsFilter button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('#lsFilter button').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on');lsPageF=b.dataset.f;renderLivestockList();
+});
+window.loadLivestockPage=async()=>{
+  const wrap=$('lsListWrap');if(!wrap)return;
+  if(!sbReady||!sbUser){wrap.innerHTML='<div class="empty" style="padding:40px 0">ต้องล็อกอินก่อน</div>';return}
+  wrap.innerHTML='<div class="empty" style="padding:40px 0"><div class="big">📸</div>กำลังโหลด...</div>';
+  try{
+    const {data,error}=await sb.from('livestock_items').select('*').order('created_at',{ascending:false});
+    if(error)throw error;
+    lsPageCache=data||[];
+    renderLivestockList();
+  }catch(e){
+    console.warn('loadLivestockPage',e);
+    wrap.innerHTML='<div class="empty" style="padding:40px 0">โหลดไม่สำเร็จ เช็คอินเทอร์เน็ตแล้วกดรีเฟรช</div>';
+  }
+};
+function renderLivestockList(){
+  const wrap=$('lsListWrap');if(!wrap)return;
+  let items=lsPageCache;
+  if(lsPageF==='published')items=items.filter(i=>i.published&&!i.sold);
+  else if(lsPageF==='unpublished')items=items.filter(i=>!i.published);
+  else if(lsPageF==='sold')items=items.filter(i=>i.sold);
+  if(!items.length){wrap.innerHTML='<div class="empty" style="padding:40px 0"><div class="big">📸</div>ไม่มีรายการ</div>';return}
+  wrap.innerHTML='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px">'+
+    items.map(it=>{
+      const photo=(it.photos&&it.photos[0])||'';
+      const statusTag=it.sold?'<span class="tag" style="background:rgba(210,86,75,.18);color:var(--red)">ขายแล้ว</span>'
+        :it.published?'<span class="tag tag-buy">เผยแพร่อยู่</span>'
+        :'<span class="tag" style="background:rgba(255,255,255,.08);color:var(--muted)">ซ่อนอยู่</span>';
+      return `<div class="panel" style="padding:10px">
+        <div style="aspect-ratio:1;border-radius:8px;overflow:hidden;background:var(--bg);margin-bottom:8px;display:flex;align-items:center;justify-content:center">
+          ${photo?`<img src="${photo}" style="width:100%;height:100%;object-fit:cover">`:'<span style="color:var(--muted);font-size:12px">ไม่มีรูป</span>'}
+        </div>
+        <div style="font-weight:700;font-size:13.5px;margin-bottom:2px">${it.name}</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:6px">${it.battery||''}${it.grade?' · '+it.grade:''}</div>
+        <div style="font-weight:800;color:var(--gold-soft);font-size:16px;margin-bottom:6px">${baht(it.price)}</div>
+        <div style="margin-bottom:8px">${statusTag}</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <button class="btn btn-ghost btn-sm" onclick="openLivestockUpload('${it.stock_id}')">✏️ แก้</button>
+          <button class="btn btn-ghost btn-sm" onclick="toggleLivestockPublish('${it.id}',${!it.published})">${it.published?'🙈 ซ่อน':'👁️ เผยแพร่'}</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteLivestockItem('${it.id}')">🗑️ ลบ</button>
+        </div>
+      </div>`;
+    }).join('')+'</div>';
+}
+window.toggleLivestockPublish=async(id,newVal)=>{
+  try{
+    await sb.from('livestock_items').update({published:newVal,updated_at:new Date().toISOString()}).eq('id',id);
+    loadLivestockPage();
+  }catch(e){alert('ทำรายการไม่สำเร็จ: '+(e.message||''));}
+};
+window.deleteLivestockItem=async(id)=>{
+  if(!confirm('ลบรายการนี้ออกจาก Realtime Stock ถาวร?\n\n(รูปภาพจะยังอยู่ใน Storage แต่จะไม่โชว์ในหน้าลูกค้าอีกต่อไป)'))return;
+  try{
+    await sb.from('livestock_items').delete().eq('id',id);
+    const item=lsPageCache.find(x=>x.id===id);
+    if(item){const st=DB.stock.find(s=>s.id===item.stock_id);if(st&&st.livestockId===id){delete st.livestockId;persist();}}
+    loadLivestockPage();
+  }catch(e){alert('ลบไม่สำเร็จ: '+(e.message||''));}
+};
+
+/* ---------- ตั้งค่าหน้าเว็บลูกค้า (Realtime Stock) — แก้ได้เองในระบบ POS ไม่ต้องแก้โค้ด ---------- */
+let lsSettingsLoaded=false, lsContactType='none', lsQrFile=null, lsCurrentQrUrl='';
+window.toggleLsSettings=async()=>{
+  const body=$('lsSettingsBody');
+  const willShow=body.classList.contains('hidden');
+  body.classList.toggle('hidden');
+  $('lsSettingsChevron').textContent=willShow?'▴':'▾';
+  if(willShow&&!lsSettingsLoaded)await loadLsSettings();
+};
+async function loadLsSettings(){
+  if(!sbReady||!sbUser)return;
+  $('lsSettingsMsg').textContent='⏳ กำลังโหลด...';
+  try{
+    const {data,error}=await sb.from('livestock_settings').select('*').eq('id',1).maybeSingle();
+    if(error)throw error;
+    if(data){
+      $('lsSetBanner').value=data.banner_text||'';
+      $('lsSetContactVal').value=data.contact_type==='line'?(data.contact_value||''):'';
+      $('lsSetContactValPhone').value=data.contact_type==='phone'?(data.contact_value||''):'';
+      lsCurrentQrUrl=data.qr_image_url||'';
+      setLsContactType(data.contact_type||'none');
+    }
+    lsSettingsLoaded=true;
+    $('lsSettingsMsg').textContent='';
+  }catch(e){
+    console.warn('loadLsSettings',e);
+    $('lsSettingsMsg').textContent='โหลดไม่สำเร็จ';
+  }
+}
+window.setLsContactType=(t)=>{
+  lsContactType=t;
+  document.querySelectorAll('#lsContactTypeChips button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));
+  show('lsQrWrap',t==='qr');
+  show('lsLineWrap',t==='line');
+  show('lsPhoneWrap',t==='phone');
+  if(t==='qr')renderLsQrPreview();
+};
+function renderLsQrPreview(){
+  const box=$('lsQrPreview');if(!box)return;
+  if(lsQrFile){box.innerHTML=`<img src="${URL.createObjectURL(lsQrFile)}" style="width:120px;height:120px;object-fit:cover;border-radius:8px;border:1px solid var(--gold-soft)">`;}
+  else if(lsCurrentQrUrl){box.innerHTML=`<img src="${lsCurrentQrUrl}" style="width:120px;height:120px;object-fit:cover;border-radius:8px;border:1px solid var(--line)">`;}
+  else box.innerHTML='<div style="font-size:12px;color:var(--muted)">ยังไม่มีรูป QR</div>';
+}
+if($('lsQrFile'))$('lsQrFile').onchange=(e)=>{lsQrFile=e.target.files[0]||null;renderLsQrPreview();};
+window.saveLsSettings=async()=>{
+  if(!sbReady||!sbUser){alert('ต้องล็อกอินก่อน');return}
+  $('lsSettingsMsg').textContent='⏳ กำลังบันทึก...';
+  try{
+    let qrUrl=lsCurrentQrUrl;
+    if(lsQrFile){
+      const ext=(lsQrFile.name.split('.').pop()||'jpg').toLowerCase();
+      const path='settings/qr-'+Date.now()+'.'+ext;
+      const {error:upErr}=await sb.storage.from('livestock-photos').upload(path,lsQrFile,{upsert:true});
+      if(upErr)throw upErr;
+      const {data:pub}=sb.storage.from('livestock-photos').getPublicUrl(path);
+      qrUrl=pub.publicUrl;
+    }
+    const contactValue=lsContactType==='line'?$('lsSetContactVal').value.trim()
+      :lsContactType==='phone'?$('lsSetContactValPhone').value.trim():'';
+    const {error}=await sb.from('livestock_settings').upsert({
+      id:1,banner_text:$('lsSetBanner').value.trim(),contact_type:lsContactType,
+      contact_value:contactValue,qr_image_url:lsContactType==='qr'?qrUrl:lsCurrentQrUrl,
+      updated_at:new Date().toISOString()
+    });
+    if(error)throw error;
+    lsCurrentQrUrl=lsContactType==='qr'?qrUrl:lsCurrentQrUrl;lsQrFile=null;
+    $('lsSettingsMsg').textContent='✓ บันทึกแล้ว';
+    setTimeout(()=>{if($('lsSettingsMsg'))$('lsSettingsMsg').textContent=''},2500);
+  }catch(e){
+    console.warn('saveLsSettings',e);
+    $('lsSettingsMsg').textContent='บันทึกไม่สำเร็จ: '+(e.message||'');
+  }
+};
+
+/* ---------- รีวิวลูกค้า (โชว์บนหน้าเว็บ Realtime Stock แบบเดียวกับร้านอื่นๆ) ---------- */
+let lsReviewsLoaded=false, lsRevFile=null, lsReviewsCache=[];
+window.toggleLsReviews=async()=>{
+  const body=$('lsReviewsBody');
+  const willShow=body.classList.contains('hidden');
+  body.classList.toggle('hidden');
+  $('lsReviewsChevron').textContent=willShow?'▴':'▾';
+  if(willShow&&!lsReviewsLoaded)await loadLsReviews();
+};
+if($('lsRevFile'))$('lsRevFile').onchange=(e)=>{
+  lsRevFile=e.target.files[0]||null;
+  const box=$('lsRevPreview');
+  box.innerHTML=lsRevFile?`<img src="${URL.createObjectURL(lsRevFile)}" style="width:70px;height:70px;object-fit:cover;border-radius:8px;border:1px solid var(--gold-soft)">`:'';
+};
+async function loadLsReviews(){
+  if(!sbReady||!sbUser)return;
+  const wrap=$('lsReviewsList');
+  wrap.innerHTML='<div style="font-size:12px;color:var(--muted)">กำลังโหลด...</div>';
+  try{
+    const {data,error}=await sb.from('livestock_reviews').select('*').order('created_at',{ascending:false});
+    if(error)throw error;
+    lsReviewsCache=data||[];
+    renderLsReviewsList();
+    lsReviewsLoaded=true;
+  }catch(e){wrap.innerHTML='<div style="font-size:12px;color:var(--muted)">โหลดไม่สำเร็จ</div>';}
+}
+function renderLsReviewsList(){
+  const wrap=$('lsReviewsList');
+  if(!lsReviewsCache.length){wrap.innerHTML='<div style="font-size:12.5px;color:var(--muted);padding:8px 0">ยังไม่มีรีวิว</div>';return}
+  wrap.innerHTML='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px">'+
+    lsReviewsCache.map(r=>`<div class="panel" style="padding:10px">
+      ${r.photo_url?`<img src="${r.photo_url}" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px;margin-bottom:8px">`:''}
+      <div style="color:var(--gold-soft);font-size:12px;margin-bottom:4px">${'★'.repeat(r.rating||5)}${'☆'.repeat(5-(r.rating||5))}</div>
+      <div style="font-size:12.5px;margin-bottom:4px">${r.review_text}</div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:8px">${r.item_label||''}</div>
+      <div style="display:flex;gap:6px">
+        <button class="btn btn-ghost btn-sm" onclick="toggleLsReviewPublish('${r.id}',${!r.published})">${r.published?'🙈 ซ่อน':'👁️ เผยแพร่'}</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteLsReview('${r.id}')">🗑️</button>
+      </div>
+    </div>`).join('')+'</div>';
+}
+window.addLsReview=async()=>{
+  if(!sbReady||!sbUser){alert('ต้องล็อกอินก่อน');return}
+  const text=$('lsRevText').value.trim();
+  if(!text){alert('กรอกคำโปรย/รีวิวก่อน');return}
+  const rating=Math.min(5,Math.max(1,+$('lsRevRating').value||5));
+  $('lsRevMsg').textContent='⏳ กำลังบันทึก...';
+  try{
+    let photoUrl='';
+    if(lsRevFile){
+      const ext=(lsRevFile.name.split('.').pop()||'jpg').toLowerCase();
+      const path='reviews/'+Date.now()+'.'+ext;
+      const {error:upErr}=await sb.storage.from('livestock-photos').upload(path,lsRevFile,{upsert:true});
+      if(upErr)throw upErr;
+      const {data:pub}=sb.storage.from('livestock-photos').getPublicUrl(path);
+      photoUrl=pub.publicUrl;
+    }
+    const {error}=await sb.from('livestock_reviews').insert({
+      photo_url:photoUrl,review_text:text,rating,item_label:$('lsRevItem').value.trim(),published:true
+    });
+    if(error)throw error;
+    $('lsRevText').value='';$('lsRevItem').value='';$('lsRevRating').value=5;
+    lsRevFile=null;$('lsRevFile').value='';$('lsRevPreview').innerHTML='';
+    $('lsRevMsg').textContent='✓ เพิ่มรีวิวแล้ว';
+    setTimeout(()=>{if($('lsRevMsg'))$('lsRevMsg').textContent=''},2000);
+    loadLsReviews();
+  }catch(e){
+    console.warn('addLsReview',e);
+    $('lsRevMsg').textContent='บันทึกไม่สำเร็จ: '+(e.message||'');
+  }
+};
+window.toggleLsReviewPublish=async(id,newVal)=>{
+  try{await sb.from('livestock_reviews').update({published:newVal}).eq('id',id);loadLsReviews();}
+  catch(e){alert('ทำรายการไม่สำเร็จ');}
+};
+window.deleteLsReview=async(id)=>{
+  if(!confirm('ลบรีวิวนี้ถาวร?'))return;
+  try{await sb.from('livestock_reviews').delete().eq('id',id);loadLsReviews();}
+  catch(e){alert('ลบไม่สำเร็จ');}
 };
 
 /* ---------- REPORT ---------- */
@@ -4603,6 +5130,7 @@ window.commitAndPrint=()=>{
   sale.no=nextInvNo();
   const cashIn=sale.installment?sale.down:sale.net;
   s.status='sold';s.dateSold=sale.ts;s.priceSold=sale.net;
+  if(s.livestockId)syncLivestockSold(s);
   DB.sales=DB.sales||[];DB.sales.push(sale);
   const sellRec={id:uid(),ts:sale.ts,type:'sell',name:s.name,imei:s.imei,
     desc:'ขาย '+s.name+(s.imei?' '+s.imei:'')+(sale.installment?' ผ่อน':''),
@@ -6442,7 +6970,7 @@ function computeNotifs(){
   });
   // 3) ยอดอะไหล่ค้างจ่ายสูง
   const partsOut=(DB.parts||[]).filter(p=>!p.cleared).reduce((s,p)=>s+p.price,0);
-  if(partsOut>=10000)out.push({id:'parts-high',icon:'📦',title:'อะไหล่ค้างจ่ายสะสมสูง',detail:'ยอดค้าง '+baht(partsOut)+' ควรเคลียร์',level:'mid'});
+  if(partsOut>=10000)out.push({id:'parts-high',icon:'📦',title:'อะไหล่สะสมสูง',detail:'ยอดค้าง '+baht(partsOut)+' ควรเคลียร์',level:'mid'});
   // 4) เครื่องค้างสต็อกเกิน 10 วัน (ยังขายไม่ออก)
   (DB.stock||[]).filter(s=>s.status==='instock').forEach(s=>{
     const days=Math.floor((now-new Date(s.dateIn))/86400000);
@@ -6687,7 +7215,7 @@ $('saveClaim').onclick=()=>{
     DB.parts.push({id:uid(),ts:c.ts,source:'(จากงานเคลม '+c.no+')',item:(c.fix||c.issue||'อะไหล่เคลม')+(c.model?' - '+c.model:''),price:cost,cleared:false,refType:'claim',refId:c.id});
   }
   persist();closeModals();
-  alert('บันทึกงานเคลมเรียบร้อย ✓ ['+c.no+']'+(cost>0?'\nต้นทุนอะไหล่ '+baht(cost)+' ส่งเข้าระบบอะไหล่ค้างจ่ายแล้ว':''));
+  alert('บันทึกงานเคลมเรียบร้อย ✓ ['+c.no+']'+(cost>0?'\nต้นทุนอะไหล่ '+baht(cost)+' ส่งเข้าระบบอะไหล่แล้ว':''));
 };
 window.openClaimHistory=()=>{
   const rows=[...DB.claims].reverse().map(c=>`<tr>
@@ -6731,9 +7259,9 @@ $('addParts').onclick=()=>{
 window.clearParts=()=>{
   const out=partsOutstanding();
   if(out<=0){alert('ไม่มียอดค้างจ่าย');return}
-  if(!confirm('เคลียร์ยอดอะไหล่ค้างจ่าย '+baht(out)+'?\n\n• จะหักเงินจากยอดโอนบัญชีหลัก\n• ประวัติรับอะไหล่ยังเก็บไว้ครบ (ไม่ลบ)'))return;
+  if(!confirm('เคลียร์ยอดอะไหล่ '+baht(out)+'?\n\n• จะหักเงินจากยอดโอนบัญชีหลัก\n• ประวัติรับอะไหล่ยังเก็บไว้ครบ (ไม่ลบ)'))return;
   DB.parts.filter(p=>!p.cleared).forEach(p=>{p.cleared=true;p.clearedTs=nowISO()});
-  DB.txns.push({id:uid(),ts:nowISO(),type:'etc',desc:'เคลียร์ยอดอะไหล่ค้างจ่าย',
+  DB.txns.push({id:uid(),ts:nowISO(),type:'etc',desc:'เคลียร์ยอดอะไหล่',
     method:'bank',in:0,out:out,cat:'ค่าใช้จ่ายร้าน',partsClear:true});
   persist();renderParts();refreshTop();
   alert('เคลียร์ยอดเรียบร้อย ✓ หัก '+baht(out)+' จากยอดโอน\nประวัติยังเก็บไว้ครบ');
