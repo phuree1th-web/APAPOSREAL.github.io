@@ -1783,7 +1783,14 @@
     <div class="modal-body">
       <div class="field"><label>ชื่อรุ่นที่โชว์ลูกค้า</label><input id="ls_name"></div>
       <div class="field-row">
-        <div class="field"><label>หมวดหมู่</label><input id="ls_category" placeholder="เช่น iPhone"></div>
+        <div class="field"><label>หมวดหมู่</label>
+          <select id="ls_category">
+            <option value="">— เลือกหมวดหมู่ —</option>
+            <option>iPhone</option><option>iPad</option><option>Apple Watch</option><option>AirPods</option><option>MacBook</option>
+            <option>Samsung</option><option>Oppo</option><option>Vivo</option><option>Xiaomi</option><option>Realme</option><option>Huawei</option><option>OnePlus</option>
+            <option>อื่นๆ</option>
+          </select>
+        </div>
         <div class="field"><label>สภาพ (มือ1/มือ2)</label><input id="ls_grade"></div>
       </div>
       <div class="field-row">
@@ -1791,8 +1798,11 @@
         <div class="field"><label>ราคาที่โชว์ (บาท)</label><input type="number" id="ls_price" placeholder="เช่น 9900"></div>
       </div>
       <div class="field"><label>ตำหนิ/สภาพเครื่อง (โชว์ให้ลูกค้าเห็น)</label><input id="ls_condition"></div>
+      <label style="display:flex;align-items:center;gap:8px;font-size:12.5px;margin-top:-6px;margin-bottom:12px;color:var(--muted)">
+        <input type="checkbox" id="ls_include_fix" checked style="width:auto" onchange="applyLsConditionAuto()"> รวมรายการอะไหล่ที่เปลี่ยนในคำอธิบาย (ปิดได้ถ้าไม่อยากให้ลูกค้าเห็นว่าเปลี่ยนอะไหล่อะไร)
+      </label>
       <div class="field">
-        <label>รูปภาพ (เลือกได้ 1-6 รูป)</label>
+        <label>รูปภาพ (เลือกได้ 1-10 รูป)</label>
         <input type="file" id="ls_photos" accept="image/*" multiple>
         <div id="lsPhotoPreview" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px"></div>
       </div>
@@ -3952,15 +3962,31 @@ window.reprintFromStock=stockId=>{
    แต่แยก RLS ไว้เด็ดขาด — ไม่แตะ shop_data/shop_backups เลย ปลอดภัยสำหรับหน้าสาธารณะ
    =================================================================== */
 let lsStockId=null, lsPhotoFiles=[], lsExistingPhotos=[];
+function guessCategoryFromName(name){
+  name=(name||'').toLowerCase();
+  const map=[['iphone','iPhone'],['ipad','iPad'],['apple watch','Apple Watch'],['airpods','AirPods'],['macbook','MacBook'],
+    ['samsung','Samsung'],['galaxy','Samsung'],['oppo','Oppo'],['vivo','Vivo'],['xiaomi','Xiaomi'],['redmi','Xiaomi'],
+    ['realme','Realme'],['huawei','Huawei'],['oneplus','OnePlus']];
+  for(const [k,v] of map){if(name.includes(k))return v;}
+  return '';
+}
+let lsBaseCondition='', lsFixText='';
+function applyLsConditionAuto(){
+  const includeFix=$('ls_include_fix').checked;
+  $('ls_condition').value = lsBaseCondition + (includeFix&&lsFixText ? (lsBaseCondition?' · ':'')+'ซ่อม: '+lsFixText : '');
+}
 window.openLivestockUpload=async(stockId)=>{
   if(!sbReady||!sbUser){alert('ต้องล็อกอินก่อนถึงจะลงขาย Realtime Stock ได้');return}
   const st=DB.stock.find(x=>x.id===stockId);if(!st)return;
   lsStockId=stockId;lsPhotoFiles=[];lsExistingPhotos=[];
   $('ls_name').value=st.name||'';
-  $('ls_category').value=st.category||'';
+  $('ls_category').value=st.category||guessCategoryFromName(st.name);
   $('ls_grade').value=st.grade||'';
   $('ls_battery').value=st.batt||'';
-  $('ls_condition').value=st.condition||st.note||'';
+  lsBaseCondition=st.condition||st.note||'';
+  lsFixText=st.fix||'';
+  $('ls_include_fix').checked=true;
+  applyLsConditionAuto();
   $('ls_price').value='';
   $('ls_published').checked=true;
   $('ls_photos').value='';
@@ -3975,6 +4001,7 @@ window.openLivestockUpload=async(stockId)=>{
       if(!error&&data){
         $('ls_price').value=data.price||'';
         $('ls_published').checked=!!data.published;
+        if(data.condition){$('ls_condition').value=data.condition;} // เคยแก้ไว้เองแล้ว ใช้ค่าที่เคยบันทึกแทนค่าคำนวณอัตโนมัติ
         lsExistingPhotos=data.photos||[];
         renderLsPhotoPreview();
       }
@@ -3983,8 +4010,8 @@ window.openLivestockUpload=async(stockId)=>{
   }
 };
 if($('ls_photos'))$('ls_photos').onchange=(e)=>{
-  const files=[...e.target.files].slice(0,6);
-  if(e.target.files.length>6)alert('เลือกได้สูงสุด 6 รูป — ใช้ 6 รูปแรกที่เลือกไว้');
+  const files=[...e.target.files].slice(0,10);
+  if(e.target.files.length>10)alert('เลือกได้สูงสุด 10 รูป — ใช้ 10 รูปแรกที่เลือกไว้');
   lsPhotoFiles=files;
   lsExistingPhotos=[]; // เลือกรูปใหม่ = แทนที่รูปเดิมทั้งหมด
   renderLsPhotoPreview();
