@@ -1247,10 +1247,10 @@
           <button class="btn btn-ghost btn-sm" onclick="printOfficialReport(&#39;cash&#39;)">💵 เงินสดส่งธนาคาร</button>
         </div>
         <div class="kpi-row">
-          <div class="kpi"><div class="label">ยอดขายรวม</div><div class="val gold" id="rpSales">฿84,900</div></div>
-          <div class="kpi"><div class="label">กำไรขั้นต้น</div><div class="val green" id="rpProfit">฿10,450</div></div>
-          <div class="kpi"><div class="label">ค่าใช้จ่ายร้าน</div><div class="val red" id="rpExpense">฿2,100</div></div>
-          <div class="kpi"><div class="label">กำไรสุทธิ</div><div class="val gold" id="rpNet">฿22,430</div></div>
+          <div class="kpi"><div class="label">ยอดขายรวม</div><div class="val gold" id="rpSales">฿84,900</div><div id="rpSalesChg" style="font-size:11px;margin-top:2px"></div></div>
+          <div class="kpi"><div class="label">กำไรขั้นต้น</div><div class="val green" id="rpProfit">฿10,450</div><div id="rpProfitChg" style="font-size:11px;margin-top:2px"></div></div>
+          <div class="kpi"><div class="label">ค่าใช้จ่ายร้าน</div><div class="val red" id="rpExpense">฿2,100</div><div id="rpExpenseChg" style="font-size:11px;margin-top:2px"></div></div>
+          <div class="kpi"><div class="label">กำไรสุทธิ</div><div class="val gold" id="rpNet">฿22,430</div><div id="rpNetChg" style="font-size:11px;margin-top:2px"></div></div>
         </div>
         <div class="kpi-row" style="grid-template-columns:repeat(3,1fr)">
           <div class="kpi"><div class="label">ขายเครื่อง (จำนวน)</div><div class="val" id="rpSoldUnits">4<span class="unit">เครื่อง</span></div></div>
@@ -1258,37 +1258,43 @@
           <div class="kpi"><div class="label">เครื่องในสต็อก</div><div class="val blue" id="rpStockUnits">32<span class="unit">เครื่อง</span></div></div>
         </div>
         <div class="panel">
-          <div class="panel-head"><h2>แยกตามหมวด</h2></div>
+          <div class="panel-head"><h2>แยกตามหมวด (แยกสด/โอน)</h2></div>
           <div class="tablewrap" style="max-height:none">
-            <table id="catTable"><thead><tr><th>หมวด</th><th class="num">รับ</th><th class="num">จ่าย</th><th class="num">สุทธิ</th></tr></thead><tbody><tr>
-    <td>รับเครื่องเข้า</td><td class="num in">—</td>
-    <td class="num out">฿132,350</td>
-    <td class="num bal">-฿132,350</td></tr><tr>
-    <td>ย้ายเงิน</td><td class="num in">฿60,200</td>
-    <td class="num out">฿60,200</td>
-    <td class="num bal">฿0</td></tr><tr>
-    <td>ขายสินค้า</td><td class="num in">฿84,900</td>
-    <td class="num out">—</td>
-    <td class="num bal">฿84,900</td></tr><tr>
-    <td>รับฝาก/รับซาก</td><td class="num in">฿18,900</td>
-    <td class="num out">฿6,000</td>
-    <td class="num bal">฿12,900</td></tr><tr>
-    <td>งานซ่อม</td><td class="num in">฿21,400</td>
-    <td class="num out">—</td>
-    <td class="num bal">฿21,400</td></tr><tr>
-    <td>ค่าใช้จ่ายส่วนตัว</td><td class="num in">—</td>
-    <td class="num out">฿8,500</td>
-    <td class="num bal">-฿8,500</td></tr><tr>
-    <td>ค่าใช้จ่ายร้าน</td><td class="num in">฿1,750</td>
-    <td class="num out">฿2,100</td>
-    <td class="num bal">-฿350</td></tr><tr>
-    <td>อุปกรณ์เสริม</td><td class="num in">฿400</td>
-    <td class="num out">—</td>
-    <td class="num bal">฿400</td></tr><tr>
-    <td>ดอกเบี้ยรับฝาก</td><td class="num in">฿220</td>
-    <td class="num out">—</td>
-    <td class="num bal">฿220</td></tr></tbody></table>
+            <table id="catTable"><thead><tr><th>หมวด</th><th class="num">สด รับ</th><th class="num">สด จ่าย</th><th class="num">โอน รับ</th><th class="num">โอน จ่าย</th><th class="num">สุทธิ</th></tr></thead><tbody></tbody></table>
           </div>
+        </div>
+
+        <div class="panel" style="margin-top:14px;border:1px solid rgba(212,175,55,.3)">
+          <div class="panel-head"><h2>🤝 สรุปกองทุนรับฝาก & หุ้นส่วน</h2></div>
+          <div class="kpi-row" style="grid-template-columns:repeat(4,1fr)">
+            <div class="kpi"><div class="label">เงินต้นรับฝากคงค้าง</div><div class="val gold" id="rpPawnOutstanding">฿0</div></div>
+            <div class="kpi"><div class="label">ดอกเบี้ยรับ (ช่วงนี้)</div><div class="val green" id="rpInterest">฿0</div></div>
+            <div class="kpi"><div class="label">กองทุนหมุนเวียนคงเหลือ</div><div class="val blue" id="rpFundBal">฿0</div></div>
+            <div class="kpi"><div class="label">ส่วนแบ่งหุ้นส่วน (ช่วงนี้)</div><div class="val gold" id="rpPartnerShare">฿0</div></div>
+          </div>
+        </div>
+
+        <div class="panel" style="margin-top:14px">
+          <div class="panel-head"><h2>📈 แนวโน้มรายรับ/รายจ่ายรายวัน (30 วันล่าสุด)</h2></div>
+          <canvas id="trendChart" height="90"></canvas>
+        </div>
+
+        <div class="panel" style="margin-top:14px">
+          <div class="panel-head"><h2>📦 มูลค่าสต็อกคงเหลือแยกหมวด (ทุน)</h2></div>
+          <canvas id="stockChart" height="100"></canvas>
+        </div>
+
+        <div class="panel" style="margin-top:14px">
+          <div class="panel-head"><h2>⏳ เครื่องค้างสต็อกนาน</h2></div>
+          <div class="kpi-row" style="grid-template-columns:repeat(3,1fr)">
+            <div class="kpi"><div class="label">0-30 วัน</div><div class="val" id="rpAge1">0<span class="unit">เครื่อง</span></div></div>
+            <div class="kpi"><div class="label">31-60 วัน</div><div class="val" style="color:var(--gold-soft)" id="rpAge2">0<span class="unit">เครื่อง</span></div></div>
+            <div class="kpi"><div class="label">เกิน 60 วัน</div><div class="val" style="color:var(--red)" id="rpAge3">0<span class="unit">เครื่อง</span></div></div>
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:flex-end;margin-top:14px">
+          <button class="btn btn-ghost btn-sm" onclick="exportReportCSV()">📤 ส่งออกรายการเป็น CSV (Excel)</button>
         </div>
       </section>
 
@@ -2305,6 +2311,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.115.0/dist/umd/supabase.js"></script>
 <script>
 const $=id=>document.getElementById(id);
@@ -3556,7 +3563,8 @@ function renderLedger(){
         <td class="num bal" style="color:#6fa8dc">${(bIn||bOut)?baht(bank):''}</td>
         <td class="num" style="white-space:nowrap">
           <button class="btn btn-danger btn-sm" onclick="voidTxn('${e.id}')">ยกเลิก</button>
-          ${currentRole==='admin'?` <button class="btn btn-ghost btn-sm" onclick="deleteTxn('${e.id}')" title="ลบถาวร">🗑️</button> <button class="btn btn-ghost btn-sm" onclick="editTxn('${e.id}')" title="แก้ไข (Admin)">✏️</button>`:''}
+          ${currentRole==='admin'?` <button class="btn btn-ghost btn-sm" onclick="deleteTxn('${e.id}')" title="ลบถาวร">🗑️</button>`:''}
+          ${(currentRole==='admin'||currentRole==='staff')?` <button class="btn btn-ghost btn-sm" onclick="editTxn('${e.id}')" title="แก้ไข">✏️</button>`:''}
           <button class="btn btn-ghost btn-sm" onclick="reprintDoc('${e.id}')" title="พิมพ์ซ้ำ">🖨️</button>
         </td>
       </tr>`);
@@ -3668,19 +3676,42 @@ window.deleteTxn=id=>{
 /* แก้ไขรายการบัญชีรายวัน (สลับสด↔โอน / แก้คำอธิบาย) — Admin เท่านั้น
    บังคับเหตุผล + ลิงก์ไปหน้าสต็อกให้ตรวจสอบทันทีถ้ารายการนี้ผูกกับสต็อก */
 window.editTxn=(id)=>{
-  if(currentRole!=='admin'){alert('เฉพาะผู้ดูแลระบบ (Admin)');return}
+  if(currentRole!=='admin'&&currentRole!=='staff'){alert('เฉพาะผู้ดูแลระบบและพนักงานเท่านั้น');return}
   const t=DB.txns.find(x=>x.id===id);if(!t)return;
   if(t.void){alert('รายการนี้ถูกยกเลิกแล้ว แก้ไขไม่ได้');return}
-  if(t.method==='split'){alert('รายการแบบผสม (สด+โอน) สลับช่องทางตรงๆ ไม่ได้ — ถ้ากรอกผิดให้ยกเลิกรายการนี้แล้วสร้างใหม่แทน');return}
-  const methodLabel={cash:'เงินสด',bank:'เงินโอน'};
-  const otherMethod=t.method==='cash'?'bank':'cash';
-  const wantSwitch=confirm('แก้ไขรายการนี้:\n"'+t.desc+'"\n\nสลับช่องทางจาก "'+(methodLabel[t.method]||t.method)+'" เป็น "'+methodLabel[otherMethod]+'"?\n\n(กด "ตกลง" เพื่อสลับ หรือ "ยกเลิก" ถ้าจะแก้แค่คำอธิบายอย่างเดียวโดยไม่สลับช่องทาง)');
+  const total=t.in||t.out||0;
+  const isIn=!!t.in;
+  const methodLabel={cash:'เงินสด',bank:'เงินโอน',split:'ผสม (สด+โอน)'};
+  const choiceStr=prompt(
+    'แก้ช่องทางการชำระของรายการนี้:\n"'+t.desc+'"\nยอดรวม '+baht(total)+' (ตอนนี้: '+(methodLabel[t.method]||t.method)+')\n\nพิมพ์ตัวเลขเพื่อเลือก:\n1 = เงินสดทั้งหมด\n2 = เงินโอนทั้งหมด\n3 = ผสม (สด+โอน)\n0 = ไม่แก้ช่องทาง (แก้แค่คำอธิบายอย่างเดียว)',
+    '0');
+  if(choiceStr===null)return;
+  const choice=choiceStr.trim();
+  let newMethod=t.method, splitFields=null;
+  if(choice==='1')newMethod='cash';
+  else if(choice==='2')newMethod='bank';
+  else if(choice==='3'){
+    const cashStr=prompt('ยอดเงินสด (บาท) จากยอดรวม '+baht(total)+'\nส่วนที่เหลือจะเป็นยอดโอนอัตโนมัติ',String(Math.round(total/2)));
+    if(cashStr===null)return;
+    const cash=+cashStr||0, bank=total-cash;
+    if(cash<0||bank<0){alert('ยอดเงินสดต้องไม่ติดลบและไม่เกินยอดรวม '+baht(total));return}
+    newMethod='split';
+    splitFields = isIn ? {splitCashIn:cash,splitBankIn:bank,splitCashOut:0,splitBankOut:0}
+                        : {splitCashOut:cash,splitBankOut:bank,splitCashIn:0,splitBankIn:0};
+  }
+  else if(choice==='0'){ /* ไม่แก้ช่องทาง */ }
+  else {alert('กรุณาพิมพ์ 0, 1, 2 หรือ 3 เท่านั้น');return}
   const newDesc=prompt('แก้ไขคำอธิบายรายการ (เว้นว่างไว้ถ้าไม่แก้)',t.desc||'');
   if(newDesc===null)return;
   const reason=prompt('เหตุผลที่แก้ไขรายการนี้ (บังคับกรอกเพื่อความโปร่งใสกับหุ้นส่วน)','');
   if(!reason||!reason.trim()){alert('ต้องกรอกเหตุผลก่อนบันทึกการแก้ไข');return}
   const oldMethod=t.method,oldDesc=t.desc;
-  if(wantSwitch)t.method=otherMethod;
+  t.method=newMethod;
+  if(newMethod==='split'&&splitFields){
+    Object.assign(t,splitFields);
+  } else if(newMethod!=='split'){
+    delete t.splitCashIn;delete t.splitCashOut;delete t.splitBankIn;delete t.splitBankOut;
+  }
   if(newDesc.trim())t.desc=newDesc.trim();
   t.editHistory=t.editHistory||[];
   t.editHistory.push({ts:nowISO(),oldMethod,newMethod:t.method,oldDesc,newDesc:t.desc,reason:reason.trim()});
@@ -3860,7 +3891,7 @@ window.quickSell=id=>{openTxn('sell',id)};
 /* ดูรายละเอียด/แก้ไขเครื่องในสต็อก (แก้ไขเฉพาะ Admin) */
 window.openStockDetail=(id)=>{
   const i=DB.stock.find(x=>x.id===id);if(!i)return;
-  const isAdmin=currentRole==='admin';
+  const isAdmin=currentRole==='admin'||currentRole==='staff';
   const statusTxt=i.status==='sold'?'ขายแล้ว':i.status==='lent'?'กำลังยืม':'ในสต็อก';
   const row=(label,val)=>`<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--line);font-size:13px"><span style="color:var(--muted)">${label}</span><span style="font-weight:600;text-align:right">${val}</span></div>`;
   if(!isAdmin){
@@ -4309,20 +4340,52 @@ window.deleteLsReview=async(id)=>{
 
 /* ---------- REPORT ---------- */
 let reportF='month';
+let trendChartInstance=null, stockChartInstance=null;
+function getPrevRange(f){
+  const n=new Date();
+  const pad=x=>String(x).padStart(2,'0');
+  const iso=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+  if(f==='today'){
+    const y=new Date(n);y.setDate(n.getDate()-1);
+    return {from:iso(y),to:iso(y)};
+  }
+  if(f==='month'){
+    const pm=new Date(n.getFullYear(),n.getMonth()-1,1);
+    const pmEnd=new Date(n.getFullYear(),n.getMonth(),0);
+    return {from:iso(pm),to:iso(pmEnd)};
+  }
+  if(f==='custom'&&customRange.from&&customRange.to){
+    const from=new Date(customRange.from),to=new Date(customRange.to);
+    const days=Math.round((to-from)/86400000)+1;
+    const prevTo=new Date(from);prevTo.setDate(prevTo.getDate()-1);
+    const prevFrom=new Date(prevTo);prevFrom.setDate(prevFrom.getDate()-days+1);
+    return {from:iso(prevFrom),to:iso(prevTo)};
+  }
+  return null; // 'all' — ไม่มีช่วงก่อนหน้าให้เทียบ
+}
+function chgBadge(cur,prev){
+  if(prev==null)return '';
+  if(prev===0)return cur>0?'<span style="color:var(--green)">▲ ใหม่</span>':'';
+  const pct=Math.round((cur-prev)/Math.abs(prev)*100);
+  const up=pct>=0;
+  return `<span style="color:${up?'var(--green)':'var(--red)'}">${up?'▲':'▼'} ${Math.abs(pct)}% เทียบช่วงก่อน</span>`;
+}
+function periodNet(txArr){
+  const grossProfit=txArr.filter(e=>e.type==='sell').reduce((s,e)=>s+(e.in-(e.cost||0)),0);
+  const repair=txArr.filter(e=>e.type==='repair').reduce((s,e)=>s+(e.in-e.out),0);
+  const expense=txArr.filter(e=>e.type==='etc'&&e.cat==='ค่าใช้จ่ายร้าน').reduce((s,e)=>s+e.out,0);
+  const etcNet=txArr.filter(e=>e.type==='etc'&&e.cat!=='ค่าใช้จ่ายร้าน'&&e.cat!=='รับฝาก/รับซาก').reduce((s,e)=>s+(e.in-e.out),0);
+  return {grossProfit,repair,expense,etcNet};
+}
 function renderReport(){
-  const tx=DB.txns.filter(e=>!e.void&&inRange(e.ts,reportF));
+  const tx=DB.txns.filter(e=>!e.void&&inRange(e.ts,reportF,customRange));
   const sales=tx.filter(e=>e.type==='sell').reduce((s,e)=>s+e.in,0);
-  const grossProfit=tx.filter(e=>e.type==='sell').reduce((s,e)=>s+(e.in-(e.cost||0)),0);
-  const repair=tx.filter(e=>e.type==='repair').reduce((s,e)=>s+(e.in-e.out),0);
-  const expense=tx.filter(e=>e.type==='etc'&&e.cat==='ค่าใช้จ่ายร้าน').reduce((s,e)=>s+e.out,0);
-  // etc อื่นๆ (ไม่รวมค่าใช้จ่ายร้าน และไม่รวมรับฝาก เพราะเงินต้นรับฝากไม่ใช่กำไร/ขาดทุน)
-  const etcNet=tx.filter(e=>e.type==='etc'&&e.cat!=='ค่าใช้จ่ายร้าน'&&e.cat!=='รับฝาก/รับซาก').reduce((s,e)=>s+(e.in-e.out),0);
-  // กำไรจากรับฝาก = ดอกเบี้ยที่รับจริงเท่านั้น
-  // กำไรรับฝากของฝั่งร้าน = ส่วนแบ่งดอกเบี้ยที่เข้ากระเป๋าร้าน (Owner Wallet) ในช่วงนี้
-  const pawnProfit=(DB.ownerWallet?DB.ownerWallet.history:[]).filter(h=>h.amount>0&&inRange(h.ts,reportF)).reduce((s,h)=>s+h.amount,0);
+  const {grossProfit,repair,expense,etcNet}=periodNet(tx);
+  const pawnProfit=(DB.ownerWallet?DB.ownerWallet.history:[]).filter(h=>h.amount>0&&inRange(h.ts,reportF,customRange)).reduce((s,h)=>s+h.amount,0);
   const net=grossProfit+repair+etcNet+pawnProfit-expense;
   const soldUnits=tx.filter(e=>e.type==='sell').length;
-  const stockUnits=DB.stock.filter(s=>s.status==='instock').length;
+  const stockItemsInStock=DB.stock.filter(s=>s.status==='instock');
+  const stockUnits=stockItemsInStock.length;
   document.getElementById('rpSales').textContent=baht(sales);
   document.getElementById('rpProfit').textContent=baht(grossProfit);
   document.getElementById('rpExpense').textContent=baht(expense);
@@ -4330,17 +4393,109 @@ function renderReport(){
   document.getElementById('rpSoldUnits').innerHTML=soldUnits+'<span class="unit">เครื่อง</span>';
   document.getElementById('rpRepair').textContent=baht(repair);
   document.getElementById('rpStockUnits').innerHTML=stockUnits+'<span class="unit">เครื่อง</span>';
-  // by category
+
+  // เทียบกับช่วงก่อนหน้า
+  const prevRange=getPrevRange(reportF);
+  if(prevRange){
+    const prevTx=DB.txns.filter(e=>!e.void&&inRange(e.ts,'custom',prevRange));
+    const prevSales=prevTx.filter(e=>e.type==='sell').reduce((s,e)=>s+e.in,0);
+    const p2=periodNet(prevTx);
+    const prevPawnProfit=(DB.ownerWallet?DB.ownerWallet.history:[]).filter(h=>h.amount>0&&inRange(h.ts,'custom',prevRange)).reduce((s,h)=>s+h.amount,0);
+    const prevNet=p2.grossProfit+p2.repair+p2.etcNet+prevPawnProfit-p2.expense;
+    document.getElementById('rpSalesChg').innerHTML=chgBadge(sales,prevSales);
+    document.getElementById('rpProfitChg').innerHTML=chgBadge(grossProfit,p2.grossProfit);
+    document.getElementById('rpExpenseChg').innerHTML=chgBadge(expense,p2.expense);
+    document.getElementById('rpNetChg').innerHTML=chgBadge(net,prevNet);
+  } else {
+    ['rpSalesChg','rpProfitChg','rpExpenseChg','rpNetChg'].forEach(id=>document.getElementById(id).innerHTML='');
+  }
+
+  // by category (แยกสด/โอน)
   const cats={};
-  tx.forEach(e=>{const c=e.cat||'อื่นๆ';if(!cats[c])cats[c]={in:0,out:0};cats[c].in+=txCashIn(e)+txBankIn(e);cats[c].out+=txCashOut(e)+txBankOut(e)});
+  tx.forEach(e=>{const c=e.cat||'อื่นๆ';if(!cats[c])cats[c]={cashIn:0,cashOut:0,bankIn:0,bankOut:0};
+    cats[c].cashIn+=txCashIn(e);cats[c].cashOut+=txCashOut(e);cats[c].bankIn+=txBankIn(e);cats[c].bankOut+=txBankOut(e);});
   const tb=document.querySelector('#catTable tbody');
-  const keys=Object.keys(cats).sort((a,b)=>(cats[b].in+cats[b].out)-(cats[a].in+cats[a].out));
-  tb.innerHTML=keys.length?keys.map(c=>`<tr>
-    <td>${c}</td><td class="num in">${cats[c].in?baht(cats[c].in):'—'}</td>
-    <td class="num out">${cats[c].out?baht(cats[c].out):'—'}</td>
-    <td class="num bal">${baht(cats[c].in-cats[c].out)}</td></tr>`).join('')
-    :`<tr><td colspan="4" class="empty">ไม่มีข้อมูล</td></tr>`;
+  const keys=Object.keys(cats).sort((a,b)=>{
+    const totA=cats[a].cashIn+cats[a].cashOut+cats[a].bankIn+cats[a].bankOut;
+    const totB=cats[b].cashIn+cats[b].cashOut+cats[b].bankIn+cats[b].bankOut;
+    return totB-totA;
+  });
+  tb.innerHTML=keys.length?keys.map(c=>{
+    const net=(cats[c].cashIn+cats[c].bankIn)-(cats[c].cashOut+cats[c].bankOut);
+    return `<tr><td>${c}</td>
+      <td class="num in">${cats[c].cashIn?baht(cats[c].cashIn):'—'}</td>
+      <td class="num out">${cats[c].cashOut?baht(cats[c].cashOut):'—'}</td>
+      <td class="num in">${cats[c].bankIn?baht(cats[c].bankIn):'—'}</td>
+      <td class="num out">${cats[c].bankOut?baht(cats[c].bankOut):'—'}</td>
+      <td class="num bal">${baht(net)}</td></tr>`;
+  }).join('') : `<tr><td colspan="6" class="empty">ไม่มีข้อมูล</td></tr>`;
+
+  // สรุปกองทุนรับฝาก & หุ้นส่วน
+  const pawnOutstanding=DB.pawns.filter(p=>p.status==='active').reduce((s,p)=>s+p.principal,0);
+  const interestPeriod=(DB.ownerWallet?DB.ownerWallet.history:[]).filter(h=>h.amount>0&&inRange(h.ts,reportF,customRange)).reduce((s,h)=>s+h.amount,0)
+    +(DB.partnerWallet?DB.partnerWallet.history:[]).filter(h=>h.amount>0&&inRange(h.ts,reportF,customRange)).reduce((s,h)=>s+h.amount,0);
+  const partnerShare=(DB.partnerWallet?DB.partnerWallet.history:[]).filter(h=>h.amount>0&&inRange(h.ts,reportF,customRange)).reduce((s,h)=>s+h.amount,0);
+  document.getElementById('rpPawnOutstanding').textContent=baht(pawnOutstanding);
+  document.getElementById('rpInterest').textContent=baht(interestPeriod);
+  document.getElementById('rpFundBal').textContent=baht(DB.fund?DB.fund.balance:0);
+  document.getElementById('rpPartnerShare').textContent=baht(partnerShare);
+
+  // เครื่องค้างสต็อกนาน
+  const now=new Date();let age1=0,age2=0,age3=0;
+  stockItemsInStock.forEach(s=>{
+    const days=Math.floor((now-new Date(s.dateIn))/86400000);
+    if(days<=30)age1++; else if(days<=60)age2++; else age3++;
+  });
+  document.getElementById('rpAge1').innerHTML=age1+'<span class="unit">เครื่อง</span>';
+  document.getElementById('rpAge2').innerHTML=age2+'<span class="unit">เครื่อง</span>';
+  document.getElementById('rpAge3').innerHTML=age3+'<span class="unit">เครื่อง</span>';
+
+  renderTrendChart();
+  renderStockChart(stockItemsInStock);
 }
+function renderTrendChart(){
+  const canvas=document.getElementById('trendChart');if(!canvas||typeof Chart==='undefined')return;
+  const days=30,labels=[],incomeData=[],expenseData=[];
+  const now=new Date();
+  for(let i=days-1;i>=0;i--){
+    const d=new Date(now);d.setDate(now.getDate()-i);d.setHours(0,0,0,0);
+    const dEnd=new Date(d);dEnd.setHours(23,59,59,999);
+    const dayTx=DB.txns.filter(e=>!e.void&&new Date(e.ts)>=d&&new Date(e.ts)<=dEnd);
+    labels.push(d.getDate()+'/'+(d.getMonth()+1));
+    incomeData.push(dayTx.reduce((s,e)=>s+(e.in||0),0));
+    expenseData.push(dayTx.reduce((s,e)=>s+(e.out||0),0));
+  }
+  if(trendChartInstance)trendChartInstance.destroy();
+  trendChartInstance=new Chart(canvas.getContext('2d'),{type:'line',data:{labels,datasets:[
+    {label:'รายรับ',data:incomeData,borderColor:'#d4af37',backgroundColor:'rgba(212,175,55,.15)',tension:.3,fill:true,pointRadius:2},
+    {label:'รายจ่าย',data:expenseData,borderColor:'#d2564b',backgroundColor:'rgba(210,86,75,.1)',tension:.3,fill:true,pointRadius:2}
+  ]},options:{responsive:true,plugins:{legend:{labels:{color:'#f2ece0'}}},
+    scales:{x:{ticks:{color:'#8f8977',maxTicksLimit:10}},y:{ticks:{color:'#8f8977'}}}}});
+}
+function renderStockChart(stockItemsInStock){
+  const canvas=document.getElementById('stockChart');if(!canvas||typeof Chart==='undefined')return;
+  const catVal={};
+  stockItemsInStock.forEach(s=>{const c=s.category||'อื่นๆ';catVal[c]=(catVal[c]||0)+(s.costTotal||0);});
+  const labels=Object.keys(catVal).sort((a,b)=>catVal[b]-catVal[a]);
+  const data=labels.map(k=>catVal[k]);
+  if(stockChartInstance)stockChartInstance.destroy();
+  stockChartInstance=new Chart(canvas.getContext('2d'),{type:'bar',data:{labels,datasets:[{label:'มูลค่าทุน (บาท)',data,backgroundColor:'#d4af37'}]},
+    options:{responsive:true,plugins:{legend:{display:false}},
+      scales:{x:{ticks:{color:'#8f8977'}},y:{ticks:{color:'#8f8977'}}}}});
+}
+window.exportReportCSV=()=>{
+  const tx=DB.txns.filter(e=>!e.void&&inRange(e.ts,reportF,customRange));
+  let csv='วันที่,เวลา,รายการ,ประเภท,หมวด,ช่องทาง,เงินเข้า,เงินออก\n';
+  tx.forEach(e=>{
+    csv+=[fmtDate(e.ts),fmtTime(e.ts),'"'+(e.desc||'').replace(/"/g,'""')+'"',e.type,e.cat||'',e.method||'',e.in||0,e.out||0].join(',')+'\n';
+  });
+  const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download='รายงาน-'+reportF+'-'+nowISO().slice(0,10)+'.csv';
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+};
 document.querySelectorAll('#reportFilter button').forEach(b=>b.onclick=()=>{
   document.querySelectorAll('#reportFilter button').forEach(x=>x.classList.remove('on'));
   b.classList.add('on');reportF=b.dataset.f;
