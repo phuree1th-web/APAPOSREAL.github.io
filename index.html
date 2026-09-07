@@ -21,12 +21,12 @@
     --radius:14px;
   }
   [data-theme="light"]{
-    --bg:#f4f2ec; --panel:#ffffff; --panel-2:#f0ece1; --line:#e0dccf;
-    --gold:#b8941f; --gold-soft:#9a7b13; --gold-dim:#c7a93a;
-    --text:#22201a; --muted:#8a8678;
-    --green:#2f8a5f; --green-bg:#e3f3ea; --green-line:#bcd9c4;
-    --yellow:#b8941f; --yellow-bg:#faf3dc; --yellow-line:#e3cf8d;
-    --red:#c0392b;
+    --bg:#f2f2f7; --panel:#ffffff; --panel-2:#f7f7fa; --line:#e5e5ea;
+    --gold:#007aff; --gold-soft:#0a84ff; --gold-dim:#cfe4ff;
+    --text:#1c1c1e; --muted:#8e8e93;
+    --green:#34c759; --green-bg:#e8f9ec; --green-line:#b8ecc4;
+    --yellow:#ff9500; --yellow-bg:#fff3e0; --yellow-line:#ffd699;
+    --red:#ff3b30;
   }
   [data-theme="light"] ::-webkit-scrollbar-thumb{background:#d0ccbe}
   *{box-sizing:border-box;margin:0;padding:0}
@@ -1257,7 +1257,16 @@
           <div class="kpi"><div class="label">รายได้งานซ่อม</div><div class="val green" id="rpRepair">฿21,400</div></div>
           <div class="kpi"><div class="label">เครื่องในสต็อก</div><div class="val blue" id="rpStockUnits">32<span class="unit">เครื่อง</span></div></div>
         </div>
+
         <div class="panel">
+          <div class="panel-head"><h2>💰 กำไรแยกละเอียดตามประเภทธุรกิจ</h2></div>
+          <div class="tablewrap" style="max-height:none">
+            <table id="profitByTypeTable"><thead><tr><th>ประเภทธุรกิจ</th><th class="num">รายรับ</th><th class="num">ต้นทุน/หัก</th><th class="num">กำไร</th><th class="num">% ของกำไรสุทธิรวม</th></tr></thead><tbody></tbody></table>
+          </div>
+          <div style="font-size:11px;color:var(--muted);margin-top:8px">* "รายรับอุปกรณ์เสริม" ยังไม่มีระบบบันทึกต้นทุนแยก จึงแสดงเป็นรายรับเต็มจำนวน ไม่ใช่กำไรสุทธิจริง</div>
+        </div>
+
+        <div class="panel" style="margin-top:14px">
           <div class="panel-head"><h2>แยกตามหมวด (แยกสด/โอน)</h2></div>
           <div class="tablewrap" style="max-height:none">
             <table id="catTable"><thead><tr><th>หมวด</th><th class="num">สด รับ</th><th class="num">สด จ่าย</th><th class="num">โอน รับ</th><th class="num">โอน จ่าย</th><th class="num">สุทธิ</th></tr></thead><tbody></tbody></table>
@@ -4450,9 +4459,37 @@ function renderReport(){
   document.getElementById('rpAge2').innerHTML=age2+'<span class="unit">เครื่อง</span>';
   document.getElementById('rpAge3').innerHTML=age3+'<span class="unit">เครื่อง</span>';
 
+  // กำไรแยกละเอียดตามประเภทธุรกิจ
+  const repairRevenue=tx.filter(e=>e.type==='repair').reduce((s,e)=>s+(e.in||0),0);
+  const repairPartsCost=(DB.parts||[]).filter(p=>{
+    if(p.refType!=='repair')return false;
+    const r=(DB.repairs||[]).find(x=>x.id===p.refId);
+    return r&&inRange(r.ts,reportF,customRange);
+  }).reduce((s,p)=>s+(p.price||0),0);
+  const repairProfit=repairRevenue-repairPartsCost;
+  const accRevenue=tx.filter(e=>e.cat==='อุปกรณ์เสริม').reduce((s,e)=>s+(e.in||0),0);
+  const rows=[
+    {label:'ขายเครื่อง',rev:sales,cost:sales-grossProfit,profit:grossProfit},
+    {label:'งานซ่อม',rev:repairRevenue,cost:repairPartsCost,profit:repairProfit},
+    {label:'รับฝาก (ส่วนแบ่งดอกเบี้ยฝั่งร้าน)',rev:pawnProfit,cost:0,profit:pawnProfit},
+    {label:'ขายอุปกรณ์เสริม',rev:accRevenue,cost:0,profit:accRevenue},
+    {label:'อื่นๆ (สุทธิ)',rev:null,cost:null,profit:etcNet},
+  ];
+  const totalProfitForPct=grossProfit+repairProfit+pawnProfit+accRevenue+etcNet-expense;
+  const ptb=document.querySelector('#profitByTypeTable tbody');
+  ptb.innerHTML=rows.map(r=>{
+    const pct=totalProfitForPct!==0?Math.round(r.profit/totalProfitForPct*100):0;
+    return `<tr><td>${r.label}</td>
+      <td class="num">${r.rev!=null?baht(r.rev):'—'}</td>
+      <td class="num out">${r.cost!=null&&r.cost?baht(r.cost):'—'}</td>
+      <td class="num ${r.profit>=0?'in':'out'}" style="font-weight:700">${baht(r.profit)}</td>
+      <td class="num" style="color:var(--muted)">${pct}%</td></tr>`;
+  }).join('')+`<tr><td>ค่าใช้จ่ายร้าน</td><td class="num">—</td><td class="num out">${baht(expense)}</td><td class="num out" style="font-weight:700">-${baht(expense)}</td><td class="num" style="color:var(--muted)">${totalProfitForPct!==0?Math.round(-expense/totalProfitForPct*100):0}%</td></tr>`;
+
   renderTrendChart();
   renderStockChart(stockItemsInStock);
 }
+function themeVar(name){return getComputedStyle(document.documentElement).getPropertyValue(name).trim()||'#8e8e93'}
 function renderTrendChart(){
   const canvas=document.getElementById('trendChart');if(!canvas||typeof Chart==='undefined')return;
   const days=30,labels=[],incomeData=[],expenseData=[];
@@ -4465,12 +4502,13 @@ function renderTrendChart(){
     incomeData.push(dayTx.reduce((s,e)=>s+(e.in||0),0));
     expenseData.push(dayTx.reduce((s,e)=>s+(e.out||0),0));
   }
+  const goldC=themeVar('--gold'), redC=themeVar('--red'), textC=themeVar('--text'), mutedC=themeVar('--muted');
   if(trendChartInstance)trendChartInstance.destroy();
   trendChartInstance=new Chart(canvas.getContext('2d'),{type:'line',data:{labels,datasets:[
-    {label:'รายรับ',data:incomeData,borderColor:'#d4af37',backgroundColor:'rgba(212,175,55,.15)',tension:.3,fill:true,pointRadius:2},
-    {label:'รายจ่าย',data:expenseData,borderColor:'#d2564b',backgroundColor:'rgba(210,86,75,.1)',tension:.3,fill:true,pointRadius:2}
-  ]},options:{responsive:true,plugins:{legend:{labels:{color:'#f2ece0'}}},
-    scales:{x:{ticks:{color:'#8f8977',maxTicksLimit:10}},y:{ticks:{color:'#8f8977'}}}}});
+    {label:'รายรับ',data:incomeData,borderColor:goldC,backgroundColor:goldC+'26',tension:.3,fill:true,pointRadius:2},
+    {label:'รายจ่าย',data:expenseData,borderColor:redC,backgroundColor:redC+'1a',tension:.3,fill:true,pointRadius:2}
+  ]},options:{responsive:true,plugins:{legend:{labels:{color:textC}}},
+    scales:{x:{ticks:{color:mutedC,maxTicksLimit:10}},y:{ticks:{color:mutedC}}}}});
 }
 function renderStockChart(stockItemsInStock){
   const canvas=document.getElementById('stockChart');if(!canvas||typeof Chart==='undefined')return;
@@ -4478,10 +4516,11 @@ function renderStockChart(stockItemsInStock){
   stockItemsInStock.forEach(s=>{const c=s.category||'อื่นๆ';catVal[c]=(catVal[c]||0)+(s.costTotal||0);});
   const labels=Object.keys(catVal).sort((a,b)=>catVal[b]-catVal[a]);
   const data=labels.map(k=>catVal[k]);
+  const goldC=themeVar('--gold'), mutedC=themeVar('--muted');
   if(stockChartInstance)stockChartInstance.destroy();
-  stockChartInstance=new Chart(canvas.getContext('2d'),{type:'bar',data:{labels,datasets:[{label:'มูลค่าทุน (บาท)',data,backgroundColor:'#d4af37'}]},
+  stockChartInstance=new Chart(canvas.getContext('2d'),{type:'bar',data:{labels,datasets:[{label:'มูลค่าทุน (บาท)',data,backgroundColor:goldC}]},
     options:{responsive:true,plugins:{legend:{display:false}},
-      scales:{x:{ticks:{color:'#8f8977'}},y:{ticks:{color:'#8f8977'}}}}});
+      scales:{x:{ticks:{color:mutedC}},y:{ticks:{color:mutedC}}}}});
 }
 window.exportReportCSV=()=>{
   const tx=DB.txns.filter(e=>!e.void&&inRange(e.ts,reportF,customRange));
@@ -7533,7 +7572,7 @@ themeToggle.onclick=()=>{
   const cur=document.documentElement.getAttribute('data-theme')==='light'?'light':'dark';
   applyTheme(cur==='light'?'dark':'light');
 };
-applyTheme(DB.theme||'dark');
+applyTheme(DB.theme||'light');
 
 /* ===== สลับโหมด PC / มือถือ ===== */
 const viewModeToggle=document.getElementById('viewModeToggle');
